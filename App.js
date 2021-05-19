@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import LoginScreen from './screens/login.js';
 import StartScreen from './screens/start.js';
+import MainScreen from './screens/main.js';
 
 const Stack = createStackNavigator();
 
@@ -12,7 +13,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="login">
+        <Stack.Navigator initialRouteName="main">
           <Stack.Screen
             name="login"
             component={LoginScreen} 
@@ -24,6 +25,12 @@ export default function App() {
             component={StartScreen} 
             options={{
               title: "촬영 유도 화면"
+            }}/>
+          <Stack.Screen
+            name="main"
+            component={MainScreen} 
+            options={{
+              title: "메인 화면"
             }}/>
         </Stack.Navigator>
       </NavigationContainer>
