@@ -2,7 +2,6 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, TextComponent, View, Image, Button, TouchableOpacity, SafeAreaView } from 'react-native';
 import TopBar from './topBar.js';
-import BottomBar from './bottomBar.js';
 import Fridge from './fridge.js';
 
 export default function MainScreen() {
@@ -10,7 +9,6 @@ export default function MainScreen() {
       <SafeAreaView style={styles.SafeAreaView}> 
         <TopBar />
         <Fridge />
-        <BottomBar />
     </SafeAreaView>
   );
 }
