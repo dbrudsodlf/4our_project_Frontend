@@ -7,7 +7,8 @@ import MainScreen from './screens/main.js';
 import ManageScreen from './screens/manage.js';
 import BasketScreen from './screens/basket.js';
 import MypageScreen from './screens/mypage.js';
-import ChoiceScreen from './screens/choice.js'
+import ChoiceScreen from './screens/choice.js';
+import SearchScreen from './screens/search.js';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -99,7 +100,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MainScreen">
+        <Stack.Navigator initialRouteName="search">
           <Stack.Screen
             name="login"
             component={LoginScreen} 
@@ -112,12 +113,19 @@ export default function App() {
             options={{
               title: "촬영 유도 화면"
             }}/>
+             <Stack.Screen
+            name="search"
+            component={SearchScreen} 
+            options={{
+              title: "재료 검색 화면"
+            }}/>
           <Stack.Screen
             name="MainScreen"
             component={MainTabScreen} 
             options={{
               title: "메인 화면"
             }}/>
+  
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

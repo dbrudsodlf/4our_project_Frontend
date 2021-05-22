@@ -38,14 +38,14 @@ const styles = StyleSheet.create({
         height: 500, 
       },
       egg:{
-        left: 1,
-        width: 160,
-        height: 335, 
+        left: 10,
+        width: 170,
+        height: 340, 
         marginBottom:140
       },
      flex:{
         position:'absolute',
-        top: 500,
+        top: 520,
         right: 50,
         flexDirection:"row",
         justifyContent: 'center',
