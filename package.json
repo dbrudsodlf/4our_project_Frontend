@@ -20,15 +20,18 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
-    "react-native-elements": "3.4.1",
+    "react-native-actionsheet": "^2.4.2",
+    "react-native-elements": "^3.4.1",
     "react-native-gesture-handler": "~1.10.2",
+    "react-native-image-crop-picker": "^0.36.2",
     "react-native-modalbox": "1.7.1",
     "react-native-paper": "4.8.1",
     "react-native-reanimated": "~2.1.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
     "react-native-tab-view": "^2.16.0",
-    "react-native-web": "~0.13.12"
+    "react-native-web": "~0.13.12",
+    "reanimated-bottom-sheet": "*"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

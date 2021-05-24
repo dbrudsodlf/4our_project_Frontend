@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
-import React from 'react';
-import { StyleSheet, SafeAreaView } from 'react-native';
+import * as React from 'react';
+import { StyleSheet, SafeAreaView, Text, View, Button, TouchableOpacity } from 'react-native';
 import LoginScreen from './screens/login.js';
 import StartScreen from './screens/start.js';
 import MainScreen from './screens/main.js';
@@ -13,6 +13,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Animated from 'react-native-reanimated';
+import BottomSheet from 'reanimated-bottom-sheet';
 
 const MainTab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -45,8 +47,9 @@ function MainTabScreen() {
         borderBottomWidth: 4,
       },
       showIcon: true,
-      showLabel: false,
-    }} >
+      showLabel: false
+    }} 
+    >
       <MainTab.Screen 
         name="MainScreen" 
         component={MainScreen} 
@@ -72,8 +75,10 @@ function MainTabScreen() {
           tabBarLabel: '냉장',
           tabBarIcon: ({tintColor}) => (
               <Icon name='plus' color='#191919' size={30} />
-          )
-        }}  />
+          ),
+          
+        }} 
+        />
       <MainTab.Screen 
         name="BasketScreen" 
         component={BasketScreen} 
@@ -100,7 +105,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="search">
+        <Stack.Navigator initialRouteName="MainScreen">
           <Stack.Screen
             name="login"
             component={LoginScreen} 
