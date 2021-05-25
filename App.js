@@ -9,6 +9,7 @@ import BasketScreen from './screens/basket.js';
 import MypageScreen from './screens/mypage.js';
 import ChoiceScreen from './screens/choice.js';
 import SearchScreen from './screens/search.js';
+import CartScreen from './screens/cart.js';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -19,6 +20,29 @@ import BottomSheet from 'reanimated-bottom-sheet';
 const MainTab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const SettingsStack = createStackNavigator();
+
+function SearchTab(){
+  return(
+    <SafeAreaView >
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="search">
+          <Stack.Screen
+          name="search"
+          component={SearchScreen}
+          /> 
+          <Stack.Screen
+            options={{
+              title: "카트"
+            }}
+          name="cart"
+          component={CartScreen}
+          ></Stack.Screen>
+          
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaView>
+  );
+}
 
 function BottomSH () {
 
@@ -109,7 +133,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MainScreen">
+        <Stack.Navigator initialRouteName="search">
           <Stack.Screen
             name="login"
             component={LoginScreen} 
@@ -127,6 +151,12 @@ export default function App() {
             component={SearchScreen} 
             options={{
               title: "재료 검색 화면"
+            }}/>
+             <Stack.Screen
+            name="cart"
+            component={CartScreen} 
+            options={{
+              title: "담은 재료"
             }}/>
           <Stack.Screen
             name="MainScreen"

@@ -5,8 +5,10 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';
 import SegmentedControl from 'rn-segmented-control';
 import Icon from 'react-native-vector-icons/AntDesign';
+import Icon2 from 'react-native-vector-icons/Feather';
 
-export default function search() {
+
+export default function search(props) {
   const [data, setData] = useState([]);
   const [query, setQuery] = useState('');
   const [heroes, setHeroes] = useState([]);
@@ -81,6 +83,16 @@ export default function search() {
   return (
 
     <View style={styles.container}>
+        <View>
+        <View style={styles.titleArea}>
+            <Text style={styles.text}>재료 검색</Text>  
+          <TouchableOpacity onPress={()=>{
+            props.navigation.navigate("cart")
+          }}>
+            <Icon2 name="shopping-cart" size={30}  color="#000" />
+          </TouchableOpacity>
+        </View>
+      </View>
       <SearchBar platform='ios' cancelButtonTitle='취소'
         onChangeText={updateQuery}
         value={query}
@@ -166,6 +178,20 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     flex: 1,
+  },
+  titleArea:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 10,
+    paddingLeft:10,
+    paddingRight:30,
+    paddingTop:20,
+    backgroundColor:'#fff'
+  },
+  text: {
+    fontSize: 32,
+    fontWeight: 'bold'
   },
   TextInputStyleClass: {
     textAlign: 'center',

@@ -18,6 +18,11 @@ export default function StartScreen() {
           <Text  style={{fontSize: 12,marginRight:10}}>간단한 촬영으로 나의 냉장고 완성하기</Text>
         </View>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.flex2}>
+        <View style={styles.btn2}>
+          <Text style={{fontSize: 15,padding:10,marginRight:40}}>다음에 인식할래요</Text>
+        </View>
+        </TouchableOpacity>
       </View>
       );
 }
@@ -54,6 +59,14 @@ const styles = StyleSheet.create({
         height: 110,
         backgroundColor: '#fff' ,
         borderRadius: 10,
+      },
+      flex2:{
+        position:'absolute',
+        top: 635,
+        flexDirection:"row",
+        justifyContent: 'center',
+        alignItems:"center",
+        left:150
       },
     btn1: {
       padding: 10,
