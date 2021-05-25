@@ -1,85 +1,13 @@
-// import * as React from 'react';
-// import { StyleSheet, Text, View, Button } from 'react-native';
-// import Animated from 'react-native-reanimated';
-// import BottomSheet from 'reanimated-bottom-sheet';
-
-// export default function ChoiceScreen () {
-//   const renderContent = () => (
-//     <View
-//       style={{
-//         backgroundColor: 'white',
-//         padding: 16,
-//         height: 450,
-//       }}
-//     >
-//       <Text>Swipe down to close</Text>
-//     </View>
-//   );
-
-//   const sheetRef = React.useRef(null);
-
-//   return (
-//       <View style={styles.container}>
-//       <View
-//         style={{
-//           flex: 1,
-//           backgroundColor: 'papayawhip',
-//           alignItems: 'center',
-//           justifyContent: 'center',
-//         }}
-//       >
-//         <Button
-//           title="Open Bottom Sheet"
-//           onPress={() => sheetRef.current.snapTo(0)}
-//         />
-//       </View>
-//       <BottomSheet
-//         ref={sheetRef}
-//         snapPoints={[450, 300, 0]}
-//         borderRadius={10}
-//         renderContent={renderContent}
-//       />
-//       </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignContent: 'center',
-//     textAlign: 'center',
-//     paddingTop: 30,
-//     backgroundColor: '#307ecc',
-//     padding: 16,
-//   },
-//   buttonStyle: {
-//     width: '100%',
-//     height: 40,
-//     padding: 10,
-//     backgroundColor: '#f5821f',
-//     marginTop: 30,
-//   },
-//   buttonTextStyle: {
-//     color: 'white',
-//     textAlign: 'center',
-//   },
-//   titleStyle: {
-//     color: 'white',
-//     textAlign: 'center',
-//     fontSize: 20,
-//     marginTop: 10,
-//   },
-// });
-
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   ImageBackground,
   TextInput,
-  StyleSheet
+  StyleSheet,
+  Image,
+  Platform
 } from 'react-native';
 
 import {useTheme} from 'react-native-paper';
@@ -91,39 +19,62 @@ import Feather from 'react-native-vector-icons/Feather';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from 'react-native-reanimated';
 
-import ImagePicker from 'react-native-image-crop-picker';
+import * as ImagePicker from 'expo-image-picker';
 import MainScreen from './main';
 import Fridge from './fridge.js';
+import { Camera } from 'expo-camera';
 
 const ChoiceScreen = () => {
 
   const {colors} = useTheme();
-
   const sheetRef = React.useRef(null);
+  const [pickedImagePath, setPickedImagePath] = useState('');
 
-  const takePhotoFromCamera = () => {
-    ImagePicker.openCamera({
-      compressImageMaxWidth: 300,
-      compressImageMaxHeight: 300,
-      cropping: true,
-      compressImageQuality: 0.7
-    }).then(image => {
-      console.log(image);
-      sheetRef.current.snapTo(1);
+  const pickImage = async () => {
+
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this appp to access your photos!");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
     });
+
+    // Explore the result
+    console.log(result);
+
+    if (!result.cancelled) {
+      setPickedImagePath(result.uri);
+      console.log(result.uri);
+    }
+  };
+
+  const openCamera = async () => {
+    // Ask the user for the permission to access the camera
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this appp to access your camera!");
+      return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync();
+
+    // Explore the result
+    console.log(result);
+
+    if (!result.cancelled) {
+      setPickedImagePath(result.uri);
+      console.log(result.uri);
+    }
   }
 
-  const choosePhotoFromLibrary = () => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 300,
-      cropping: true,
-      compressImageQuality: 0.7
-    }).then(image => {
-      console.log(image);
-      sheetRef.current.snapTo(1);
-    });
-  }
 
   const renderInner = () => (
     <View style={styles.panel}>
@@ -131,11 +82,11 @@ const ChoiceScreen = () => {
         <Text style={styles.panelTitle}>Upload Photo</Text>
         <Text style={styles.panelSubtitle}>Choose Your Ingredients Picture</Text>
       </View>
-      <TouchableOpacity style={styles.panelButton} onPress={takePhotoFromCamera}>
-        <Text style={styles.panelButtonTitle}>사진 촬영하러 가기</Text>
+      <TouchableOpacity style={styles.panelButton} onPress={openCamera}>
+        <Text style={styles.panelButtonTitle} >사진 촬영하러 가기</Text>
         <Icon name='camera' color='#191919' size={32} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.panelButton} onPress={choosePhotoFromLibrary}>
+      <TouchableOpacity style={styles.panelButton} onPress={pickImage}>
         <Text style={styles.panelButtonTitle}>라이브러리에서 사진 가져오기</Text>
         <Icon name='import' color='#191919' size={32} />
       </TouchableOpacity>
@@ -266,11 +217,5 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#FF0000',
     paddingBottom: 5,
-  },
-  textInput: {
-    flex: 1,
-    marginTop: Platform.OS === 'ios' ? 0 : -12,
-    paddingLeft: 10,
-    color: '#05375a',
-  },
+  }
 });

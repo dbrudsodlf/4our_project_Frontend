@@ -20,6 +20,10 @@ const MainTab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const SettingsStack = createStackNavigator();
 
+function BottomSH () {
+
+}
+
 function MainTabScreen() {
   return (
     <MainTab.Navigator
@@ -105,7 +109,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="search">
+        <Stack.Navigator initialRouteName="MainScreen">
           <Stack.Screen
             name="login"
             component={LoginScreen} 
