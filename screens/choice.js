@@ -10,7 +10,7 @@ import {
   Platform
 } from 'react-native';
 
-import {useTheme} from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -26,7 +26,7 @@ import { Camera } from 'expo-camera';
 
 const ChoiceScreen = () => {
 
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const sheetRef = React.useRef(null);
   const [pickedImagePath, setPickedImagePath] = useState('');
 
@@ -78,7 +78,7 @@ const ChoiceScreen = () => {
 
   const renderInner = () => (
     <View style={styles.panel}>
-      <View style={{alignItems: 'center'}}>
+      <View style={{ alignItems: 'center' }}>
         <Text style={styles.panelTitle}>Upload Photo</Text>
         <Text style={styles.panelSubtitle}>Choose Your Ingredients Picture</Text>
       </View>
@@ -121,7 +121,7 @@ const ChoiceScreen = () => {
         renderContent={renderInner}
         renderHeader={renderHeader}
       />
-      
+
       {/* <Animated.View style={{margin: 20,
         opacity: Animated.add(1.0, Animated.multiply(fadeAnim, 1.0)),
     }}>
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: '#FFFFFF',
     shadowColor: '#333333',
-    shadowOffset: {width: -1, height: -3},
+    shadowOffset: { width: -1, height: -3 },
     shadowRadius: 2,
     shadowOpacity: 0.4,
     // elevation: 5,
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems:'center'
+    alignItems: 'center'
   },
   panelButtonTitle: {
     fontSize: 20,

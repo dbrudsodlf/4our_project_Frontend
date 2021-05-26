@@ -31,7 +31,7 @@
     "react-native-actionsheet": "^2.4.2",
     "react-native-date-picker": "3.3.0",
     "react-native-datepicker": "1.7.2",
-    "react-native-elements": "^3.4.1",
+    "react-native-elements": "git+https://github.com/react-native-elements/react-native-elements.git#dist",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-image-crop-picker": "^0.36.2",
     "react-native-material-buttons": "0.6.0",
@@ -46,12 +46,13 @@
     "react-native-segmented-control-tab": "3.4.1",
     "react-native-tab-view": "^2.16.0",
     "react-native-unimodules": "^0.13.3",
+    "react-native-vector-icons": "8.1.0",
     "react-native-web": "~0.13.12",
     "react-native-wheel-picker": "1.2.0",
+    "react-radio-buttons": "1.2.2",
     "reanimated-bottom-sheet": "*",
-    "rn-segmented-control": "0.2.8",
-    "react-native-vector-icons": "8.1.0",
-    "react-radio-buttons": "1.2.2"
+    "rn-round-checkbox": "1.0.0",
+    "rn-segmented-control": "0.2.8"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

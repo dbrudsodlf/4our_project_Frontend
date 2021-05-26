@@ -1,6 +1,6 @@
 import { SearchBar } from 'react-native-elements';
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, FlatList, Text, TouchableHighlight, TouchableOpacity,Dimensions } from 'react-native';
+import React, { useState, useEffect,Component } from 'react';
+import { StyleSheet, View, FlatList, Text, TouchableHighlight, TouchableOpacity, Dimensions } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';
 import SegmentedControl from 'rn-segmented-control';
@@ -20,9 +20,9 @@ export default function search(props) {
   const [tabIndex, setTabIndex] = React.useState(0);
 
 
-   const handleTabsChange = index => {
-      setTabIndex(index);
-    };
+  const handleTabsChange = index => {
+    setTabIndex(index);
+  };
 
 
   const onChange = (event, selectedDate) => {
@@ -83,13 +83,13 @@ export default function search(props) {
   return (
 
     <View style={styles.container}>
-        <View>
+      <View>
         <View style={styles.titleArea}>
-            <Text style={styles.text}>재료 검색</Text>  
-          <TouchableOpacity onPress={()=>{
+          <Text style={styles.text}>재료 검색</Text>
+          <TouchableOpacity onPress={() => {
             props.navigation.navigate("cart")
           }}>
-            <Icon2 name="shopping-cart" size={30}  color="#000" />
+            <Icon2 name="shopping-cart" size={30} color="#000" />
           </TouchableOpacity>
         </View>
       </View>
@@ -112,60 +112,60 @@ export default function search(props) {
         }
         }
       />
-      <Modal  closeOnTouchOutside={true} isVisible={isModalVisible} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <View style={styles.modal}>
-        <View style={styles.modal2}>
-          <Text style={styles.food}>재료이름</Text>
-          <Text style={styles.date}>유통 기한</Text>
-      <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
-        <View style={styles.showdate} >
-        <Icon name="calendar" size={30}  color="#8C9190" />
-              <Text style={styles.date2}>{date.toLocaleDateString('ko-KR')}
-              </Text></View>
+      <Modal closeOnTouchOutside={true} isVisible={isModalVisible} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={styles.modal}>
+          <View style={styles.modal2}>
+            <Text style={styles.food}>재료이름</Text>
+            <Text style={styles.date}>유통 기한</Text>
+            <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
+              <View style={styles.showdate} >
+                <Icon name="calendar" size={30} color="#8C9190" />
+                <Text style={styles.date2}>{date.toLocaleDateString('ko-KR')}
+                </Text></View>
             </TouchableHighlight>
-          {show && (
-            <DateTimePicker
-            testID="dateTimePicker"
-            value={date}
-            mode={mode}
-            is24Hour={true}
-            display="spinner"
-            onChange={onChange}
-          />
-          )}
-          <Text style={styles.fridge}>보관 방법</Text>
-       
-<SegmentedControl
-        tabs={['냉장', '냉동']}
-        currentIndex={tabIndex}
-        onChange={handleTabsChange}
-        segmentedControlBackgroundColor='#fff'
-        activeSegmentBackgroundColor='#7DDED2'  
-        paddingVertical={15}
-        width={Dimensions.get('screen').width - 180}
-  
-        textStyle={{
-          fontWeight: '300',
-        }}
-      />
- </View>
- <View  style={styles.touch} >
- <TouchableOpacity
-        style={styles.button1}
-        onPress={() => {
-          setModalVisible(!isModalVisible);
-        }}>
-      
-        <Text style={styles.txt}>취소</Text>
-      </TouchableOpacity>
+            {show && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={mode}
+                is24Hour={true}
+                display="spinner"
+                onChange={onChange}
+              />
+            )}
+            <Text style={styles.fridge}>보관 방법</Text>
 
-      <TouchableOpacity
-        style={styles.button2}
-       // onPress={onPress}
-      >
-        <Text style={styles.txt}>담기</Text>
-      </TouchableOpacity></View>
-      </View>
+            <SegmentedControl
+              tabs={['냉장', '냉동']}
+              currentIndex={tabIndex}
+              onChange={handleTabsChange}
+              segmentedControlBackgroundColor='#fff'
+              activeSegmentBackgroundColor='#7DDED2'
+              paddingVertical={15}
+              width={Dimensions.get('screen').width - 180}
+
+              textStyle={{
+                fontWeight: '300',
+              }}
+            />
+          </View>
+          <View style={styles.touch} >
+            <TouchableOpacity
+              style={styles.button1}
+              onPress={() => {
+                setModalVisible(!isModalVisible);
+              }}>
+
+              <Text style={styles.txt}>취소</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.button2}
+            // onPress={onPress}
+            >
+              <Text style={styles.txt}>담기</Text>
+            </TouchableOpacity></View>
+        </View>
       </Modal>
 
     </View>
@@ -179,15 +179,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
   },
-  titleArea:{
+  titleArea: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 10,
-    paddingLeft:10,
-    paddingRight:30,
-    paddingTop:20,
-    backgroundColor:'#fff'
+    paddingLeft: 10,
+    paddingRight: 30,
+    paddingTop: 20,
+    backgroundColor: '#fff'
   },
   text: {
     fontSize: 32,
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 20
   },
-  modal2:{
+  modal2: {
     padding: 30,
   },
   food: {
@@ -225,58 +225,58 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 30
   },
-  date:{
+  date: {
     fontSize: 23,
     fontWeight: "bold",
     marginBottom: 10,
-    
+
   },
-  showdate:{
+  showdate: {
     flexDirection: 'row',
     borderWidth: 1,
     borderColor: '#8C9190',
-    height:50,
-    alignItems:'center',
-    justifyContent:'space-between',
-    padding:15,
-    marginBottom:30
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 15,
+    marginBottom: 30
   },
-  fridge:{
+  fridge: {
     fontSize: 23,
     fontWeight: "bold",
     marginBottom: 10,
-    
+
   },
-  date2:{
+  date2: {
     fontSize: 20,
-    marginRight:50
+    marginRight: 50
   },
-  touch:{
+  touch: {
     flexDirection: 'row',
-    width:300,
-    borderBottomEndRadius:20
+    width: 300,
+    borderBottomEndRadius: 20
   },
-  button1:{
-    width:150,
-    alignItems:'center',
-    justifyContent:'center',
-    backgroundColor:'#F59A23',
-    height:60,
-    borderColor:'#fff',
-    borderBottomLeftRadius:20
+  button1: {
+    width: 150,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F59A23',
+    height: 60,
+    borderColor: '#fff',
+    borderBottomLeftRadius: 20
   },
-  button2:{
-    width:150,
-    alignItems:'center',
-    justifyContent:'center',
-    backgroundColor:'#F59A23',
-    height:60,
-    borderColor:'#fff',
-    borderBottomRightRadius:20,
-    borderStartWidth:1
+  button2: {
+    width: 150,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F59A23',
+    height: 60,
+    borderColor: '#fff',
+    borderBottomRightRadius: 20,
+    borderStartWidth: 1
   },
-  txt:{
-    fontSize:20,
-    color:'#fff'
+  txt: {
+    fontSize: 20,
+    color: '#fff'
   }
 });

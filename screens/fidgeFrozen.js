@@ -11,7 +11,7 @@ import EggImage from '../assets/egg.jpeg';
 // import axios from 'axios';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function FridgeFrozen () {
+export default function FridgeFrozen() {
 
   //재료 받아오기
   // const [ingredients, setIngredients] = React.useState([])
@@ -28,8 +28,8 @@ export default function FridgeFrozen () {
 
   return (
     <View>
-    <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', overflow: 'hidden'}}>
-      {/* 재료 받아올 때 아래 코드로 대체할 것임 */}
+      <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', overflow: 'hidden' }}>
+        {/* 재료 받아올 때 아래 코드로 대체할 것임 */}
         {/* <View style={styles.ingredientsList} >
           {
             ingredients.map((ingredients, index)=>{
@@ -55,7 +55,7 @@ export default function FridgeFrozen () {
         <TouchableOpacity>
           <View style={styles.ingredientsCard}>
             <View>
-              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"}/>
+              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"} />
             </View>
             <View style={styles.ingredientsContents}>
               <Text style={styles.ingredientsFont}>계란</Text>
@@ -66,7 +66,7 @@ export default function FridgeFrozen () {
         <TouchableOpacity>
           <View style={styles.ingredientsCard}>
             <View>
-              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"}/>
+              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"} />
             </View>
             <View style={styles.ingredientsContents}>
               <Text style={styles.ingredientsFont}>계란</Text>
@@ -77,7 +77,7 @@ export default function FridgeFrozen () {
         <TouchableOpacity>
           <View style={styles.ingredientsCard}>
             <View>
-              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"}/>
+              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"} />
             </View>
             <View style={styles.ingredientsContents}>
               <Text style={styles.ingredientsFont}>계란</Text>
@@ -88,7 +88,7 @@ export default function FridgeFrozen () {
         <TouchableOpacity>
           <View style={styles.ingredientsCard}>
             <View>
-              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"}/>
+              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"} />
             </View>
             <View style={styles.ingredientsContents}>
               <Text style={styles.ingredientsFont}>계란</Text>
@@ -99,7 +99,7 @@ export default function FridgeFrozen () {
         <TouchableOpacity>
           <View style={styles.ingredientsCard}>
             <View>
-              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"}/>
+              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"} />
             </View>
             <View style={styles.ingredientsContents}>
               <Text style={styles.ingredientsFont}>계란</Text>
@@ -129,7 +129,7 @@ export default function FridgeFrozen () {
             </View>
           </View>
         </TouchableOpacity>
-    </ScrollView>
+      </ScrollView>
     </View>
   );
 }
@@ -171,8 +171,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   ingredientsList: {
-    flex: 1, 
-    flexDirection: 'row', 
+    flex: 1,
+    flexDirection: 'row',
     flexWrap: 'wrap'
   }
 });
