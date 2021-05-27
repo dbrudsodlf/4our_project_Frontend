@@ -24,7 +24,7 @@ import MainScreen from './main';
 import Fridge from './fridge.js';
 import { Camera } from 'expo-camera';
 
-const ChoiceScreen = () => {
+const ChoiceScreen = (props) => {
 
   const { colors } = useTheme();
   const sheetRef = React.useRef(null);
@@ -90,13 +90,19 @@ const ChoiceScreen = () => {
         <Text style={styles.panelButtonTitle}>라이브러리에서 사진 가져오기</Text>
         <Icon name='import' color='#191919' size={32} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.panelButton} >
+      <TouchableOpacity 
+        style={styles.panelButton} 
+          onPress={()=> {
+            props.navigation.navigate('search');
+          }}>
         <Text style={styles.panelButtonTitle}>직접 검색하러 가기</Text>
         <Icon name='magnify' color='#191919' size={32} />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.panelButton}
-        onPress={() => sheetRef.current.snapTo(1)}>
+        onPress={()=> {
+          props.navigation.navigate('MainScreen');
+        }}>
         <Text style={styles.panelButtonTitle}>Cancel</Text>
       </TouchableOpacity>
     </View>
