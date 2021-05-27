@@ -39,25 +39,29 @@ export default function cart() {
     <View style={styles.container}>
 
          <View style={styles.boxtop}>
+         <View style={styles.checkboxtop}>
       <Checkbox
-        color="#7DDED2"
+        color="#F59A23"
         status={checked ? 'checked' : 'unchecked'}
         onPress={() => {
           setChecked(!checked);
         }}
         
-      >전체선택</Checkbox>
+      ></Checkbox>
+      <Text style={styles.checkboxtop2}>전체 선택</Text></View>
+
+
       <TouchableHighlight underlayColor='#fff'style={styles.add} >
-        <Text>선택 추가하기</Text>
+        <Text style={styles.add2}>선택 추가하기</Text>
       </TouchableHighlight>
       </View>
 
 
-      <View style={styles.container2}>
+      <View style={styles.container2}     >
         <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', overflow: 'hidden' }}>
           <View style={styles.box}>
             <Checkbox
-              color="#7DDED2"
+              color="#F59A23"
               status={checked ? 'checked' : 'unchecked'}
               onPress={() => {
                 setChecked(!checked);
@@ -65,10 +69,10 @@ export default function cart() {
             />
 
 
-            <View style={styles.box2}>
+            <View style={styles.box2} width={Dimensions.get('screen').width*0.9}>
               <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"} />
-              <View style={styles.box3}>
-
+              <View style={styles.box3}
+              width={Dimensions.get('screen').width*0.5}>
                 <Text style={styles.food}>재료이름</Text>
                 <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
                   <View style={styles.showdate} >
@@ -84,6 +88,7 @@ export default function cart() {
                     is24Hour={true}
                     display="spinner"
                     onChange={onChange}
+      
                   />
                 )}
 
@@ -94,7 +99,7 @@ export default function cart() {
                   segmentedControlBackgroundColor='#fff'
                   activeSegmentBackgroundColor='#7DDED2'
                   paddingVertical={15}
-                  width={Dimensions.get('screen').width - 180}
+                  width={Dimensions.get('screen').width /2}
 
                   textStyle={{
                     fontWeight: '300',
@@ -104,110 +109,7 @@ export default function cart() {
             </View>
 
 
-          </View>
-
-
-          <View style={styles.box}>
-            <Checkbox
-              color="#7DDED2"
-              status={checked ? 'checked' : 'unchecked'}
-              onPress={() => {
-                setChecked(!checked);
-              }}
-            />
-
-
-            <View style={styles.box2}>
-              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"} />
-              <View style={styles.box3}>
-
-                <Text style={styles.food}>재료이름</Text>
-                <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
-                  <View style={styles.showdate} >
-                    <Icon name="calendar" size={30} color="#8C9190" />
-                    <Text style={styles.date2}>{date.toLocaleDateString('ko-KR')}
-                    </Text></View>
-                </TouchableHighlight>
-                {show && (
-                  <DateTimePicker
-                    testID="dateTimePicker"
-                    value={date}
-                    mode={mode}
-                    is24Hour={true}
-                    display="spinner"
-                    onChange={onChange}
-                  />
-                )}
-
-                <SegmentedControl
-                  tabs={['냉장', '냉동']}
-                  currentIndex={tabIndex}
-                  onChange={handleTabsChange}
-                  segmentedControlBackgroundColor='#fff'
-                  activeSegmentBackgroundColor='#7DDED2'
-                  paddingVertical={15}
-                  width={Dimensions.get('screen').width - 180}
-
-                  textStyle={{
-                    fontWeight: '300',
-                  }}
-                />
-              </View>
-            </View>
-
-
-          </View>
-
-          <View style={styles.box}>
-            <Checkbox
-              color="#7DDED2"
-              status={checked ? 'checked' : 'unchecked'}
-              onPress={() => {
-                setChecked(!checked);
-              }}
-            />
-
-
-            <View style={styles.box2}>
-              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"} />
-              <View style={styles.box3}>
-
-                <Text style={styles.food}>재료이름</Text>
-                <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
-                  <View style={styles.showdate} >
-                    <Icon name="calendar" size={30} color="#8C9190" />
-                    <Text style={styles.date2}>{date.toLocaleDateString('ko-KR')}
-                    </Text></View>
-                </TouchableHighlight>
-                {show && (
-                  <DateTimePicker
-                    testID="dateTimePicker"
-                    value={date}
-                    mode={mode}
-                    is24Hour={true}
-                    display="spinner"
-                    onChange={onChange}
-                  />
-                )}
-
-                <SegmentedControl
-                  tabs={['냉장', '냉동']}
-                  currentIndex={tabIndex}
-                  onChange={handleTabsChange}
-                  segmentedControlBackgroundColor='#fff'
-                  activeSegmentBackgroundColor='#7DDED2'
-                  paddingVertical={15}
-                  width={Dimensions.get('screen').width - 180}
-
-                  textStyle={{
-                    fontWeight: '300',
-                  }}
-                />
-              </View>
-            </View>
-
-
-          </View>
+</View>
         </ScrollView>
       </View>
     </View>
@@ -224,18 +126,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent:'space-between',
     backgroundColor: '#fff',
-paddingLeft:20,
-paddingRight:20,
-paddingTop:10,
-paddingBottom:10
-
+padding:20,
+borderBottomWidth:2,
+borderBottomColor:'#F59A23',
+  },
+  checkboxtop:{
+    marginTop:5,
+    flexDirection: 'row',
+    justifyContent:'center'
+  },
+  checkboxtop2:{
+    fontSize:15,
+    marginTop:7
   },
   add:{
     borderRadius: 10,
-    borderColor: "#000",
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    padding: 10
+    borderColor: "#F59A23",
+    backgroundColor: '#F59A23',
+    borderWidth: 2,
+    padding: 10,
+  },
+  add2:{
+    fontSize:13,
+    fontWeight:'bold',
+    color:'#fff'
   },
   container2: {
     flex: 1,
@@ -243,7 +157,7 @@ paddingBottom:10
   },
   box: {
     flexDirection: 'column',
-    margin: 10,
+    margin: 15,
     borderRadius: 10,
     borderColor: "#000",
     backgroundColor: '#fff',
@@ -251,10 +165,10 @@ paddingBottom:10
     padding: 10
   },
   box2: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   box3: {
-    paddingLeft: 10
+    paddingLeft: 20,
   },
   food: {
     fontSize: 25,
