@@ -1,16 +1,18 @@
 import React from "react";
-import {Text,TouchableOpacity,View,StyleSheet,Image} from "react-native";
+import {Text,TouchableOpacity,View,StyleSheet,Image,Dimensions} from "react-native";
 import camera from '../assets/camera.png';
 import hand from '../assets/hand.png';
 import egg from '../assets/avocado.png';
 
-export default function StartScreen() {
+export default function StartScreen(props) {
     return (
      <View style={styles.container}>
         <Image style={styles.egg} source={egg} />
         <View style={styles.hand}>
-          <Image style={styles.hand} source={hand} /></View>
-        <TouchableOpacity style={styles.flex}>
+          <Image style={styles.hand} source={hand} />
+             </View>
+             <View>
+        <TouchableOpacity style={styles.flex1} >
         <View style={styles.cameraicon}>
           <Image style={styles.camera} source={camera} /></View>
         <View style={styles.btn1}>
@@ -18,12 +20,14 @@ export default function StartScreen() {
           <Text  style={{fontSize: 12,marginRight:10}}>간단한 촬영으로 나의 냉장고 완성하기</Text>
         </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.flex2}>
+        <TouchableOpacity style={styles.flex2} onPress={() => {
+            props.navigation.navigate("MainScreen")
+          }}>
         <View style={styles.btn2}>
-          <Text style={{fontSize: 15,padding:10,marginRight:40}}>다음에 인식할래요</Text>
+          <Text style={{fontSize: 15,padding:10,marginRight:40}}>냉장고 바로가기 </Text>
         </View>
         </TouchableOpacity>
-      </View>
+      </View></View>
       );
 }
 
@@ -32,26 +36,23 @@ const styles = StyleSheet.create({
         flex:1, 
         flexDirection:'column',      
         backgroundColor: '#FFD098',
+        alignItems:'center',
         justifyContent: 'center',
-        alignItems:"center",
       },
       hand:{
         position:'absolute',
-        top: 20,
-        right: 0,
-        width: 500,
+        top: 55,
+        right:0,
+        width: 600,
         height: 500, 
       },
       egg:{
-        left: 10,
-        width: 170,
-        height: 340, 
-        marginBottom:140
-      },
-     flex:{
         position:'absolute',
-        top: 520,
-        right: 50,
+        width: 200,
+        height: 400, 
+       top:140
+      },
+     flex1:{
         flexDirection:"row",
         justifyContent: 'center',
         alignItems:"center",
@@ -59,14 +60,18 @@ const styles = StyleSheet.create({
         height: 110,
         backgroundColor: '#fff' ,
         borderRadius: 10,
+        marginTop:500
       },
       flex2:{
-        position:'absolute',
-        top: 635,
         flexDirection:"row",
         justifyContent: 'center',
         alignItems:"center",
-        left:150
+        marginTop:20,
+        borderWidth:1,
+        borderColor:"#000",
+        width: 300,
+        paddingLeft:40,
+        borderRadius:10
       },
     btn1: {
       padding: 10,
@@ -85,6 +90,7 @@ const styles = StyleSheet.create({
         alignItems:"center",
         justifyContent: "center",
        marginLeft:20,
-    }
+    },
+
   });
   
