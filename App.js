@@ -10,12 +10,14 @@ import MypageScreen from './screens/mypage.js';
 import ChoiceScreen from './screens/choice.js';
 import SearchScreen from './screens/search.js';
 import CartScreen from './screens/cart.js';
+import CookScreen from './screens/cook.js';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 const MainTab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -104,6 +106,7 @@ function MainTabScreen() {
             <Icon name='account-outline' color='#191919' size={30} />
           )
         }} />
+
     </MainTab.Navigator>
   );
 }
@@ -112,7 +115,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="search">
+        <Stack.Navigator initialRouteName="cook">
           <Stack.Screen
             name="login"
             component={LoginScreen}
@@ -142,6 +145,12 @@ export default function App() {
             component={MainTabScreen}
             options={{
               title: "메인 화면"
+            }} />
+            <Stack.Screen
+            name="cook"
+            component={CookScreen}
+            options={{
+              title: "요리 하기"
             }} />
         </Stack.Navigator>
       </NavigationContainer>
