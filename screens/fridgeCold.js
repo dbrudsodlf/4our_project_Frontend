@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import {
   TouchableOpacity,
   StyleSheet,
@@ -8,39 +8,35 @@ import {
   Image
 } from 'react-native';
 import EggImage from '../assets/egg.jpeg';
-// import axios from 'axios';
+import axios from 'axios';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {API_URL} from '../config/constants.js';
 
+export default function FridgeCold (props) {
 
-export default function FridgeCold () {
-
-  //재료 받아오기
-  // const [ingredients, setIngredients] = React.useState([])
-  // React.useEffect(()=>{
-  //   axios
-  //     .get(`${API_URL}/MainScreen`)
-  //     .tne((result)=>{
-  //       setIngredients(result.data.ingredients);
-  //     })
-  //     .catch((error)=>{
-  //       console.error(error)
-  //     });
-  // }, []);
+  const [ingredients, setIngredients] = React.useState([]);
+  React.useEffect(()=>{
+    axios.get(`${API_URL}/fridgecold`).then((result)=>{
+      console.log(result);
+      setIngredients(result.data.ingredients);
+    }).catch((error)=>{
+      console.error(error);
+    })
+  }, []);
 
   return (
     <View>
     <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', overflow: 'hidden'}}>
-      {/* 재료 받아올 때 아래 코드로 대체할 것임 */}
-        {/* <View style={styles.ingredientsList} >
+        <View style={styles.ingredientsList} >
           {
-            ingredients.map((ingredients, index)=>{
+            ingredients.map((ingredient, index)=>{
               return (
                 <View style={styles.ingredientsCard}>
                   <View>
                     <Image 
                       style={styles.ingredientsImage} 
                       source={{
-                        uri: `${API_URL}/${ingredient.imgUrl}`
+                        uri: `${ingredient.imgUrl}`
                       }} 
                       resizeMode={"contain"}/>
                   </View>
@@ -52,41 +48,9 @@ export default function FridgeCold () {
               );
             })
           }
-        </View> */}
-        <TouchableOpacity>
-          <View style={styles.ingredientsCard}>
-            <View>
-              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"}/>
-            </View>
-            <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont}>계란</Text>
-              <Text style={styles.ingredientsFont}>D-3</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.ingredientsCard}>
-            <View>
-              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"}/>
-            </View>
-            <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont}>계란</Text>
-              <Text style={styles.ingredientsFont}>D-3</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.ingredientsCard}>
-            <View>
-              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"}/>
-            </View>
-            <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont}>계란</Text>
-              <Text style={styles.ingredientsFont}>D-3</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity disabled={true}>
+        </View>
+        
+        {/* <TouchableOpacity disabled={true}>
           <View style={styles.ingredientsCard}>
             <View style={{ alignItems: 'center', padding: 10 }}>
               <Icon name='help-circle-outline' size={110} color='#191919' />
@@ -97,42 +61,14 @@ export default function FridgeCold () {
             </View>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity disabled={true}>
-          <View style={styles.ingredientsCard}>
-            <View style={{ alignItems: 'center', padding: 10 }}>
-              <Icon name='help-circle-outline' size={110} color='#191919' />
-            </View>
-            <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont}> </Text>
-              <Text style={styles.ingredientsFont}> </Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity disabled={true}>
-          <View style={styles.ingredientsCard}>
-            <View style={{ alignItems: 'center', padding: 10 }}>
-              <Icon name='help-circle-outline' size={110} color='#191919' />
-            </View>
-            <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont}> </Text>
-              <Text style={styles.ingredientsFont}> </Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity disabled={true}>
-          <View style={styles.ingredientsCard}>
-            <View style={{ alignItems: 'center', padding: 10 }}>
-              <Icon name='help-circle-outline' size={110} color='#191919' />
-            </View>
-            <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont}> </Text>
-              <Text style={styles.ingredientsFont}> </Text>
-            </View>
-          </View>
-        </TouchableOpacity>
+         */}
     </ScrollView>
     </View>
   );
+
+  // function onMultiChange() {
+  //   return (item) => setSelectedTeams(xorBy(selectedTeams, [item], 'id'))
+  // }
 }
 
 const styles = StyleSheet.create({
