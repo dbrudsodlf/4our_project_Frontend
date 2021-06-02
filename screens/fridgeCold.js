@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   TouchableOpacity,
   StyleSheet,
@@ -12,13 +12,13 @@ import axios from 'axios';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {API_URL} from '../config/constants.js';
 
-export default function FridgeCold (props) {
+export default function FridgeCold () {
 
   const [ingredients, setIngredients] = React.useState([]);
   React.useEffect(()=>{
     axios.get(`${API_URL}/fridgecold`).then((result)=>{
-      console.log(result);
       setIngredients(result.data.ingredients);
+      console.log(ingredients);
     }).catch((error)=>{
       console.error(error);
     })
@@ -31,20 +31,22 @@ export default function FridgeCold (props) {
           {
             ingredients.map((ingredient, index)=>{
               return (
-                <View style={styles.ingredientsCard}>
-                  <View>
-                    <Image 
-                      style={styles.ingredientsImage} 
-                      source={{
-                        uri: `${ingredient.imgUrl}`
-                      }} 
-                      resizeMode={"contain"}/>
+                <TouchableOpacity>
+                  <View style={styles.ingredientsCard}>
+                    <View>
+                      <Image 
+                        style={styles.ingredientsImage} 
+                        source={{
+                          uri: `${API_URL}/${ingredient.imgUrl}`
+                        }} 
+                        resizeMode={"contain"}/>
+                    </View>
+                    <View style={styles.ingredientsContents}>
+                      <Text style={styles.ingredientsFont}>{ingredient.name}</Text>
+                      <Text style={styles.ingredientsFont}>{ingredient.dday}</Text>
+                    </View>
                   </View>
-                  <View style={styles.ingredientsContents}>
-                    <Text style={styles.ingredientsFont}>{ingredient.name}</Text>
-                    <Text style={styles.ingredientsFont}>{ingredient.dday}</Text>
-                  </View>
-                </View>
+                </TouchableOpacity>
               );
             })
           }
@@ -60,15 +62,10 @@ export default function FridgeCold (props) {
               <Text style={styles.ingredientsFont}> </Text>
             </View>
           </View>
-        </TouchableOpacity>
-         */}
+        </TouchableOpacity> */}
     </ScrollView>
     </View>
   );
-
-  // function onMultiChange() {
-  //   return (item) => setSelectedTeams(xorBy(selectedTeams, [item], 'id'))
-  // }
 }
 
 const styles = StyleSheet.create({
