@@ -11,6 +11,7 @@ import ChoiceScreen from './screens/choice.js';
 import SearchScreen from './screens/search.js';
 import CartScreen from './screens/cart.js';
 import CookScreen from './screens/cook.js';
+import YoutubeList from './screens/youtubeList';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -115,7 +116,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MainScreen">
+        <Stack.Navigator initialRouteName="start">
           <Stack.Screen
             name="login"
             component={LoginScreen}
@@ -152,6 +153,12 @@ export default function App() {
             options={{
               title: "요리 하기"
             }} />
+          <Stack.Screen
+            name="youtubeList"
+            component={YoutubeList}
+            options={{
+              title: "요리 하기"
+            }} />           
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

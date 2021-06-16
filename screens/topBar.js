@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, Text, TextComponent, View, Image, Button, TouchableOpacity, SafeAreaView } from 'react-native';
 
 const title = '나의 재료'
-export default function TopBar() {
+export default function TopBar(props) {
   return (
       <View>
         <View style={styles.titleArea}>
@@ -11,8 +11,8 @@ export default function TopBar() {
             <Text style={styles.text}>{title}</Text>  
             <Text style={{color: '#797979', paddingTop: 6}}>아래 추가하기 버튼을 눌러 재료를 넣어주세요.</Text>
           </View>
-          <TouchableOpacity>
-            <View style={styles.cookBtn}>
+          <TouchableOpacity style={styles.cookBtn} >
+            <View >
               <Text style={styles.cookBtnText}>요리하기</Text> 
             </View>
           </TouchableOpacity>

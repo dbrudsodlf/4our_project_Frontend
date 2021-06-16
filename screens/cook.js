@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function CookScreen () {
+export default function CookScreen (props) {
   return (
     <SafeAreaView style={styles.container}>
     <Text style={styles.appTitle}>내가 선택한 재료</Text>
@@ -30,7 +30,9 @@ export default function CookScreen () {
     </View>
     <View style={styles.container3}
         width={Dimensions.get('screen').width *0.2}>
-    <TouchableOpacity style={styles.icon} >
+    <TouchableOpacity style={styles.icon} onPress={() => {
+            props.navigation.navigate("youtubeList")
+          }} >
             <Icon name="silverware-fork-knife" size={40} color="#fff" />
           </TouchableOpacity>
           </View>
@@ -44,7 +46,9 @@ export default function CookScreen () {
     </View>
     <View style={styles.container3}
         width={Dimensions.get('screen').width *0.2}>
-    <TouchableOpacity style={styles.icon} >
+    <TouchableOpacity style={styles.icon}onPress={() => {
+            props.navigation.navigate("youtubeList")
+          }} >
             <Icon name="silverware-fork-knife" size={40} color="#fff" />
           </TouchableOpacity>
           </View>
@@ -94,7 +98,7 @@ const styles = StyleSheet.create({
     flex: 5,
     fontWeight: 'bold',
     fontSize: 25,
-    marginLeft:20,
+    marginLeft:25,
     marginTop:20
   },
   food_ing: {
@@ -107,7 +111,7 @@ const styles = StyleSheet.create({
   },
  icon:{
    width:90,
-   padding:5,
+   padding:7,
    backgroundColor:'#F59A23',
    alignItems:'center',
    borderRadius:25
