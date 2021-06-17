@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
-  TouchableOpacity,
   ImageBackground,
   TextInput,
   StyleSheet,
   Image,
   Platform
 } from 'react-native';
-
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import { useTheme } from 'react-native-paper';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';

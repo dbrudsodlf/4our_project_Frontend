@@ -2,12 +2,12 @@ import * as React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
-  TouchableOpacity,
   View,
   Text,
   ScrollView,
   Dimensions
 } from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function CookScreen (props) {
