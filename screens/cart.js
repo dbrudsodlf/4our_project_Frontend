@@ -6,6 +6,8 @@ import SegmentedControl from 'rn-segmented-control';
 import { Checkbox } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/AntDesign';
 import EggImage from '../assets/egg.jpeg';
+import { API_URL } from '../config/constants.js';
+import axios from 'axios';
 
 export default function cart() {
   const today = new Date();
@@ -14,7 +16,7 @@ export default function cart() {
   const [show, setShow] = useState(false);
   const [tabIndex, setTabIndex] = React.useState(0);
   const [checked, setChecked] = React.useState(false);
-
+  const [ingredients, setIngredients] = React.useState([]);
 
   const handleTabsChange = index => {
     setTabIndex(index);
@@ -34,6 +36,18 @@ export default function cart() {
   const showDatepicker = () => {
     showMode('date');
   };
+
+  
+  React.useEffect(() => {
+    axios.get(`${API_URL}/fridgecold`)
+    .then((result) => {
+      setIngredients(result.data.ingredients);
+      console.log(ingredients);
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -69,16 +83,17 @@ export default function cart() {
             />
 
 
-            <View style={styles.box2} width={Dimensions.get('screen').width*0.9}>
+            <View style={styles.box2} width={Dimensions.get('screen').width*0.89}>
               <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"} />
               <View style={styles.box3}
               width={Dimensions.get('screen').width*0.5}>
-                <Text style={styles.food}>재료이름</Text>
+                <Text style={styles.food} key={ingredients.id}>{ingredients.name}</Text>
                 <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
                   <View style={styles.showdate} >
                     <Icon name="calendar" size={30} color="#8C9190" />
-                    <Text style={styles.date2}>{date.toLocaleDateString('ko-KR')}
-                    </Text></View>
+                    <View style={styles.date1} >
+                       <Text style={styles.date2}>{date.toLocaleDateString('ko-KR')}
+                    </Text></View></View>
                 </TouchableHighlight>
                 {show && (
                   <DateTimePicker
@@ -98,7 +113,7 @@ export default function cart() {
                   onChange={handleTabsChange}
                   segmentedControlBackgroundColor='#fff'
                   activeSegmentBackgroundColor='#7DDED2'
-                  paddingVertical={15}
+                  paddingVertical={14}
                   width={Dimensions.get('screen').width /2}
 
                   textStyle={{
@@ -178,8 +193,10 @@ borderBottomColor:'#F59A23',
   date: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 10
-
+    marginBottom: 10,
+  },
+  date1: {
+marginLeft:15
   },
   showdate: {
     flexDirection: 'row',

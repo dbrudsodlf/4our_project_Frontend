@@ -1,29 +1,27 @@
 import { SearchBar } from 'react-native-elements';
-import React, { useState, useEffect,Component } from 'react';
-import { StyleSheet, View, FlatList, Text, TouchableHighlight, TouchableOpacity, Dimensions } from 'react-native';
+import React, { useState, useEffect, Component } from 'react';
+import { StyleSheet, View, FlatList, ScrollView, Text, TouchableHighlight, TouchableOpacity, Dimensions } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';
 import SegmentedControl from 'rn-segmented-control';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/Feather';
-
+import { API_URL } from '../config/constants.js';
+import axios from 'axios';
 
 export default function search(props) {
-  const [data, setData] = useState([]);
-  const [query, setQuery] = useState('');
-  const [heroes, setHeroes] = useState([]);
+  const [ingredients, setIngredients] = React.useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
   const today = new Date();
   const [date, setDate] = useState(new Date(today));
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [tabIndex, setTabIndex] = React.useState(0);
-
-
+  const [modalData, setModalData] = useState([]);
+ 
   const handleTabsChange = index => {
     setTabIndex(index);
   };
-
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -41,44 +39,41 @@ export default function search(props) {
   };
 
 
-  const toggleModal = () => {
+  const toggleModal = (ingredients) => {//모달띄우기
     setModalVisible(!isModalVisible);
+    setModalData(ingredients.name);
   };
 
-
-
-  const fetchData = async () => {
-    const res = await fetch('https://api.opendota.com/api/heroes');
-    const json = await res.json();
-    setData(json);
-    setHeroes(json.slice());
-  };
-
-  useEffect(() => {
-    fetchData();
+  React.useEffect(() => {//데이터 받아오기
+    axios.get(`${API_URL}/fridgecold`)
+      .then((result) => {
+        setIngredients(result.data.ingredients);
+        console.log(ingredients);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
   }, []);
 
-  const formatNames = (hero) => {
-    let heroName = hero.name.charAt(14).toUpperCase() + hero.name.slice(15);
-    heroName = heroName.replace(/_/g, " ");
-    return heroName;
-  }
-
-  const updateQuery = (input) => {
-    setQuery(input);
-    setHeroes(data.slice());
-  }
-
-  const filterNames = (hero) => {
-    let search = query.toLowerCase().replace(/ /g, "_");
-    if (hero.name.startsWith(search, 14)) {
-      return formatNames(hero);
-    } else {
-      heroes.splice(heroes.indexOf(hero), 1);
-      return null;
-    }
-  }
-
+  //  const searchFilterFunction = (text) => {
+  //     if (text) { //빈칸이 아니면
+  //       const newData = masterDataSource.filter(
+  //         function (ingredients) {
+  //           const itemData = ingredients
+  //             ? ingredients.name.toUpperCase()
+  //             : ''.toUpperCase();
+  //           const textData = text.toUpperCase();
+  //           return itemData.indexOf(textData) > -1;
+  //       });
+  //       setFilteredDataSource(newData);
+  //       setSearch(text);
+  //     } else {
+  //       // Inserted text is blank
+  //       // Update FilteredDataSource with masterDataSource
+  //       setFilteredDataSource(masterDataSource);
+  //       setSearch(text);
+  //     }
+  //   };
 
   return (
 
@@ -86,7 +81,7 @@ export default function search(props) {
       <View>
         <View style={styles.titleArea}>
           <Text style={styles.text}>재료 검색</Text>
-          <TouchableOpacity onPress={() => {
+          <TouchableOpacity onPress={() => {//장바구니로 이동
             props.navigation.navigate("cart")
           }}>
             <Icon2 name="shopping-cart" size={30} color="#000" />
@@ -94,35 +89,43 @@ export default function search(props) {
         </View>
       </View>
       <SearchBar platform='ios' cancelButtonTitle='취소'
-        onChangeText={updateQuery}
-        value={query}
+        // onChangeText={(text) => searchFilterFunction(text)}
+        //  value={search}
         underlineColorAndroid='transparent'
         placeholder="원하는 재료를 검색해보세요" />
 
-      <FlatList
-        data={heroes} keyExtractor={(i) => i.id.toString()}
-        extraData={query}
-        renderItem={({ item }) => {
-          return (
-            <TouchableHighlight underlayColor='#F59A23' onPress={toggleModal}>
-              <Text style={styles.flatList}>{filterNames(item)}
-              </Text>
-            </TouchableHighlight>
-          );
-        }
-        }
-      />
-      <Modal closeOnTouchOutside={true} isVisible={isModalVisible} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <ScrollView
+        contentContainerStyle={{ flexDirection: 'row' }}>
+        <View style={styles.foodList} width={Dimensions.get('screen').width}>
+          {
+            ingredients.map((ingredient, index) => {
+              return (
+                <TouchableHighlight underlayColor='#F59A23' onPress={() => toggleModal(ingredient)}>
+                  <Text style={styles.flatList} key={ingredient.id}>{ingredient.name}</Text>
+                </TouchableHighlight>
+              );
+            })
+          }
+        </View>
+      </ScrollView>
+
+      <Modal
+        transparent={true}
+        closeOnTouchOutside={true}
+        isVisible={isModalVisible}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <View style={styles.modal}>
           <View style={styles.modal2}>
-            <Text style={styles.food}>재료이름</Text>
-            <Text style={styles.date}>유통 기한</Text>
+            <Text style={styles.food} key={ingredients.name}>{modalData}</Text>
+            <Text style={styles.date} >유통 기한</Text>
+
             <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
               <View style={styles.showdate} >
                 <Icon name="calendar" size={30} color="#8C9190" />
                 <Text style={styles.date2}>{date.toLocaleDateString('ko-KR')}
                 </Text></View>
             </TouchableHighlight>
+
             {show && (
               <DateTimePicker
                 testID="dateTimePicker"
@@ -133,6 +136,7 @@ export default function search(props) {
                 onChange={onChange}
               />
             )}
+
             <Text style={styles.fridge}>보관 방법</Text>
 
             <SegmentedControl
@@ -142,20 +146,19 @@ export default function search(props) {
               segmentedControlBackgroundColor='#fff'
               activeSegmentBackgroundColor='#7DDED2'
               paddingVertical={15}
-              width={Dimensions.get('screen').width /2}
-
+              width={Dimensions.get('screen').width / 2}
               textStyle={{
                 fontWeight: '300',
               }}
             />
           </View>
+
           <View style={styles.touch} >
             <TouchableOpacity
               style={styles.button1}
               onPress={() => {
                 setModalVisible(!isModalVisible);
               }}>
-
               <Text style={styles.txt}>취소</Text>
             </TouchableOpacity>
 
@@ -169,8 +172,6 @@ export default function search(props) {
       </Modal>
 
     </View>
-
-
   );
 }
 
@@ -200,6 +201,9 @@ const styles = StyleSheet.create({
     borderColor: '#FFFFFF',
     borderRadius: 7,
     backgroundColor: "#FFFFFF",
+
+  },
+  foodList: {
 
   },
   flatList: {
