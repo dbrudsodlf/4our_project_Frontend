@@ -29,7 +29,7 @@ export default function FridgeCold ({ isSelectBtn }) {
   const [selectedIngredients, setSelectedIngredients] = React.useState([]);
 
   const renderIngredients = ({ item, index }) => {
-    const { name, slug, imgUrl, dday } = item;
+    const { name, slug, imgUrl, dday, id } = item;
     const isSelected = selectedIngredients.filter((i) => i === slug).length > 0;
 
     return (
@@ -37,12 +37,12 @@ export default function FridgeCold ({ isSelectBtn }) {
         onPress={() => {
           if (isSelected) {
             setSelectedIngredients((prev) => prev.filter((i) => i !== slug));
-            isSelectBtn({flag: false, add : -1});
+            isSelectBtn({flag: false, add : -1, id:index});
           } else {
             setSelectedIngredients(prev => [...prev, slug])
-            isSelectBtn({flag: true, add : 1});
+            isSelectBtn({flag: true, add : 1, id: index});
           }
-          console.log(selectedIngredients);
+          console.log(index);
         }}>
           <View style={[styles.ingredientsCard, isSelected && { backgroundColor: 'gray'}]}>
             <View>

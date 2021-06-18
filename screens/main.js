@@ -4,21 +4,44 @@ import { StyleSheet, Text, TextComponent, View, Image, Button, TouchableOpacity,
 import TopBar from './topBar.js';
 import Fridge from './fridge.js';
 import { set } from 'react-native-reanimated';
+import axios from 'axios';
+import {API_URL} from '../config/constants.js';
+
 
 const title = '나의 재료'
 export default function MainScreen(props) {
+
+  const [selectedIngredients, setSelectedIngredients] = React.useState([]);
+  React.useEffect(()=>{
+    axios.get(`${API_URL}/fridgecold`).then((result)=>{
+      setSelectedIngredients(result.data.selectedIngredients);
+      console.log(selectedIngredients);
+    }).catch((error)=>{
+      console.error(error);
+    })
+  }, []);
+
   const [selectedBtn, setSelectedBtn] = React.useState([
-    { flag: false, add : 0 }
+    { flag: false, add : 0, id: -1 }
   ]);
+
+  const [selectIds, setSelectIds] = React.useState([]);
 
   const [sum, setSum] = React.useState(0)
  
   const isSelectBtn = function (isSelect) {
     setSelectedBtn(isSelect);
     addFlag(sum+isSelect.add);
-    }
+
+    setSelectIds({
+      ...selectIds,
+      isSelect
+    });
+  }
     
   const addFlag = function (sum) {
+    console.log("selectId: ");
+    console.log(selectIds);
     setSum(sum);
     if( sum <= 0 ) {
       setSelectedBtn({flag :false});
@@ -39,7 +62,9 @@ export default function MainScreen(props) {
             <TouchableOpacity style={[styles.cookBtn, selectedBtn.flag ? styles.selectedCookBtn : styles.cookBtn]} 
             onPress={()=> {
               if(selectedBtn.flag){
-                props.navigation.navigate('cook');
+                props.navigation.navigate('cook', {
+                  id: selectIds.isSelect.id
+                });
               }
             }}
             disabled={selectedBtn.flag ? false : true }>

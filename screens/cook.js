@@ -1,3 +1,4 @@
+import axios from 'axios';
 import * as React from 'react';
 import {
   SafeAreaView,
@@ -5,19 +6,38 @@ import {
   View,
   Text,
   ScrollView,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {API_URL} from '../config/constants.js';
 
 export default function CookScreen (props) {
+  const {id} =props.route.params;
+  console.log(id);
+  const [ingredient, setIngredient] = React.useState(null);
+  
+  React.useEffect(()=>{
+    axios.get(`${API_URL}/fridgecold/${id}`).then((result)=>{
+      setIngredient(result.data);
+      console.log('ing result : ', result.data);
+    }).catch((error)=>{
+      console.error(error);
+    })
+  }, []);
+  
+  if(!ingredient) {
+    return <ActivityIndicator />
+  }
+
   return (
     <SafeAreaView style={styles.container}>
     <Text style={styles.appTitle}>내가 선택한 재료</Text>
     <View style={styles.mypicks} >
-    <Text style={styles.mypick}>토마토</Text>
-    <Text style={styles.mypick}>계란</Text>
-    <Text style={styles.mypick}>파</Text>
+    <Text style={styles.mypick}>{ingredient.name}</Text>
+    {/* <Text style={styles.mypick}>계란</Text>
+    <Text style={styles.mypick}>파</Text> */}
     </View>
    <View style={styles.card}>
     <ScrollView>
@@ -26,7 +46,7 @@ export default function CookScreen (props) {
     <View style={styles.container2}
       width={Dimensions.get('screen').width *0.6}>
     <Text style={styles.food_text}>토마토 달걀 볶음</Text>
-    <Text style={styles.food_ing}>토마토 / 계란 / 식용유</Text>
+    <Text style={styles.food_ing}>{ingredient.name}</Text>
     </View>
     <View style={styles.container3}
         width={Dimensions.get('screen').width *0.2}>
@@ -42,7 +62,7 @@ export default function CookScreen (props) {
     <View style={styles.container2}
       width={Dimensions.get('screen').width *0.6}>
     <Text style={styles.food_text}>토마토 계란 국</Text>
-    <Text style={styles.food_ing}>토마토 / 계란 / 멸치 / 다시마</Text>
+    <Text style={styles.food_ing}>{ingredient.name}</Text>
     </View>
     <View style={styles.container3}
         width={Dimensions.get('screen').width *0.2}>
