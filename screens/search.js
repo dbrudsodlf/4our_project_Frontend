@@ -18,7 +18,10 @@ export default function search(props) {
   const [show, setShow] = useState(false);
   const [tabIndex, setTabIndex] = React.useState(0);
   const [modalData, setModalData] = useState([]);
- 
+  const [search, setSearch] = useState('');
+  const [filteredDataSource, setFilteredDataSource] = useState([]);
+  const [masterDataSource, setMasterDataSource] = useState([]);
+
   const handleTabsChange = index => {
     setTabIndex(index);
   };
@@ -55,25 +58,25 @@ export default function search(props) {
       })
   }, []);
 
-  //  const searchFilterFunction = (text) => {
-  //     if (text) { //빈칸이 아니면
-  //       const newData = masterDataSource.filter(
-  //         function (ingredients) {
-  //           const itemData = ingredients
-  //             ? ingredients.name.toUpperCase()
-  //             : ''.toUpperCase();
-  //           const textData = text.toUpperCase();
-  //           return itemData.indexOf(textData) > -1;
-  //       });
-  //       setFilteredDataSource(newData);
-  //       setSearch(text);
-  //     } else {
-  //       // Inserted text is blank
-  //       // Update FilteredDataSource with masterDataSource
-  //       setFilteredDataSource(masterDataSource);
-  //       setSearch(text);
-  //     }
-  //   };
+   const searchFilterFunction = (text) => {//검색필터
+      if (text) { //빈칸이 아니면
+        const newData = masterDataSource.filter(
+          function (ingredients) {
+            const itemData = ingredients
+              ? ingredients.name.toUpperCase()
+              : ''.toUpperCase();
+            const textData = text.toUpperCase();
+            return itemData.indexOf(textData) > -1;
+        });
+        setFilteredDataSource(newData);
+        setSearch(text);
+      } else {
+        // Inserted text is blank
+        // Update FilteredDataSource with masterDataSource
+        setFilteredDataSource(masterDataSource);
+        setSearch(text);
+      }
+    };
 
   return (
 
@@ -89,25 +92,27 @@ export default function search(props) {
         </View>
       </View>
       <SearchBar platform='ios' cancelButtonTitle='취소'
-        // onChangeText={(text) => searchFilterFunction(text)}
-        //  value={search}
+        onChangeText={(text) => searchFilterFunction(text)}
+         value={search}
         underlineColorAndroid='transparent'
         placeholder="원하는 재료를 검색해보세요" />
 
-      <ScrollView
-        contentContainerStyle={{ flexDirection: 'row' }}>
-        <View style={styles.foodList} width={Dimensions.get('screen').width}>
-          {
-            ingredients.map((ingredient, index) => {
-              return (
-                <TouchableHighlight underlayColor='#F59A23' onPress={() => toggleModal(ingredient)}>
-                  <Text style={styles.flatList} key={ingredient.id}>{ingredient.name}</Text>
-                </TouchableHighlight>
-              );
-            })
-          }
-        </View>
-      </ScrollView>
+
+      <FlatList
+        data={ingredients} 
+        keyExtractor={(id, index) => {
+          return index.toString();
+        }}
+        renderItem={({ item }) => {
+          return (
+            <TouchableHighlight underlayColor='#F59A23'  onPress={() => toggleModal(item)}>
+              <Text style={styles.flatList}>{item.name}</Text>
+            </TouchableHighlight>
+          );
+        }
+        }
+       
+      />    
 
       <Modal
         transparent={true}
@@ -116,7 +121,7 @@ export default function search(props) {
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <View style={styles.modal}>
           <View style={styles.modal2}>
-            <Text style={styles.food} key={ingredients.name}>{modalData}</Text>
+            <Text style={styles.food} key={ingredients.id}>{modalData}</Text>
             <Text style={styles.date} >유통 기한</Text>
 
             <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
@@ -144,7 +149,7 @@ export default function search(props) {
               currentIndex={tabIndex}
               onChange={handleTabsChange}
               segmentedControlBackgroundColor='#fff'
-              activeSegmentBackgroundColor='#7DDED2'
+              activeSegmentBackgroundColor='#ffe0ad'
               paddingVertical={15}
               width={Dimensions.get('screen').width / 2}
               textStyle={{

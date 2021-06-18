@@ -112,7 +112,7 @@ export default function cart() {
                   currentIndex={tabIndex}
                   onChange={handleTabsChange}
                   segmentedControlBackgroundColor='#fff'
-                  activeSegmentBackgroundColor='#7DDED2'
+                  activeSegmentBackgroundColor='#ffe0ad'
                   paddingVertical={14}
                   width={Dimensions.get('screen').width /2}
 
