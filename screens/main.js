@@ -6,6 +6,14 @@ import Fridge from './fridge.js';
 
 const title = '나의 재료'
 export default function MainScreen(props) {
+  const [selectedBtn, setSelectedBtn] = React.useState([
+    { flag: false }
+  ]);
+
+  const isSelectBtn = function (isSelect) {
+    setSelectedBtn(isSelect);
+    console.log(isSelect);
+  }
   return (
       <SafeAreaView style={styles.SafeAreaView}> 
         <View>
@@ -14,17 +22,19 @@ export default function MainScreen(props) {
               <Text style={styles.text}>{title}</Text>  
               <Text style={{color: '#797979', paddingTop: 6}}>아래 추가하기 버튼을 눌러 재료를 넣어주세요.</Text>
             </View>
-            <TouchableOpacity style={styles.cookBtn} 
+            <TouchableOpacity style={[styles.cookBtn, selectedBtn.flag ? styles.selectedCookBtn : styles.cookBtn]} 
             onPress={()=> {
-              props.navigation.navigate('cook');
+              if(selectedBtn){
+                props.navigation.navigate('cook');
+              }
             }}>
               <View >
-                <Text style={styles.cookBtnText}>요리하기</Text> 
+                <Text style={[styles.cookBtnText, selectedBtn.flag ? styles.selectedCookBtnText : styles.cookBtnText]}>요리하기</Text> 
               </View>
             </TouchableOpacity>
           </View>
         </View>
-        <Fridge />
+        <Fridge isSelectBtn={isSelectBtn}/>
     </SafeAreaView>
   );
 }
@@ -56,10 +66,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 10,
   },
+  selectedCookBtn: {
+    padding: 10,
+    width: 100,
+    height: 40,
+    backgroundColor: '#F59A23',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+  },
   cookBtnText: {
     color: '#191919',
     fontSize: 18,
     fontWeight: 'bold',
     color: 'white'
+  },
+  selectedCookBtnText: {
+    color: '#191919',
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black'
   }
 });

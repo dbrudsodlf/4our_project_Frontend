@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {API_URL} from '../config/constants.js';
 import { State } from 'react-native-gesture-handler';
 
-export default function FridgeCold () {
+export default function FridgeCold ({ isSelectBtn }) {
 
   const [ingredients, setIngredients] = React.useState([]);
   React.useEffect(()=>{
@@ -37,8 +37,11 @@ export default function FridgeCold () {
         onPress={() => {
           if (isSelected) {
             setSelectedIngredients((prev) => prev.filter((i) => i !== slug));
+            isSelectBtn({flag: false});
           } else {
             setSelectedIngredients(prev => [...prev, slug])
+            console.log(selectedIngredients);
+            isSelectBtn({flag: true});
           }
         }}>
           <View style={[styles.ingredientsCard, isSelected && { backgroundColor: 'gray'}]}>
@@ -66,6 +69,7 @@ export default function FridgeCold () {
           <FlatList
             data={ingredients}
             renderItem={renderIngredients}
+            isSelectBtn={isSelectBtn}
             numColumns={2}
             scrollEnabled={true}
           />

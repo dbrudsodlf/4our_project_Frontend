@@ -20,6 +20,7 @@ const leafIcon = ['leaf']
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 
+
 function TabStack() {
     return (
         <NavigationContainer>
@@ -40,10 +41,12 @@ function TabStack() {
     );
   }
 
-export default function Fridge() {
+export default function Fridge({isSelectBtn}) {
+
   return (
     <Tab.Navigator
       initialRouteName="FridgeCold"
+      isSelectBtn={isSelectBtn}
       tabBarOptions={{
         activeTintColor: '#F59A23',
         inactiveTintColor: '#191919',
@@ -67,7 +70,7 @@ export default function Fridge() {
       }}>
       <Tab.Screen
         name="FridgeCold"
-        component={FridgeCold}
+        children={()=><FridgeCold isSelectBtn={isSelectBtn}/>}
         options={{
           tabBarLabel: '냉장',
           tabBarIcon: ({tintColor}) => (
