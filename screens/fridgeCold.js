@@ -37,12 +37,12 @@ export default function FridgeCold ({ isSelectBtn }) {
         onPress={() => {
           if (isSelected) {
             setSelectedIngredients((prev) => prev.filter((i) => i !== slug));
-            isSelectBtn({flag: false});
+            isSelectBtn({flag: false, add : -1});
           } else {
             setSelectedIngredients(prev => [...prev, slug])
-            console.log(selectedIngredients);
-            isSelectBtn({flag: true});
+            isSelectBtn({flag: true, add : 1});
           }
+          console.log(selectedIngredients);
         }}>
           <View style={[styles.ingredientsCard, isSelected && { backgroundColor: 'gray'}]}>
             <View>

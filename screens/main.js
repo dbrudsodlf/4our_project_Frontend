@@ -3,17 +3,31 @@ import React from 'react';
 import { StyleSheet, Text, TextComponent, View, Image, Button, TouchableOpacity, SafeAreaView } from 'react-native';
 import TopBar from './topBar.js';
 import Fridge from './fridge.js';
+import { set } from 'react-native-reanimated';
 
 const title = '나의 재료'
 export default function MainScreen(props) {
   const [selectedBtn, setSelectedBtn] = React.useState([
-    { flag: false }
+    { flag: false, add : 0 }
   ]);
 
+  const [sum, setSum] = React.useState(0)
+ 
   const isSelectBtn = function (isSelect) {
     setSelectedBtn(isSelect);
-    console.log(isSelect);
+    addFlag(sum+isSelect.add);
+    }
+    
+  const addFlag = function (sum) {
+    setSum(sum);
+    if( sum <= 0 ) {
+      setSelectedBtn({flag :false});
+    } else {
+      setSelectedBtn({flag:true});
+    }
   }
+
+  
   return (
       <SafeAreaView style={styles.SafeAreaView}> 
         <View>
@@ -24,10 +38,11 @@ export default function MainScreen(props) {
             </View>
             <TouchableOpacity style={[styles.cookBtn, selectedBtn.flag ? styles.selectedCookBtn : styles.cookBtn]} 
             onPress={()=> {
-              if(selectedBtn){
+              if(selectedBtn.flag){
                 props.navigation.navigate('cook');
               }
-            }}>
+            }}
+            disabled={selectedBtn.flag ? false : true }>
               <View >
                 <Text style={[styles.cookBtnText, selectedBtn.flag ? styles.selectedCookBtnText : styles.cookBtnText]}>요리하기</Text> 
               </View>
