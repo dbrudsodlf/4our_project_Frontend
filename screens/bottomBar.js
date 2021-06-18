@@ -29,6 +29,6 @@ const styles = StyleSheet.create({
       height: -9
     },
     shadowOpacity: 0.4,
-    shadowRadius: 10
+    shadowRadius: 10,
   }
 });

@@ -38,6 +38,7 @@ function MainTabScreen() {
         activeTintColor: '#F59A23',
         inactiveTintColor: '#191919',
         style: {
+          paddingBottom: 20,
           backgroundColor: '#FFF',
           padding: 20,
           alignItems: 'center',
@@ -116,7 +117,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="search">
+        <Stack.Navigator initialRouteName="MainScreen">
           <Stack.Screen
             name="login"
             component={LoginScreen}

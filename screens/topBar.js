@@ -11,7 +11,10 @@ export default function TopBar(props) {
             <Text style={styles.text}>{title}</Text>  
             <Text style={{color: '#797979', paddingTop: 6}}>아래 추가하기 버튼을 눌러 재료를 넣어주세요.</Text>
           </View>
-          <TouchableOpacity style={styles.cookBtn} >
+          <TouchableOpacity style={styles.cookBtn} 
+          onPress={()=> {
+            props.navigation.navigate('cook');
+          }}>
             <View >
               <Text style={styles.cookBtnText}>요리하기</Text> 
             </View>

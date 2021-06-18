@@ -4,10 +4,26 @@ import { StyleSheet, Text, TextComponent, View, Image, Button, TouchableOpacity,
 import TopBar from './topBar.js';
 import Fridge from './fridge.js';
 
-export default function MainScreen() {
+const title = '나의 재료'
+export default function MainScreen(props) {
   return (
       <SafeAreaView style={styles.SafeAreaView}> 
-        <TopBar />
+        <View>
+          <View style={styles.titleArea}>
+            <View>
+              <Text style={styles.text}>{title}</Text>  
+              <Text style={{color: '#797979', paddingTop: 6}}>아래 추가하기 버튼을 눌러 재료를 넣어주세요.</Text>
+            </View>
+            <TouchableOpacity style={styles.cookBtn} 
+            onPress={()=> {
+              props.navigation.navigate('cook');
+            }}>
+              <View >
+                <Text style={styles.cookBtnText}>요리하기</Text> 
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
         <Fridge />
     </SafeAreaView>
   );
@@ -21,24 +37,29 @@ const styles = StyleSheet.create({
       flexWrap: 'nowrap',
       justifyContent: 'center',
   },
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: "center",
-    alignItems: "center",
+  titleArea: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 30,
   },
-  kakaoBtn: {
+  text: {
+    fontSize: 32,
+    fontWeight: 'bold'
+  },
+  cookBtn: {
     padding: 10,
-    width: 352,
-    height: 60,
-    backgroundColor: '#FFE812',
+    width: 100,
+    height: 40,
+    backgroundColor: '#D7D7D7',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
   },
-  kakaoBtnText: {
+  cookBtnText: {
     color: '#191919',
     fontSize: 18,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'white'
   }
 });

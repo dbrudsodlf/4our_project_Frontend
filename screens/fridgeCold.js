@@ -1,16 +1,18 @@
 import React from 'react';
 import {
-  TouchableOpacity,
   StyleSheet,
   View,
   Text,
   ScrollView,
-  Image
+  Image,
+  FlatList
 } from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import EggImage from '../assets/egg.jpeg';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {API_URL} from '../config/constants.js';
+import { State } from 'react-native-gesture-handler';
 
 export default function FridgeCold () {
 
@@ -24,45 +26,50 @@ export default function FridgeCold () {
     })
   }, []);
 
+  const [selectedIngredients, setSelectedIngredients] = React.useState([]);
+
+  const renderIngredients = ({ item, index }) => {
+    const { name, slug, imgUrl, dday } = item;
+    const isSelected = selectedIngredients.filter((i) => i === slug).length > 0;
+
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          if (isSelected) {
+            setSelectedIngredients((prev) => prev.filter((i) => i !== slug));
+          } else {
+            setSelectedIngredients(prev => [...prev, slug])
+          }
+        }}>
+          <View style={[styles.ingredientsCard, isSelected && { backgroundColor: 'gray'}]}>
+            <View>
+              <Image 
+                style={styles.ingredientsImage} 
+                source={{
+                  uri: `${imgUrl}`
+                }} 
+                resizeMode={"contain"}/>
+            </View>
+            <View style={styles.ingredientsContents}>
+              <Text style={styles.ingredientsFont}>{name}</Text>
+              <Text style={styles.ingredientsFont}>{dday}</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+    );
+  };
+
   return (
     <View>
     <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', overflow: 'hidden'}}>
         <View style={styles.ingredientsList} >
-          {
-            ingredients.map((ingredient, index)=>{
-              return (
-                <TouchableOpacity>
-                  <View style={styles.ingredientsCard}>
-                    <View>
-                      <Image 
-                        style={styles.ingredientsImage} 
-                        source={{
-                          uri: `${API_URL}/${ingredient.imgUrl}`
-                        }} 
-                        resizeMode={"contain"}/>
-                    </View>
-                    <View style={styles.ingredientsContents}>
-                      <Text style={styles.ingredientsFont}>{ingredient.name}</Text>
-                      <Text style={styles.ingredientsFont}>{ingredient.dday}</Text>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              );
-            })
-          }
+          <FlatList
+            data={ingredients}
+            renderItem={renderIngredients}
+            numColumns={2}
+            scrollEnabled={true}
+          />
         </View>
-        
-        {/* <TouchableOpacity disabled={true}>
-          <View style={styles.ingredientsCard}>
-            <View style={{ alignItems: 'center', padding: 10 }}>
-              <Icon name='help-circle-outline' size={110} color='#191919' />
-            </View>
-            <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont}> </Text>
-              <Text style={styles.ingredientsFont}> </Text>
-            </View>
-          </View>
-        </TouchableOpacity> */}
     </ScrollView>
     </View>
   );
