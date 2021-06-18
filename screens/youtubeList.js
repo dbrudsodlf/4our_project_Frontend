@@ -18,7 +18,7 @@ export default function YoutubeList () {
          <Icon name="sc-youtube" size={60} color="#000" />
          <View style={styles.food1}>
          <Text style={styles.food2}>토마토 달걀 볶음</Text></View>
-         <Icon2 name="ios-heart-outline" size={45} color="#000" />
+         <Icon2 name="ios-heart-outline" size={40} color="#000"style={styles.icon} />
          </View>
 
       <View style={styles.container2}     >
@@ -57,10 +57,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFD098',
 padding:20,
   },
+  icon:{
+marginTop:5
+  },
   food1:{
-    marginLeft:20,
+    marginLeft:10,
     marginTop:7 ,
-    marginRight:120
+    marginRight:70
   },
   food2: {
     fontSize: 25,
