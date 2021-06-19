@@ -48,14 +48,22 @@ export default function search(props) {
   };
 
 
-  const toggleModal = (ingredients) => {//모달띄우기
+  // const toggleModal = (ingredients) => {//모달띄우기
+  //   setModalVisible(!isModalVisible);
+  //   setModalName(ingredients.name);
+  //   setModalFrozen(ingredients.frozen);
+  //   //setModalDate(ingredients.date);
+  // };
+
+  const toggleModal = (searchText) => {//모달띄우기
+ 
     setModalVisible(!isModalVisible);
-    setModalName(ingredients.name);
+    setModalName(searchText);
     setModalFrozen(ingredients.frozen);
-    //setModalDate(ingredients.date);
+    setModalDate(ingredients.date);
+   
+  
   };
-
-
 
   React.useEffect(() => {//데이터 받아오기
     axios.get(`${API_URL}/fridgecold`)
@@ -70,16 +78,19 @@ export default function search(props) {
 
   const searchFilterFunction = (text) => {//검색필터
     if (text) { //빈칸이 아니면
-      const newData = masterDataSource.filter(
-        function (ingredients) {
-          const itemData = ingredients
-            ? ingredients.name.toUpperCase()
-            : ''.toUpperCase();
-          const textData = text.toUpperCase();
-          return itemData.indexOf(textData) > -1;
-        });
-      setFilteredDataSource(newData);
+      // const newData = masterDataSource.filter(
+      //   function (ingredients) {
+      //     const itemData = ingredients
+      //       ? ingredients.name.toUpperCase()
+      //       : ''.toUpperCase();
+      //     const textData = text.toUpperCase();
+      //     return itemData.indexOf(textData) > -1;
+      //   });
+      // setFilteredDataSource(newData);
+      // setSearch(text);
       setSearch(text);
+    
+
     } else {
       // Inserted text is blank
       // Update FilteredDataSource with masterDataSource
@@ -106,22 +117,29 @@ export default function search(props) {
         onChangeText={(text) => searchFilterFunction(text)}
         value={search}
         underlineColorAndroid='transparent'
-        placeholder="원하는 재료를 검색해보세요" />
-
+        placeholder="원하는 재료를 검색해보세요"
+        onKeyPress={ (event) => {
+          if(event.nativeEvent.key == "Enter"){
+            toggleModal(search);
+          } 
+         
+      }} 
+      />
+        
 
       <FlatList
-        data={ingredients}
-        keyExtractor={(id, index) => {
-          return index.toString();
-        }}
-        renderItem={({ item }) => {
-          return (
-            <TouchableHighlight underlayColor='#F59A23' onPress={() => toggleModal(item)}>
-              <Text style={styles.flatList}>{item.name}</Text>
-            </TouchableHighlight>
-          );
-        }
-        }
+        // data={ingredients}
+        // keyExtractor={(id, index) => {
+        //   return index.toString();
+        // }}
+        // renderItem={({ item }) => {
+        //   return (
+        //     <TouchableHighlight underlayColor='#F59A23' onPress={() => toggleModal(item)}>
+        //       <Text style={styles.flatList}>{item.name}</Text>
+        //     </TouchableHighlight>
+        //   );
+        // }
+        // }
 
       />
 
@@ -180,10 +198,9 @@ export default function search(props) {
 
             <TouchableOpacity
               style={styles.button2}
-              // onPress={
-
-              // }
-            >
+              onPress={() => {
+                setModalVisible(!isModalVisible);
+              }}>
               <Text style={styles.txt}>담기</Text>
             </TouchableOpacity></View>
         </View>

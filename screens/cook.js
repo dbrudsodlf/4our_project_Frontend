@@ -41,7 +41,7 @@ export default function CookScreen (props) {
         {
         ingredient.map((ingredientt, index)=>{
           return (
-          <Text style={styles.mypick}>{ingredientt.name}</Text>
+          <Text style={styles.mypick}  key={ingredientt.name}>{ingredientt.name}</Text>
           );
         })
       }
@@ -56,7 +56,7 @@ export default function CookScreen (props) {
                 {
                 ingredient.map((ingredientt, index)=>{
                   return (
-                    <Text style={styles.food_ing}>{ingredientt.name}</Text>
+                    <Text style={styles.food_ing} key={ingredientt.name}>{ingredientt.name}</Text>
                     );
                   })
                 }

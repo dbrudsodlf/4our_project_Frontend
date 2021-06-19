@@ -58,8 +58,8 @@ export default function FridgeCold ({ isSelectBtn }) {
                 resizeMode={"contain"}/>
             </View>
             <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont}>{name}</Text>
-              <Text style={styles.ingredientsFont}>{dday}</Text>
+              <Text style={styles.ingredientsFont} key={name}>{name}</Text>
+              <Text style={styles.ingredientsFont} key={dday}>{dday}</Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -68,7 +68,7 @@ export default function FridgeCold ({ isSelectBtn }) {
 
   return (
     <View>
-    <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', overflow: 'hidden'}}>
+
         <View style={styles.ingredientsList} >
           <FlatList
             data={ingredients}
@@ -78,7 +78,7 @@ export default function FridgeCold ({ isSelectBtn }) {
             scrollEnabled={true}
           />
         </View>
-    </ScrollView>
+   
     </View>
   );
 }
