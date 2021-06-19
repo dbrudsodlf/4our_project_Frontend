@@ -15,20 +15,26 @@ import {API_URL} from '../config/constants.js';
 
 export default function CookScreen (props) {
   const Array =props.route.params;
-  console.log(props);
-  console.log(Array);
-
   const [ingredient, setIngredient] = React.useState([]);
-  
-  
+  const aLoop = [];
+
   React.useEffect(()=>{
     axios.get(`${API_URL}/fridgecold`).then((result)=>{
       setIngredient(result.data.ingredients);
-      console.log('ing result : ', result.data);
     }).catch((error)=>{
       console.error(error);
     })
   }, []);
+
+
+  
+  ingredient.map((ingg, idx)=>{
+    Array.map((unit, index)=>{
+      if(unit==ingg.id) {
+        aLoop.push(ingg);
+      }
+    });
+  })
   
   if(!ingredient) {
     return <ActivityIndicator />
@@ -39,9 +45,9 @@ export default function CookScreen (props) {
       <Text style={styles.appTitle}>내가 선택한 재료</Text>
         <View style={styles.mypicks} >
         {
-        ingredient.map((ingredientt, index)=>{
+        aLoop.map((ingredientt, index)=>{
           return (
-          <Text style={styles.mypick}>{ingredientt.name}</Text>
+          <Text key={index} style={styles.mypick}>{ingredientt.name}</Text>
           );
         })
       }
@@ -54,9 +60,9 @@ export default function CookScreen (props) {
               <Text style={styles.food_text}>토마토 달걀 볶음</Text>
                 <View style={styles.ing_container}>
                 {
-                ingredient.map((ingredientt, index)=>{
+                aLoop.map((ingredientt, index)=>{
                   return (
-                    <Text style={styles.food_ing}>{ingredientt.name}</Text>
+                    <Text key={index} style={styles.food_ing}>{ingredientt.name}</Text>
                     );
                   })
                 }

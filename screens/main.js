@@ -7,7 +7,6 @@ import { set } from 'react-native-reanimated';
 import axios from 'axios';
 import {API_URL} from '../config/constants.js';
 
-
 const title = '나의 재료'
 export default function MainScreen(props) {
 
@@ -21,6 +20,11 @@ export default function MainScreen(props) {
     })
   }, []);
 
+  React.useEffect(()=>{
+    setCount(0);
+    setSelectedBtn({ flag: false, add : 0, id: -1 });
+  },[]);
+
   const [selectedBtn, setSelectedBtn] = React.useState([
     { flag: false, add : 0, id: -1 }
   ]);
@@ -28,28 +32,32 @@ export default function MainScreen(props) {
   const [selectIds, setSelectIds] = React.useState([]);
   const [sId, setSId] = React.useState([]);
 
-  const [sum, setSum] = React.useState(0)
+  const [count, setCount] = React.useState(0);
  
   const isSelectBtn = function (isSelect, Array) {
     setSelectedBtn(isSelect);
-    addFlag(sum+isSelect.add);
+    console.log("========", count);
 
+    setCount(count + isSelect.add)
+    addFlag(count + isSelect.add);
     setSelectIds({
       ...selectIds,
       isSelect
     });
+    console.log('array:',Array);
     setSId(Array);
-    console.log("arr:",sId);
+    console.log("arr:", sId);
   }
     
-  const addFlag = function (sum) {
+  const addFlag = function (summ) {
     console.log("selectId: ");
     console.log(selectIds);
-    setSum(sum);
-    if( sum <= 0 ) {
-      setSelectedBtn({flag :false});
+    if( summ <= 0 ) {
+      setSelectedBtn({flag:false});
+      console.log('flg!!!:', selectedBtn.flag);
     } else {
       setSelectedBtn({flag:true});
+      console.log('Tflg!!!:', selectedBtn.flag);
     }
   }
 
@@ -65,9 +73,6 @@ export default function MainScreen(props) {
             <TouchableOpacity style={[styles.cookBtn, selectedBtn.flag ? styles.selectedCookBtn : styles.cookBtn]} 
             onPress={()=> {
               if(selectedBtn.flag){
-                // props.navigation.navigate('cook', {
-                //   id: selectIds.isSelect.id
-                // });
                 props.navigation.navigate('cook', sId);
               }
             }}
