@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -6,12 +6,19 @@ import {
   View,
   Text,
   ScrollView,
-  Dimensions
+  Dimensions,
+  Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import Icon2 from 'react-native-vector-icons/Ionicons';
+import Youtubeimg from '../assets/youtube.jpeg';
+import Youtubeimg2 from '../assets/youtube2.jpeg';
+import Youtubeimg3 from '../assets/youtube3.jpeg';
+
+
 
 export default function YoutubeList () {
+
   return (
     <View style={styles.container}>
          <View style={styles.boxtop}>
@@ -24,19 +31,26 @@ export default function YoutubeList () {
       <View style={styles.container2}     >
         <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', overflow: 'hidden' }}>
           <View style={styles.box}>
-
             <View style={styles.box2} width={Dimensions.get('screen').width*0.9}>
-             
-              <View style={styles.box3}
-              width={Dimensions.get('screen').width*0.5}>
-              
-
-
-              </View>
+            <Image
+            source={Youtubeimg} resizeMode={"contain"}
+                      />
             </View>
-
-
-</View>
+            </View>
+            <View style={styles.box}>
+            <View style={styles.box2} width={Dimensions.get('screen').width*0.9}>
+            <Image
+            source={Youtubeimg2} resizeMode={"contain"}
+                      />
+            </View>
+            </View>
+            <View style={styles.box}>
+            <View style={styles.box2} width={Dimensions.get('screen').width*0.9}>
+            <Image
+            source={Youtubeimg3} resizeMode={"contain"}
+                      />
+            </View>
+            </View>
         </ScrollView>
       </View>
     </View>
@@ -51,6 +65,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     justifyContent: 'flex-start'
+  },
+  productImage: {
+    width: "100%",
+    height: 300,
   },
   boxtop:{
     flexDirection: 'row',
@@ -102,10 +120,11 @@ marginTop:5
     backgroundColor: '#fff',
     padding: 10,
 
-    elevation:5
+    elevation:10
   },
   box2: {
-    flexDirection: 'row',
+
+    marginBottom:10
   },
   box3: {
     paddingLeft: 20,

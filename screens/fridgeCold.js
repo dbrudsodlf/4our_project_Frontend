@@ -8,15 +8,23 @@ import {
   FlatList
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import EggImage from '../assets/egg.jpeg';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {API_URL} from '../config/constants.js';
+import {API_URL} from "../config/constants";
 import { State } from 'react-native-gesture-handler';
+import {EggImage} from '../assets/egg.jpeg';
+import {TomatoImage} from '../assets/egg.jpeg';
+import {CucumberImage} from '../assets/cucumber.jpeg';
+
 
 export default function FridgeCold ({ isSelectBtn }) {
 
   const [ingredients, setIngredients] = React.useState([]);
+  const [selectedIngredients, setSelectedIngredients] = React.useState([]);
+  const [select, setSelect] = React.useState([]);
+  const [flagstate, setFlagstate] = React.useState([]);
+  // const aLoop = ['../assets/egg.jpeg', '../assets/egg.jpeg', '../assets/cucumber.jpeg'];
+
   React.useEffect(()=>{
     axios.get(`${API_URL}/fridgecold`).then((result)=>{
       setIngredients(result.data.ingredients);
@@ -26,8 +34,10 @@ export default function FridgeCold ({ isSelectBtn }) {
     })
   }, []);
 
-  const [selectedIngredients, setSelectedIngredients] = React.useState([]);
-  const [select, setSelect] = React.useState([]);
+  React.useEffect(()=>{
+    isSelectBtn(flagstate, select);
+  }, [selectedIngredients]);
+
 
   const renderIngredients = ({ item, index }) => {
     const { name, slug, imgUrl, dday, id } = item;
@@ -38,25 +48,42 @@ export default function FridgeCold ({ isSelectBtn }) {
         onPress={() => {
           if (isSelected) {
             setSelectedIngredients((prev) => prev.filter((i) => i !== slug));
-            isSelectBtn({flag: false, add : -1, id:index});
+            console.log('sfb: ', select, index);
+            setSelect(idd => [...idd, id]);
+            setSelect(item => item.filter(num => num != index));
+            console.log('sfa: ', select);
+            setFlagstate({flag: false, add : -1, id:index});
           } else {
             setSelectedIngredients(prev => [...prev, slug])
-            setSelect(idd => [...idd, id]);
+            console.log(id);
+            setSelect(select => [...select, id]);
             console.log("selectedIng: ", select);
-            isSelectBtn({flag: true, add : 1, id: index}, select);
-
+            setFlagstate({flag: true, add : 1, id:index});
           }
-          console.log(index);
+          console.log('i', select);
         }}>
           <View style={[styles.ingredientsCard, isSelected && { backgroundColor: 'gray'}]}>
-            <View>
+           
+            {/* {
+                  aLoop.map((imgurl, index)=>{
+                    if(imgUrl == "EggImage"){
+                    return (
+                        <Image 
+                          key={index}
+                          style={styles.ingredientsImage} 
+                          source={EggImage} 
+                          resizeMode={"contain"}/>
+                      );
+                    }
+                  })
+                } */}
               <Image 
                 style={styles.ingredientsImage} 
-                source={{
-                  uri: `${imgUrl}`
-                }} 
-                resizeMode={"contain"}/>
-            </View>
+                source={{ 
+                  uri:'${API_URL}/${item.imgUrl}'
+                    }}
+                resizeMode="contain"/>
+            
             <View style={styles.ingredientsContents}>
               <Text style={styles.ingredientsFont} key={name}>{name}</Text>
               <Text style={styles.ingredientsFont} key={dday}>{dday}</Text>
