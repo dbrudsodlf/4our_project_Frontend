@@ -26,10 +26,11 @@ export default function MainScreen(props) {
   ]);
 
   const [selectIds, setSelectIds] = React.useState([]);
+  const [sId, setSId] = React.useState([]);
 
   const [sum, setSum] = React.useState(0)
  
-  const isSelectBtn = function (isSelect) {
+  const isSelectBtn = function (isSelect, Array) {
     setSelectedBtn(isSelect);
     addFlag(sum+isSelect.add);
 
@@ -37,6 +38,8 @@ export default function MainScreen(props) {
       ...selectIds,
       isSelect
     });
+    setSId(Array);
+    console.log("arr:",sId);
   }
     
   const addFlag = function (sum) {
@@ -62,9 +65,10 @@ export default function MainScreen(props) {
             <TouchableOpacity style={[styles.cookBtn, selectedBtn.flag ? styles.selectedCookBtn : styles.cookBtn]} 
             onPress={()=> {
               if(selectedBtn.flag){
-                props.navigation.navigate('cook', {
-                  id: selectIds.isSelect.id
-                });
+                // props.navigation.navigate('cook', {
+                //   id: selectIds.isSelect.id
+                // });
+                props.navigation.navigate('cook', sId);
               }
             }}
             disabled={selectedBtn.flag ? false : true }>

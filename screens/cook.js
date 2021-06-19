@@ -14,13 +14,16 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {API_URL} from '../config/constants.js';
 
 export default function CookScreen (props) {
-  const {id} =props.route.params;
-  console.log(id);
-  const [ingredient, setIngredient] = React.useState(null);
+  const Array =props.route.params;
+  console.log(props);
+  console.log(Array);
+
+  const [ingredient, setIngredient] = React.useState([]);
+  
   
   React.useEffect(()=>{
-    axios.get(`${API_URL}/fridgecold/${id}`).then((result)=>{
-      setIngredient(result.data);
+    axios.get(`${API_URL}/fridgecold`).then((result)=>{
+      setIngredient(result.data.ingredients);
       console.log('ing result : ', result.data);
     }).catch((error)=>{
       console.error(error);
@@ -33,51 +36,43 @@ export default function CookScreen (props) {
 
   return (
     <SafeAreaView style={styles.container}>
-    <Text style={styles.appTitle}>내가 선택한 재료</Text>
-    <View style={styles.mypicks} >
-    <Text style={styles.mypick}>{ingredient.name}</Text>
-    {/* <Text style={styles.mypick}>계란</Text>
-    <Text style={styles.mypick}>파</Text> */}
-    </View>
-   <View style={styles.card}>
-    <ScrollView>
-
-      <View style={styles.menu}>
-    <View style={styles.container2}
-      width={Dimensions.get('screen').width *0.6}>
-    <Text style={styles.food_text}>토마토 달걀 볶음</Text>
-    <Text style={styles.food_ing}>{ingredient.name}</Text>
-    </View>
-    <View style={styles.container3}
-        width={Dimensions.get('screen').width *0.2}>
-    <TouchableOpacity style={styles.icon} onPress={() => {
-            props.navigation.navigate("youtubeList")
-          }} >
-            <Icon name="silverware-fork-knife" size={40} color="#fff" />
-          </TouchableOpacity>
-          </View>
-          </View>
-
+      <Text style={styles.appTitle}>내가 선택한 재료</Text>
+        <View style={styles.mypicks} >
+        {
+        ingredient.map((ingredientt, index)=>{
+          return (
+          <Text style={styles.mypick}>{ingredientt.name}</Text>
+          );
+        })
+      }
+      </View>
+      <View style={styles.card}>
+        <ScrollView>
           <View style={styles.menu}>
-    <View style={styles.container2}
-      width={Dimensions.get('screen').width *0.6}>
-    <Text style={styles.food_text}>토마토 계란 국</Text>
-    <Text style={styles.food_ing}>{ingredient.name}</Text>
-    </View>
-    <View style={styles.container3}
-        width={Dimensions.get('screen').width *0.2}>
-    <TouchableOpacity style={styles.icon}onPress={() => {
-            props.navigation.navigate("youtubeList")
-          }} >
-            <Icon name="silverware-fork-knife" size={40} color="#fff" />
-          </TouchableOpacity>
+            <View 
+              width={Dimensions.get('screen').width *0.6}>
+              <Text style={styles.food_text}>토마토 달걀 볶음</Text>
+                <View style={styles.ing_container}>
+                {
+                ingredient.map((ingredientt, index)=>{
+                  return (
+                    <Text style={styles.food_ing}>{ingredientt.name}</Text>
+                    );
+                  })
+                }
+              </View>
+            </View>
+            <View style={styles.container3}
+                width={Dimensions.get('screen').width *0.2}>
+              <TouchableOpacity style={styles.icon} onPress={() => {
+                      props.navigation.navigate("youtubeList")
+                    }} >
+                <Icon name="silverware-fork-knife" size={40} color="#fff" />
+              </TouchableOpacity>
+            </View>
           </View>
-          </View>
-
-
-
         </ScrollView>
-        </View>
+      </View>
   </SafeAreaView>
 
   );
@@ -106,11 +101,6 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
   },
-  container2: {
-    flexDirection:'column',
-    alignItems: 'flex-start',
-  
-  },
   container3: {
     alignItems: 'flex-end',
   },
@@ -122,13 +112,12 @@ const styles = StyleSheet.create({
     marginTop:20
   },
   food_ing: {
-    flex: 5,
     fontWeight: '500',
     fontSize: 17,
     marginBottom:20,
     marginTop:10,
-    marginLeft:30,
-  },
+    marginLeft:10,
+    },
  icon:{
    width:90,
    padding:7,
@@ -159,5 +148,11 @@ const styles = StyleSheet.create({
    borderRadius:20,
    height:45,
    marginRight:15
- }
+ },
+ ing_container: {
+   display: 'flex',
+   flexDirection:'row', 
+   justifyContent: 'flex-start',
+   marginLeft: 18,
+  }
 });

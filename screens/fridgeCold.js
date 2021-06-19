@@ -27,6 +27,7 @@ export default function FridgeCold ({ isSelectBtn }) {
   }, []);
 
   const [selectedIngredients, setSelectedIngredients] = React.useState([]);
+  const [select, setSelect] = React.useState([]);
 
   const renderIngredients = ({ item, index }) => {
     const { name, slug, imgUrl, dday, id } = item;
@@ -40,7 +41,10 @@ export default function FridgeCold ({ isSelectBtn }) {
             isSelectBtn({flag: false, add : -1, id:index});
           } else {
             setSelectedIngredients(prev => [...prev, slug])
-            isSelectBtn({flag: true, add : 1, id: index});
+            setSelect(idd => [...idd, id]);
+            console.log("selectedIng: ", select);
+            isSelectBtn({flag: true, add : 1, id: index}, select);
+
           }
           console.log(index);
         }}>
