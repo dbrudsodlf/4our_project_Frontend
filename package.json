@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-community/checkbox": "0.5.8",
     "@react-native-community/datetimepicker": "3.5.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-segmented-control/segmented-control": "2.3.0",
@@ -41,13 +42,14 @@
     "react-native-modalbox": "1.7.1",
     "react-native-multi-selectbox": "^1.5.0",
     "react-native-paper": "4.8.1",
+    "react-native-picker-checkbox": "2.0.2",
     "react-native-radio-buttons": "1.0.0",
     "react-native-reanimated": "~2.1.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
     "react-native-search-filter": "0.1.5",
     "react-native-segmented-control-tab": "3.4.1",
-    "react-native-select-multiple": "^2.1.0",
+    "react-native-select-multiple": "2.1.0",
     "react-native-tab-view": "^2.16.0",
     "react-native-unimodules": "^0.13.3",
     "react-native-vector-icons": "8.1.0",
@@ -57,6 +59,7 @@
     "react-redux": "7.2.4",
     "reanimated-bottom-sheet": "*",
     "redux": "4.1.0",
+    "rn-checkbox-list": "0.4.0",
     "rn-round-checkbox": "1.0.0",
     "rn-segmented-control": "0.2.8"
   },
