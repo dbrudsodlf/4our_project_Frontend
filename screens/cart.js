@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 ScrollView
-import { StyleSheet, View, Image, Text, TouchableHighlight, Dimensions, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableHighlight, Dimensions, ScrollView, FlatList} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import SegmentedControl from 'rn-segmented-control';
-import { Checkbox } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/AntDesign';
 import EggImage from '../assets/egg.jpeg';
 import { API_URL } from '../config/constants.js';
 import axios from 'axios';
-import { registerCustomIconType } from 'react-native-elements';
+import SelectMultiple from 'react-native-select-multiple'
+import { Checkbox } from 'react-native-paper';
 
 export default function cart(props) {
   const today = new Date();
@@ -16,8 +16,8 @@ export default function cart(props) {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [tabIndex, setTabIndex] = React.useState(0);
-  const [state, setState] = React.useState();
   const [ingredients, setIngredients] = React.useState([]);
+  const [checked, setChecked] = React.useState(false);
 
   const handleTabsChange = index => {
     setTabIndex(index);
@@ -50,29 +50,29 @@ export default function cart(props) {
       })
   }, []);
 
- const onchecked=(item)=>{
-  data={ingredients}
-  index=data.findIndex(x=>x,id===id)
-  data[index].checked=!data[index].checked
-  setState(data)
-}
+const state = { selectedFruits: [] }
 
-  const render = ({ item, key }) => {
+  const onSelectionsChange = (selectedFruits) => {
+    // selectedFruits is array of { label, value }
+   setState({ selectedFruits })
+  }
+
+  
+  const render = ({ item, index }) => {
 
     return (
       <View style={styles.box}>
-        <Checkbox
-          color="#F59A23"
-        value={item.checked}
-          onPress={() => {
-            onchecked(item)
-          }}
-        />
+          <Checkbox
+            color="#F59A23"
+            status={checked ? 'checked' : 'unchecked'}
+            onPress={() => {
+              setChecked(!checked);
+            }}
 
-
+          ></Checkbox>
         <View style={styles.box2} width={Dimensions.get('screen').width * 0.89}>
           <Image style={styles.ingredientsImage} source={{ 
-         uri:'${API_URL}/${item.imgUrl}'
+         uri:item.imgUrl
            }} resizeMode={"contain"} />
           <View style={styles.box3}
             width={Dimensions.get('screen').width * 0.5}>
@@ -141,17 +141,15 @@ export default function cart(props) {
 
 
       <View style={styles.container2}     >
-        <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', overflow: 'hidden' }}>
           <View >
             <FlatList
               data={ingredients}
               renderItem={render}
               numColumns={1}
               scrollEnabled={true}
-              keyExtractor={(id, index) => index.toString()}
+              keyExtractor={(item, index) => index.toString()}
             />
           </View>
-        </ScrollView>
       </View>
     </View>
   );
