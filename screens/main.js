@@ -36,7 +36,6 @@ export default function MainScreen(props) {
  
   const isSelectBtn = function (isSelect, Array) {
     setSelectedBtn(isSelect);
-    console.log("========", count);
 
     setCount(count + isSelect.add)
     addFlag(count + isSelect.add);

@@ -3,13 +3,16 @@ import React from 'react';
 import { StyleSheet, Text, TextComponent, View, Image, Button, TouchableOpacity } from 'react-native';
 import logo from '../assets/logoex.png';
 
-export default function LoginScreen() {
+export default function LoginScreen(props) {
   return (
     <View style={styles.container}>
       <View style={styles.logo}>
         <Image style={styles.logoImage} source={logo} />
       </View>
-      <TouchableOpacity>
+      <TouchableOpacity 
+        onPress={()=> {
+            props.navigation.navigate('start');
+        }}>
         <View style={styles.kakaoBtn}>
           <Text style={styles.kakaoBtnText}>카카오 계정으로 로그인</Text> 
         </View>

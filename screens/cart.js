@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-ScrollView
 import { StyleSheet, View, Image, Text, TouchableHighlight, Dimensions, ScrollView, FlatList} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import SegmentedControl from 'rn-segmented-control';
@@ -25,7 +24,7 @@ export default function cart(props) {
   const [checked1, setChecked1] = React.useState(false);
   const [checked2, setChecked2] = React.useState(false);
   const [checked3, setChecked3] = React.useState(false);
- 
+
   const handleTabsChange1 = index => {
     setTabIndex1(index);
   };
@@ -64,7 +63,6 @@ export default function cart(props) {
     showMode('date');
   };
 
-
   return (
     <View style={styles.container}>
 
@@ -82,7 +80,8 @@ export default function cart(props) {
 
 
         <TouchableHighlight underlayColor='#fff' style={styles.add}
-          onPress={() => { props.navigation.navigate("MainScreen") }}>
+          onPress={() => { props.navigation.navigate("fridge") }} 
+        >
           <Text style={styles.add2}>선택 추가하기</Text>
         </TouchableHighlight>
       </View>

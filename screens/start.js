@@ -50,7 +50,8 @@ const styles = StyleSheet.create({
         position:'absolute',
         width: 200,
         height: 400, 
-       top:140
+       top:140,
+       left: 85
       },
      flex1:{
         flexDirection:"row",
