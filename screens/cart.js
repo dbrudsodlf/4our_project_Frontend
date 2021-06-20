@@ -80,7 +80,7 @@ export default function cart(props) {
 
 
         <TouchableHighlight underlayColor='#fff' style={styles.add}
-          onPress={() => { props.navigation.navigate("fridge") }} 
+          onPress={() => { props.navigation.navigate("MainScreen") }} 
         >
           <Text style={styles.add2}>선택 추가하기</Text>
         </TouchableHighlight>
