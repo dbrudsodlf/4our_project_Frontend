@@ -13,9 +13,13 @@ import { Checkbox } from 'react-native-paper';
 
 export default function cart(props) {
   const today = new Date();
+  const [date2, setDate2] = useState(new Date(today));
   const [date1, setDate1] = useState(new Date(today));
   const [date, setDate] = useState(new Date(today));
-
+  const [mode2, setMode2] = useState('date');
+  const [show2, setShow2] = useState(false);
+  const [mode1, setMode1] = useState('date');
+  const [show1, setShow1] = useState(false);
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [tabIndex1, setTabIndex1] = React.useState(0);
@@ -35,10 +39,15 @@ export default function cart(props) {
   const handleTabsChange3 = index => {
     setTabIndex3(index);
   };
-  const onChange1 = (event, selectedDate) => {
-    const currentDate = selectedDate || date1;
-    setShow(Platform.OS === 'ios');
-    setDate1(currentDate);
+  const onChange2 = (event, selectedDate2) => {
+    const currentDate2 = selectedDate2 || date2;
+    setShow2(Platform.OS === 'ios');
+    setDate2(currentDate2);
+  };
+  const onChange1 = (event, selectedDate1) => {
+    const currentDate1 = selectedDate1 || date1;
+    setShow1(Platform.OS === 'ios');
+    setDate1(currentDate1);
   };
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -50,17 +59,24 @@ export default function cart(props) {
     setShow(true);
     setMode(currentMode);
   };
-
+  const showMode1 = (currentMode1) => {
+    setShow1(true);
+    setMode1(currentMode1);
+  };
+  const showMode2 = (currentMode2) => {
+    setShow2(true);
+    setMode2(currentMode2);
+  };
   const showDatepicker1 = () => {
-    showMode('date');
+    showMode1('date');
   };
   
   const showDatepicker = () => {
     showMode('date');
   };
   
-  const showDatepicker3 = () => {
-    showMode('date');
+  const showDatepicker2 = () => {
+    showMode2('date');
   };
 
   return (
@@ -103,21 +119,21 @@ export default function cart(props) {
           <View style={styles.box3}
             width={Dimensions.get('screen').width * 0.5}>
             <Text style={styles.food} >계란</Text>
-            <TouchableHighlight underlayColor='#fff' onPress={showDatepicker1}>
+            <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
               <View style={styles.showdate} >
                 <Icon name="calendar" size={30} color="#8C9190" />
                 <View style={styles.date1} >
-                  <Text style={styles.date2}>{date1.toLocaleDateString('ko-KR')}
+                  <Text style={styles.date2}>{date.toLocaleDateString('ko-KR')}
                   </Text></View></View>
             </TouchableHighlight>
             {show && (
               <DateTimePicker
                 testID="dateTimePicker"
-                value={date1}
+                value={date}
                 mode={mode}
                 is24Hour={true}
                 display="spinner"
-                onChange={onChange1}
+                onChange={onChange}
 
               />
             )}
@@ -159,21 +175,21 @@ export default function cart(props) {
           <View style={styles.box3}
             width={Dimensions.get('screen').width * 0.5}>
             <Text style={styles.food} >토마토</Text>
-            <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
+            <TouchableHighlight underlayColor='#fff' onPress={showDatepicker1}>
               <View style={styles.showdate} >
                 <Icon name="calendar" size={30} color="#8C9190" />
                 <View style={styles.date1} >
-                  <Text style={styles.date2}>{date.toLocaleDateString('ko-KR')}
+                  <Text style={styles.date2}>{date1.toLocaleDateString('ko-KR')}
                   </Text></View></View>
             </TouchableHighlight>
-            {show && (
+            {show1 && (
               <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode={mode}
+                testID="dateTimePicker1"
+                value={date1}
+                mode={mode1}
                 is24Hour={true}
                 display="spinner"
-                onChange={onChange}
+                onChange={onChange1}
 
               />
             )}
@@ -215,21 +231,21 @@ export default function cart(props) {
           <View style={styles.box3}
             width={Dimensions.get('screen').width * 0.5}>
             <Text style={styles.food} >오이</Text>
-            <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
+            <TouchableHighlight underlayColor='#fff' onPress={showDatepicker2}>
               <View style={styles.showdate} >
                 <Icon name="calendar" size={30} color="#8C9190" />
                 <View style={styles.date1} >
-                  <Text style={styles.date2}>{date.toLocaleDateString('ko-KR')}
+                  <Text style={styles.date2}>{date2.toLocaleDateString('ko-KR')}
                   </Text></View></View>
             </TouchableHighlight>
-            {show && (
+            {show2 && (
               <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode={mode}
+                testID="dateTimePicker2"
+                value={date2}
+                mode={mode2}
                 is24Hour={true}
                 display="spinner"
-                onChange={onChange}
+                onChange={onChange2}
 
               />
             )}
