@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
+ScrollView
 import { StyleSheet, View, Image, Text, TouchableHighlight, Dimensions, ScrollView, FlatList} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import SegmentedControl from 'rn-segmented-control';
 import Icon from 'react-native-vector-icons/AntDesign';
 import EggImage from '../assets/egg.jpeg';
-import TomatoImage from '../assets/tomato.jpeg';
-import CucumberImage from '../assets/cucumber.jpg';
 import { API_URL } from '../config/constants.js';
 import axios from 'axios';
 import SelectMultiple from 'react-native-select-multiple'
@@ -13,42 +12,17 @@ import { Checkbox } from 'react-native-paper';
 
 export default function cart(props) {
   const today = new Date();
-  const [date2, setDate2] = useState(new Date(today));
-  const [date1, setDate1] = useState(new Date(today));
   const [date, setDate] = useState(new Date(today));
-  const [mode2, setMode2] = useState('date');
-  const [show2, setShow2] = useState(false);
-  const [mode1, setMode1] = useState('date');
-  const [show1, setShow1] = useState(false);
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [tabIndex1, setTabIndex1] = React.useState(0);
-  const [tabIndex2, setTabIndex2] = React.useState(0);
-  const [tabIndex3, setTabIndex3] = React.useState(0);
-  const [checked1, setChecked1] = React.useState(false);
-  const [checked2, setChecked2] = React.useState(false);
-  const [checked3, setChecked3] = React.useState(false);
-
-  const handleTabsChange1 = index => {
-    setTabIndex1(index);
-  };
-  const handleTabsChange2 = index => {
-    setTabIndex2(index);
+  const [tabIndex, setTabIndex] = React.useState(0);
+  const [ingredients, setIngredients] = React.useState([]);
+  const [checked, setChecked] = React.useState(false);
+ 
+  const handleTabsChange = index => {
+    setTabIndex(index);
   };
 
-  const handleTabsChange3 = index => {
-    setTabIndex3(index);
-  };
-  const onChange2 = (event, selectedDate2) => {
-    const currentDate2 = selectedDate2 || date2;
-    setShow2(Platform.OS === 'ios');
-    setDate2(currentDate2);
-  };
-  const onChange1 = (event, selectedDate1) => {
-    const currentDate1 = selectedDate1 || date1;
-    setShow1(Platform.OS === 'ios');
-    setDate1(currentDate1);
-  };
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
@@ -59,31 +33,27 @@ export default function cart(props) {
     setShow(true);
     setMode(currentMode);
   };
-  const showMode1 = (currentMode1) => {
-    setShow1(true);
-    setMode1(currentMode1);
-  };
-  const showMode2 = (currentMode2) => {
-    setShow2(true);
-    setMode2(currentMode2);
-  };
-  const showDatepicker1 = () => {
-    showMode1('date');
-  };
-  
+
   const showDatepicker = () => {
     showMode('date');
   };
-  
-  const showDatepicker2 = () => {
-    showMode2('date');
-  };
 
-  return (
-    <View style={styles.container}>
 
-      <View style={styles.boxtop}>
-        {/* <View style={styles.checkboxtop}>
+  React.useEffect(() => {
+    axios.get(`${API_URL}/fridgecold`)
+      .then((result) => {
+        console.log("result : ", result.data);
+        setIngredients(result.data.ingredients);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+  }, []);
+
+  const render = ({ item, index }) => {
+
+    return (
+      <View style={styles.box}>
           <Checkbox
             color="#F59A23"
             status={checked ? 'checked' : 'unchecked'}
@@ -92,33 +62,13 @@ export default function cart(props) {
             }}
 
           ></Checkbox>
-          <Text style={styles.checkboxtop2}>전체 선택</Text></View> */}
-
-
-        <TouchableHighlight underlayColor='#fff' style={styles.add}
-          onPress={() => { props.navigation.navigate("MainScreen") }} 
-        >
-          <Text style={styles.add2}>선택 추가하기</Text>
-        </TouchableHighlight>
-      </View>
-
-<ScrollView>
-      <View style={styles.container2}     >
-          <View >
-          <View style={styles.box}>
-          <Checkbox
-            color="#F59A23"
-            status={checked1 ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setChecked1(!checked1);
-            }}
-
-          ></Checkbox>
         <View style={styles.box2} width={Dimensions.get('screen').width * 0.89}>
-          <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"} />
+          <Image style={styles.ingredientsImage} source={{ 
+         uri:item.imgUrl
+           }} resizeMode={"contain"} />
           <View style={styles.box3}
             width={Dimensions.get('screen').width * 0.5}>
-            <Text style={styles.food} >계란</Text>
+            <Text style={styles.food} key={item.id}>{item.name}</Text>
             <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
               <View style={styles.showdate} >
                 <Icon name="calendar" size={30} color="#8C9190" />
@@ -140,8 +90,8 @@ export default function cart(props) {
 
             <SegmentedControl
               tabs={['냉장', '냉동']}
-              currentIndex={tabIndex1}
-              onChange={handleTabsChange1}
+              currentIndex={tabIndex}
+              onChange={handleTabsChange}
               segmentedControlBackgroundColor='#fff'
               activeSegmentBackgroundColor='#ffe0ad'
               paddingVertical={14}
@@ -156,121 +106,43 @@ export default function cart(props) {
 
 
       </View>
-          </View>
-      </View>
-      
-      <View style={styles.container2}     >
-          <View >
-          <View style={styles.box}>
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+
+      <View style={styles.boxtop}>
+        {/* <View style={styles.checkboxtop}>
           <Checkbox
             color="#F59A23"
-            status={checked2 ? 'checked' : 'unchecked'}
+            status={checked ? 'checked' : 'unchecked'}
             onPress={() => {
-              setChecked2(!checked2);
+              setChecked(!checked);
             }}
 
           ></Checkbox>
-        <View style={styles.box2} width={Dimensions.get('screen').width * 0.89}>
-          <Image style={styles.ingredientsImage} source={TomatoImage} resizeMode={"contain"} />
-          <View style={styles.box3}
-            width={Dimensions.get('screen').width * 0.5}>
-            <Text style={styles.food} >토마토</Text>
-            <TouchableHighlight underlayColor='#fff' onPress={showDatepicker1}>
-              <View style={styles.showdate} >
-                <Icon name="calendar" size={30} color="#8C9190" />
-                <View style={styles.date1} >
-                  <Text style={styles.date2}>{date1.toLocaleDateString('ko-KR')}
-                  </Text></View></View>
-            </TouchableHighlight>
-            {show1 && (
-              <DateTimePicker
-                testID="dateTimePicker1"
-                value={date1}
-                mode={mode1}
-                is24Hour={true}
-                display="spinner"
-                onChange={onChange1}
-
-              />
-            )}
-
-            <SegmentedControl
-              tabs={['냉장', '냉동']}
-              currentIndex={tabIndex2}
-              onChange={handleTabsChange2}
-              segmentedControlBackgroundColor='#fff'
-              activeSegmentBackgroundColor='#ffe0ad'
-              paddingVertical={14}
-              width={Dimensions.get('screen').width / 2}
-
-              textStyle={{
-                fontWeight: '300',
-              }}
-            />
-          </View>
-        </View>
+          <Text style={styles.checkboxtop2}>전체 선택</Text></View> */}
 
 
+        <TouchableHighlight underlayColor='#fff' style={styles.add}
+          onPress={() => { props.navigation.navigate("cart") }}>
+          <Text style={styles.add2}>선택 추가하기</Text>
+        </TouchableHighlight>
       </View>
-          </View>
-      </View>
+
 
       <View style={styles.container2}     >
           <View >
-          <View style={styles.box}>
-          <Checkbox
-            color="#F59A23"
-            status={checked3 ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setChecked3(!checked3);
-            }}
-
-          ></Checkbox>
-        <View style={styles.box2} width={Dimensions.get('screen').width * 0.89}>
-          <Image style={styles.ingredientsImage} source={CucumberImage} resizeMode={"contain"} />
-          <View style={styles.box3}
-            width={Dimensions.get('screen').width * 0.5}>
-            <Text style={styles.food} >오이</Text>
-            <TouchableHighlight underlayColor='#fff' onPress={showDatepicker2}>
-              <View style={styles.showdate} >
-                <Icon name="calendar" size={30} color="#8C9190" />
-                <View style={styles.date1} >
-                  <Text style={styles.date2}>{date2.toLocaleDateString('ko-KR')}
-                  </Text></View></View>
-            </TouchableHighlight>
-            {show2 && (
-              <DateTimePicker
-                testID="dateTimePicker2"
-                value={date2}
-                mode={mode2}
-                is24Hour={true}
-                display="spinner"
-                onChange={onChange2}
-
-              />
-            )}
-
-            <SegmentedControl
-              tabs={['냉장', '냉동']}
-              currentIndex={tabIndex3}
-              onChange={handleTabsChange3}
-              segmentedControlBackgroundColor='#fff'
-              activeSegmentBackgroundColor='#ffe0ad'
-              paddingVertical={14}
-              width={Dimensions.get('screen').width / 2}
-
-              textStyle={{
-                fontWeight: '300',
-              }}
+            <FlatList
+              data={ingredients}
+              renderItem={render}
+              numColumns={1}
+              scrollEnabled={true}
+              keyExtractor={(item, index) => index.toString()}
             />
           </View>
-        </View>
-
-
       </View>
-          </View>
-      </View>
-      </ScrollView>
     </View>
   );
 }

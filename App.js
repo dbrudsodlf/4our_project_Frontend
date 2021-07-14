@@ -117,7 +117,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="start">
+        <Stack.Navigator initialRouteName="MainScreen">
           <Stack.Screen
             name="login"
             component={LoginScreen}
@@ -159,7 +159,13 @@ export default function App() {
             component={YoutubeList}
             options={{
               title: "요리 하기"
-            }} />           
+            }} />   
+     <Stack.Screen
+            name="basket"
+            component={BasketScreen}
+            options={{
+              title: "장바구니"
+            }} />         
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
