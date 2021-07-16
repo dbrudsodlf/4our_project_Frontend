@@ -1,17 +1,17 @@
-import React, {useState} from 'react';
-import {Button, StyleSheet, TextInput, View} from 'react-native';
+import React, { useState } from 'react';
+import { Button, StyleSheet, TextInput, View } from 'react-native';
 
-const BasketInsert = ({onAddTodo}) => {
-    const [newTodoItem, setNewTodoItem] = useState('');
+const BasketInsert = ({ onAddTodo }) => {
+  const [newTodoItem, setNewTodoItem] = useState('');
 
-    const todoInputHandler = newTodo => {
-        setNewTodoItem(newTodo);
-      };
+  const todoInputHandler = newTodo => {
+    setNewTodoItem(newTodo);
+  };
 
-    const addTodoHandler = () => {
-        onAddTodo(newTodoItem);
-        setNewTodoItem('');
-      };
+  const addTodoHandler = () => {
+    onAddTodo(newTodoItem);
+    setNewTodoItem('');
+  };
 
   return (
     <View style={styles.inputContainer}>
@@ -38,9 +38,9 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    paddingBottom:10,
-    paddingTop:30,
-    paddingLeft:10,
+    paddingBottom: 10,
+    paddingTop: 30,
+    paddingLeft: 10,
     borderBottomColor: '#bbb',
     borderBottomWidth: 1,
     fontSize: 20,
@@ -48,9 +48,9 @@ const styles = StyleSheet.create({
   },
   button: {
     marginRight: 15,
-    marginLeft:15,
-    marginTop:20
-    
+    marginLeft: 15,
+    marginTop: 20
+
   },
 });
 

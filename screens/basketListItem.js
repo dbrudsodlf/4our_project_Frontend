@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-const BasketListItem = ({textValue, id, checked, onRemove,onToggle}) => {
+const BasketListItem = ({ textValue, id, checked, onRemove, onToggle }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPressOut={onToggle(id)}>
@@ -14,13 +14,13 @@ const BasketListItem = ({textValue, id, checked, onRemove,onToggle}) => {
           <View style={styles.circle} />
         )}
       </TouchableOpacity>
-      <Text style={[ styles.text, checked ? styles.strikeText : styles.unstrikeText,]}>{textValue}</Text>
-    <TouchableOpacity style={styles.buttonContainer} >
-    <Text style={styles.buttonText}  onPress={onRemove(id)}>
-      <Icon name="close" size={30} color="#e33057" />
-    </Text>
-</TouchableOpacity>
-  </View>
+      <Text style={[styles.text, checked ? styles.strikeText : styles.unstrikeText,]}>{textValue}</Text>
+      <TouchableOpacity style={styles.buttonContainer} >
+        <Text style={styles.buttonText} onPress={onRemove(id)}>
+          <Icon name="close" size={30} color="#e33057" />
+        </Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
   unstrikeText: {
     color: '#29323c',
   },
-  buttonText:{
-  marginRight:10
+  buttonText: {
+    marginRight: 10
   },
   buttonContainer: {
     marginVertical: 10,

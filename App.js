@@ -11,6 +11,11 @@ import ChoiceScreen from './screens/choice.js';
 import SearchScreen from './screens/search.js';
 import CartScreen from './screens/cart.js';
 import CookScreen from './screens/cook.js';
+import CookList from './screens/cooklist.js';
+import HeartList from './screens/heartlist';
+import Notice from './screens/notice';
+import UserInfo from './screens/userinfo';
+import Logout from './screens/logout.js';
 import YoutubeList from './screens/youtubeList';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -117,7 +122,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="mypage">
+        <Stack.Navigator initialRouteName="MainScreen">
           <Stack.Screen
             name="login"
             component={LoginScreen}
@@ -160,18 +165,48 @@ export default function App() {
             options={{
               title: "요리 하기"
             }} />   
-     <Stack.Screen
+          <Stack.Screen
             name="basket"
             component={BasketScreen}
             options={{
               title: "장바구니"
             }} />     
-               <Stack.Screen
+          <Stack.Screen
             name="mypage"
             component={MypageScreen}
             options={{
               title: "마이페이지"
-            }} />     
+            }} />  
+          <Stack.Screen
+            name="cooklist"
+            component={CookList}
+            options={{
+              title: "요리내역"
+            }} /> 
+          <Stack.Screen
+            name="heartlist"
+            component={HeartList}
+            options={{
+              title: "찜한 목록"
+            }} /> 
+          <Stack.Screen
+            name="notice"
+            component={Notice}
+            options={{
+              title: "공지사항"
+            }} /> 
+          <Stack.Screen
+            name="userinfo"
+            component={UserInfo}
+            options={{
+              title: "회원 정보"
+            }} />  
+          <Stack.Screen
+            name="logout"
+            component={Logout}
+            options={{
+              title: "로그아웃"
+            }} />      
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

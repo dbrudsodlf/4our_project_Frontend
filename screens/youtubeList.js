@@ -22,7 +22,7 @@ export default function YoutubeList () {
   return (
     <View style={styles.container}>
          <View style={styles.boxtop}>
-         <Icon name="sc-youtube" size={60} color="#000" />
+         <Icon name="sc-youtube" size={60} color="#ff0000" />
          <View style={styles.food1}>
          <Text style={styles.food2}>토마토 달걀 볶음</Text></View>
          <Icon2 name="ios-heart-outline" size={40} color="#000"style={styles.icon} />
