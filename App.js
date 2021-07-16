@@ -117,7 +117,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MainScreen">
+        <Stack.Navigator initialRouteName="mypage">
           <Stack.Screen
             name="login"
             component={LoginScreen}
@@ -165,7 +165,13 @@ export default function App() {
             component={BasketScreen}
             options={{
               title: "장바구니"
-            }} />         
+            }} />     
+               <Stack.Screen
+            name="mypage"
+            component={MypageScreen}
+            options={{
+              title: "마이페이지"
+            }} />     
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
