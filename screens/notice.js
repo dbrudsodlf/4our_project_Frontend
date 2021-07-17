@@ -9,22 +9,27 @@ import {
 
 export default function Notice () {
   return (
-    <View style={{ flex: 1 , padding: 16}}>
-        <Text>
-          공지사항
+    <View  style={styles.container}>
+      <View> 
+        <Text style={styles.text}>
+          version 1.0
         </Text>
+
+      </View>
     </View>
   );
 }
 
-/*
+
 const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 10,
-    width: 300,
-    marginTop: 16,
+  container:{
+    backgroundColor:'#fff',
+    height:'100%'
   },
+  text:{
+  padding:30,
+  fontSize:15,
+  fontStyle:'italic',
+  color:'#696969'
+}
 });
-*/

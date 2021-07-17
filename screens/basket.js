@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, TextInput, View, Text, ScrollView, Button, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Text } from 'react-native';
 import BasketInsert from './basketInsert.js';
 import BasketList from './basketList.js';
 
