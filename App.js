@@ -17,6 +17,8 @@ import Notice from './screens/notice';
 import UserInfo from './screens/userinfo';
 import Logout from './screens/logout.js';
 import YoutubeList from './screens/youtubeList';
+import CameraCheck from './screens/cameraCheck';
+import CameraError from './screens/cameraError';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -122,7 +124,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="mypage">
+        <Stack.Navigator initialRouteName="cameraError">
           <Stack.Screen
             name="login"
             component={LoginScreen}
@@ -207,6 +209,18 @@ export default function App() {
             options={{
               title: "로그아웃"
             }} />      
+          <Stack.Screen
+            name="cameraCheck"
+            component={CameraCheck}
+            options={{
+              title: "재료 인식 결과 확인"
+            }} />   
+          <Stack.Screen
+            name="cameraError"
+            component={CameraError}
+            options={{
+              title: "재료 인식 결과 실패"
+            }} />   
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
