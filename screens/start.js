@@ -2,12 +2,12 @@ import React from "react";
 import {Text,TouchableOpacity,View,StyleSheet,Image,Dimensions} from "react-native";
 import camera from '../assets/camera.png';
 import hand from '../assets/hand.png';
-import egg from '../assets/avocado.png';
+import avocado from '../assets/avocado.png';
 
 export default function StartScreen(props) {
     return (
      <View style={styles.container}>
-        <Image style={styles.egg} source={egg} />
+        <Image style={styles.avocado} source={avocado} />
         <View style={styles.hand}>
           <Image style={styles.hand} source={hand} />
              </View>
@@ -41,17 +41,17 @@ const styles = StyleSheet.create({
       },
       hand:{
         position:'absolute',
-        top: 55,
-        right:0,
+        top: 40,
+        right:-10,
         width: 600,
         height: 500, 
       },
-      egg:{
+      avocado:{
         position:'absolute',
         width: 200,
         height: 400, 
-       top:140,
-       left: 85
+       top:105,
+       left: 103
       },
      flex1:{
         flexDirection:"row",

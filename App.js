@@ -124,7 +124,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="cameraError">
+        <Stack.Navigator initialRouteName="manage">
           <Stack.Screen
             name="login"
             component={LoginScreen}
@@ -220,6 +220,12 @@ export default function App() {
             component={CameraError}
             options={{
               title: "재료 인식 결과 실패"
+            }} />  
+          <Stack.Screen
+            name="manage"
+            component={ManageScreen}
+            options={{
+              title: "냉장고 관리"
             }} />   
         </Stack.Navigator>
       </NavigationContainer>
