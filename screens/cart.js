@@ -11,6 +11,7 @@ import SelectMultiple from 'react-native-select-multiple'
 import { Checkbox } from 'react-native-paper';
 
 export default function cart(props) {
+  const Food =props.route.params;
   const today = new Date();
   const [date, setDate] = useState(new Date(today));
   const [mode, setMode] = useState('date');
@@ -50,102 +51,95 @@ export default function cart(props) {
       })
   }, []);
 
-  const render = ({ item, index }) => {
+ 
 
     return (
-      <View style={styles.box}>
-          <Checkbox
-            color="#F59A23"
-            status={checked ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setChecked(!checked);
-            }}
-
-          ></Checkbox>
-        <View style={styles.box2} width={Dimensions.get('screen').width * 0.89}>
-          <Image style={styles.ingredientsImage} source={{ 
-         uri:item.imgUrl
-           }} resizeMode={"contain"} />
-          <View style={styles.box3}
-            width={Dimensions.get('screen').width * 0.5}>
-            <Text style={styles.food} key={item.id}>{item.name}</Text>
-            <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
-              <View style={styles.showdate} >
-                <Icon name="calendar" size={30} color="#8C9190" />
-                <View style={styles.date1} >
-                  <Text style={styles.date2}>{date.toLocaleDateString('ko-KR')}
-                  </Text></View></View>
-            </TouchableHighlight>
-            {show && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode={mode}
-                is24Hour={true}
-                display="spinner"
-                onChange={onChange}
-
-              />
-            )}
-
-            <SegmentedControl
-              tabs={['냉장', '냉동']}
-              currentIndex={tabIndex}
-              onChange={handleTabsChange}
-              segmentedControlBackgroundColor='#fff'
-              activeSegmentBackgroundColor='#ffe0ad'
-              paddingVertical={14}
-              width={Dimensions.get('screen').width / 2}
-
-              textStyle={{
-                fontWeight: '300',
-              }}
-            />
-          </View>
-        </View>
-
-
-      </View>
-    );
-  };
-
-  return (
-    <View style={styles.container}>
-
+      <View style={styles.container}>
       <View style={styles.boxtop}>
-        {/* <View style={styles.checkboxtop}>
-          <Checkbox
-            color="#F59A23"
-            status={checked ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setChecked(!checked);
-            }}
+      {/* <View style={styles.checkboxtop}>
+        <Checkbox
+          color="#F59A23"
+          status={checked ? 'checked' : 'unchecked'}
+          onPress={() => {
+            setChecked(!checked);
+          }}
 
-          ></Checkbox>
-          <Text style={styles.checkboxtop2}>전체 선택</Text></View> */}
-
-
-        <TouchableHighlight underlayColor='#fff' style={styles.add}
-          onPress={() => { props.navigation.navigate("cart") }}>
-          <Text style={styles.add2}>선택 추가하기</Text>
-        </TouchableHighlight>
-      </View>
+        ></Checkbox>
+        <Text style={styles.checkboxtop2}>전체 선택</Text></View> */}
 
 
-      <View style={styles.container2}     >
-          <View >
-            <FlatList
-              data={ingredients}
-              renderItem={render}
-              numColumns={1}
-              scrollEnabled={true}
-              keyExtractor={(item, index) => index.toString()}
-            />
-          </View>
-      </View>
+      <TouchableHighlight underlayColor='#fff' style={styles.add}
+        onPress={() => { props.navigation.navigate("cart") }}>
+        <Text style={styles.add2}>선택 추가하기</Text>
+      </TouchableHighlight>
     </View>
-  );
-}
+
+     <ScrollView>
+       {
+         Food.map((food,index)=>{
+           return(
+            <View style={styles.box}  key={index}>
+            <Checkbox
+              color="#F59A23"
+              status={checked ? 'checked' : 'unchecked'}
+              onPress={() => {
+                setChecked(!checked);
+              }}
+  
+            ></Checkbox>
+          <View style={styles.box2} width={Dimensions.get('screen').width * 0.89}>
+            <Image style={styles.ingredientsImage} 
+           // source={{uri:item.imgUrl}}
+             resizeMode={"contain"} />
+            <View style={styles.box3}
+              width={Dimensions.get('screen').width * 0.5}>
+              <Text style={styles.food} key={index}>{food}</Text>
+              <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
+                <View style={styles.showdate} >
+                  <Icon name="calendar" size={30} color="#8C9190" />
+                  <View style={styles.date1} >
+                    <Text style={styles.date2}>{date.toLocaleDateString('ko-KR')}
+                    </Text></View></View>
+              </TouchableHighlight>
+              {show && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={date}
+                  mode={mode}
+                  is24Hour={true}
+                  display="spinner"
+                  onChange={onChange}
+  
+                />
+              )}
+  
+              <SegmentedControl
+                tabs={['냉장', '냉동']}
+                currentIndex={tabIndex}
+                onChange={handleTabsChange}
+                segmentedControlBackgroundColor='#fff'
+                activeSegmentBackgroundColor='#ffe0ad'
+                paddingVertical={14}
+                width={Dimensions.get('screen').width / 2}
+  
+                textStyle={{
+                  fontWeight: '300',
+                }}
+              />
+            </View>
+          </View>
+  
+  
+        </View>
+           );
+         })
+       }
+     </ScrollView>
+     </View>
+    );
+  
+      }
+ 
 
 const styles = StyleSheet.create({
   container: {

@@ -25,6 +25,10 @@ export default function MypageScreen(props) {
         <Text style={styles.text}> 공지사항 </Text>
         <Icon name="right" size={30} color="#a9a9a9" />
       </TouchableOpacity>
+      <TouchableOpacity style={styles.versioninfo} onPress={() => { props.navigation.navigate("versioninfo") }}>
+        <Text style={styles.text}> 버전 정보 </Text>
+        <Icon name="right" size={30} color="#a9a9a9" />
+      </TouchableOpacity>
       <TouchableOpacity style={styles.userinfo} onPress={() => { props.navigation.navigate("userinfo") }}>
         <Text style={styles.text}> 회원 정보 </Text>
         <Icon name="right" size={30} color="#a9a9a9" />
@@ -71,6 +75,17 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ffefd5',
     backgroundColor: '#fff',
     marginTop: 20,
+    height: 50,
+    paddingRight: 10,
+    paddingLeft: 20
+  },
+  versioninfo: {
+    flexDirection: "row",
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ffefd5',
+    backgroundColor: '#fff',
     height: 50,
     paddingRight: 10,
     paddingLeft: 20

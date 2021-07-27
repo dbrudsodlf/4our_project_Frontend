@@ -4,31 +4,31 @@ import ManageTab from './manageTab';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function ManageScreen(props) {
- return (
-      <SafeAreaView style={styles.SafeAreaView}> 
-        <View>
-          <View style={styles.titleArea}>
-            <View >
-              <Text style={styles.text}>냉장고 관리</Text>  
-            </View>
-            <View style={styles.alert}>
-              <Icon name="alert-circle" size={20} color="#DC143C" />
-              <Text style={styles.text2}>:  유통기한이 3일 이내로 끝나는 재료들이에요!</Text>
-            </View>
+  return (
+    <SafeAreaView style={styles.SafeAreaView}>
+      <View>
+        <View style={styles.titleArea}>
+          <View >
+            <Text style={styles.text}>냉장고 관리</Text>
+          </View>
+          <View style={styles.alert}>
+            <Icon name="alert-circle" size={20} color="#DC143C" />
+            <Text style={styles.text2}>:  유통기한이 3일 이내로 끝나는 재료들이에요!</Text>
           </View>
         </View>
-       <ManageTab/>
+      </View>
+      <ManageTab />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   SafeAreaView: {
-      flex: 1,
-      backgroundColor: '#fff',
-      flexDirection: 'column',
-      flexWrap: 'nowrap',
-      justifyContent: 'center',
+    flex: 1,
+    backgroundColor: '#fff',
+    flexDirection: 'column',
+    flexWrap: 'nowrap',
+    justifyContent: 'center',
   },
   titleArea: {
     flexDirection: 'column',
@@ -36,10 +36,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 30,
   },
-  alert:{
+  alert: {
     flexDirection: 'row',
-    justifyContent:'center',
-    alignItems:'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingTop: 6,
   },
   text: {
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
   text2: {
     color: '#797979',
-    marginLeft:5,
-    marginBottom:2
+    marginLeft: 5,
+    marginBottom: 2
   },
 });

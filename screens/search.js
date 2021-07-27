@@ -19,15 +19,25 @@ export default function search(props) {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [tabIndex, setTabIndex] = React.useState(0);
-  const [modalName, setModalName] = useState([]);
+  const [modalName, setModalName] = useState('');
   const [modalDate, setModalDate] = useState([]);
   const [modalFrozen, setModalFrozen] = useState(1);
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
-
+  const [cartin,setCartin]=useState([]);
   
-
+  const pickfood=(name)=>{
+    if(cartin.length===0){
+      setCartin([...cartin,name]);
+  }else{
+    if(cartin.indexOf(name)<0){
+      setCartin([...cartin,name]);
+    }else{
+      alert("이미 담은 재료입니다.");
+    }
+  }
+}
   const handleTabsChange = index => {
     setTabIndex(index);
   };
@@ -48,22 +58,13 @@ export default function search(props) {
   };
 
 
-  // const toggleModal = (ingredients) => {//모달띄우기
-  //   setModalVisible(!isModalVisible);
-  //   setModalName(ingredients.name);
-  //   setModalFrozen(ingredients.frozen);
-  //   //setModalDate(ingredients.date);
-  // };
-
-  const toggleModal = (searchText) => {//모달띄우기
- 
+  const toggleModal = (ingredients) => {//모달띄우기
     setModalVisible(!isModalVisible);
-    setModalName(searchText);
+    setModalName(ingredients.name);
     setModalFrozen(ingredients.frozen);
-    setModalDate(ingredients.date);
-   
-  
+    //setModalDate(ingredients.date);
   };
+
 
   React.useEffect(() => {//데이터 받아오기
     axios.get(`${API_URL}/fridgecold`)
@@ -108,7 +109,7 @@ export default function search(props) {
         <View style={styles.titleArea}>
           <Text style={styles.text}>재료 검색</Text>
           <TouchableOpacity onPress={() => {//장바구니로 이동
-            props.navigation.navigate("cart")}}>
+            props.navigation.navigate("cart",cartin)}}>
             <Icon2 name="shopping-cart" size={30} color="#000" />
           </TouchableOpacity>
         </View>
@@ -118,28 +119,28 @@ export default function search(props) {
         value={search}
         underlineColorAndroid='transparent'
         placeholder="원하는 재료를 검색해보세요"
-        onKeyPress={ (event) => {
-          if(event.nativeEvent.key == "Enter"){
-            toggleModal(search);
-          } 
+      //   onKeyPress={ (event) => {
+      //     if(event.nativeEvent.key == "Enter"){
+      //       toggleModal(search);
+      //     } 
          
-      }} 
+      // }} 
       />
         
 
       <FlatList
-        // data={ingredients}
-        // keyExtractor={(id, index) => {
-        //   return index.toString();
-        // }}
-        // renderItem={({ item }) => {
-        //   return (
-        //     <TouchableHighlight underlayColor='#F59A23' onPress={() => toggleModal(item)}>
-        //       <Text style={styles.flatList}>{item.name}</Text>
-        //     </TouchableHighlight>
-        //   );
-        // }
-        // }
+        data={ingredients}
+        keyExtractor={(id, index) => {
+          return index.toString();
+        }}
+        renderItem={({ item }) => {
+          return (
+            <TouchableHighlight underlayColor='#F59A23' onPress={() => toggleModal(item)}>
+              <Text style={styles.flatList}>{item.name}</Text>
+            </TouchableHighlight>
+          );
+        }
+        }
 
       />
 
@@ -199,6 +200,7 @@ export default function search(props) {
             <TouchableOpacity
               style={styles.button2}
               onPress={() => {
+                pickfood(modalName)
                 setModalVisible(!isModalVisible);
               }}>
               <Text style={styles.txt}>담기</Text>

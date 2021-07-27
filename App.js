@@ -15,6 +15,7 @@ import CookList from './screens/cooklist.js';
 import HeartList from './screens/heartlist';
 import Notice from './screens/notice';
 import UserInfo from './screens/userinfo';
+import VersionInfo  from './screens/versioninfo.js';
 import Logout from './screens/logout.js';
 import YoutubeList from './screens/youtubeList';
 import CameraCheck from './screens/cameraCheck';
@@ -124,7 +125,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="manage">
+        <Stack.Navigator initialRouteName="search">
           <Stack.Screen
             name="login"
             component={LoginScreen}
@@ -197,6 +198,12 @@ export default function App() {
             options={{
               title: "공지사항"
             }} /> 
+          <Stack.Screen
+            name="versioninfo"
+            component={VersionInfo}
+            options={{
+              title: "버전 정보"
+            }} />
           <Stack.Screen
             name="userinfo"
             component={UserInfo}
