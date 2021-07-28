@@ -13,7 +13,7 @@ export default function ManageScreen(props) {
           </View>
           <View style={styles.alert}>
             <Icon name="alert-circle" size={20} color="#DC143C" />
-            <Text style={styles.text2}>:  유통기한이 3일 이내로 끝나는 재료들이에요!</Text>
+            <Text style={styles.text2}> 유통기한이 3일 이내로 끝나는 재료들이에요!</Text>
           </View>
         </View>
       </View>
