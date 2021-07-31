@@ -14,7 +14,8 @@ export default function manageFridge () {
 const data = [{id: 1, name: '바나나'}, {id: 2, name: '사과'}];
 
   return (
-    <SafeAreaView  style={styles.container}>
+    <View style={styles.container}>
+      <SafeAreaView  style={{flex: 1}}>
         <CheckboxList
           headerName="전체선택"
           theme="orange"
@@ -23,7 +24,8 @@ const data = [{id: 1, name: '바나나'}, {id: 2, name: '사과'}];
           istItemStyle={{ borderBottomColor: '#eee', borderBottomWidth: 1 }}
           checkboxProp={{ boxType: 'square' }} // iOS (supported from v0.3.0)
         />
-    </SafeAreaView>
+      </SafeAreaView>
+    </View>
   );
 }
 
