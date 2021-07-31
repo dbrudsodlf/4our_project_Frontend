@@ -11,7 +11,7 @@ import { Checkbox } from 'react-native-paper';
 
 export default function manageFridge () {
 
-const data = [{id: 1, name: '계란'}, {id: 2, name: '오이'}, {id: 3, name: '토마토'}];
+const data = [{id: 1, name: '계란'}, {id: 2, name: '토마토'}, {id: 3, name: '오이'}];
 
   return (
     <View style={styles.container}>
