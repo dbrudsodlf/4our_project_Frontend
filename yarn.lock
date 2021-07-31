@@ -1108,6 +1108,13 @@
   dependencies:
     "cross-spawn" "^6.0.5"
 
+"@expo/vector-icons@^10.0.6":
+  "integrity" "sha512-clYQZFLeU2y23n03hXg18EEsZS5c73sJJnfderztfSAqkUXkfUtv07fwuprYwbHIvgFkw6L7R6xJOCVYtS85iQ=="
+  "resolved" "https://registry.npmjs.org/@expo/vector-icons/-/vector-icons-10.2.1.tgz"
+  "version" "10.2.1"
+  dependencies:
+    "lodash" "^4.17.4"
+
 "@expo/vector-icons@^12.0.4":
   "integrity" "sha512-zWvHBmkpbi1KrPma6Y+r/bsGI6MjbM1MBSe6W9A4uYMLhNI5NR4JtTnqxhf7g1XdpaDtBdv5aOWKEx4d5rxnhg=="
   "resolved" "https://registry.npmjs.org/@expo/vector-icons/-/vector-icons-12.0.5.tgz"
@@ -1514,6 +1521,11 @@
   dependencies:
     "dequal" "^1.0.0"
     "isoworker" "^0.1.1"
+
+"@react-native-community/checkbox@^0.5.1", "@react-native-community/checkbox@0.5.8":
+  "integrity" "sha512-2ppw40sSqBKSPz75l8rDCvpcvQb/78MtvB5BDtovsJE1kXoUJP4eVLuyLo+LfYdSK9qLD4Llt4bIulr1SI9UIQ=="
+  "resolved" "https://registry.npmjs.org/@react-native-community/checkbox/-/checkbox-0.5.8.tgz"
+  "version" "0.5.8"
 
 "@react-native-community/cli-debugger-ui@^4.13.1":
   "integrity" "sha512-UFnkg5RTq3s2X15fSkrWY9+5BKOFjihNSnJjTV2H5PtTUFbd55qnxxPw8CxSfK0bXb1IrSvCESprk2LEpqr5cg=="
@@ -2957,6 +2969,11 @@
   "resolved" "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz"
   "version" "4.0.0"
 
+"escape-string-regexp@2.0.0":
+  "integrity" "sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w=="
+  "resolved" "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz"
+  "version" "2.0.0"
+
 "esprima@^4.0.0":
   "integrity" "sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A=="
   "resolved" "https://registry.npmjs.org/esprima/-/esprima-4.0.1.tgz"
@@ -4216,7 +4233,7 @@
   "resolved" "https://registry.npmjs.org/lodash.throttle/-/lodash.throttle-4.1.1.tgz"
   "version" "4.1.1"
 
-"lodash@^4.17.13", "lodash@^4.17.14", "lodash@^4.17.15", "lodash@^4.3.0":
+"lodash@^4.17.13", "lodash@^4.17.14", "lodash@^4.17.15", "lodash@^4.17.4", "lodash@^4.3.0":
   "integrity" "sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg=="
   "resolved" "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   "version" "4.17.21"
@@ -5358,6 +5375,14 @@
     "color" "^3.1.2"
     "react-native-iphone-x-helper" "^1.3.1"
 
+"react-native-picker-checkbox@2.0.2":
+  "integrity" "sha512-7jTrPL61U1GuVhkjaWopaACoPvsiKToLLsxikF8+civk6CycslOK+xcpDLYvQ3pot4KuFjFYRkGJwprFwo4eKw=="
+  "resolved" "https://registry.npmjs.org/react-native-picker-checkbox/-/react-native-picker-checkbox-2.0.2.tgz"
+  "version" "2.0.2"
+  dependencies:
+    "@expo/vector-icons" "^10.0.6"
+    "prop-types" "^15.6.0"
+
 "react-native-radio-buttons@1.0.0":
   "integrity" "sha512-9qglzqVfpFXph2aeRvpg7obDhb8X8LBexMRugXSjud7+2J1teDMsWyypE8PLbF+WCXoCCtW0K+RpHOuzv7kJjA=="
   "resolved" "https://registry.npmjs.org/react-native-radio-buttons/-/react-native-radio-buttons-1.0.0.tgz"
@@ -5403,7 +5428,7 @@
   "resolved" "https://registry.npmjs.org/react-native-segmented-control-tab/-/react-native-segmented-control-tab-3.4.1.tgz"
   "version" "3.4.1"
 
-"react-native-select-multiple@^2.1.0":
+"react-native-select-multiple@2.1.0":
   "integrity" "sha512-sJepp/RNeLorR+/bEUVuWnVEX5klpyf0MHWKy0SN1MIty4vcKhL9ZhPM6Zydm5p6qHeFcvA7Q87FzO1JTdaqkw=="
   "resolved" "https://registry.npmjs.org/react-native-select-multiple/-/react-native-select-multiple-2.1.0.tgz"
   "version" "2.1.0"
@@ -5474,6 +5499,14 @@
     "normalize-css-color" "^1.0.2"
     "prop-types" "^15.6.0"
     "react-timer-mixin" "^0.13.4"
+
+"react-native-webview@11.6.5":
+  "integrity" "sha512-5U+hI8snkCrFeDy+bUTszwhzcJIenaaOy3ubhY77HZq7R0pFIZzRYWkT0YXe1ymRYW9mSU96nr6S0AVDk8qkMw=="
+  "resolved" "https://registry.npmjs.org/react-native-webview/-/react-native-webview-11.6.5.tgz"
+  "version" "11.6.5"
+  dependencies:
+    "escape-string-regexp" "2.0.0"
+    "invariant" "2.2.4"
 
 "react-native-wheel-picker@1.2.0":
   "integrity" "sha1-BQPjezMmhWckUBZ5vfVpfg3SR6Y="
@@ -5731,6 +5764,13 @@
   "integrity" "sha1-5Dm+Kq7jJzIZUnMPmaiSnk/FBYI="
   "resolved" "https://registry.npmjs.org/rimraf/-/rimraf-2.2.8.tgz"
   "version" "2.2.8"
+
+"rn-checkbox-list@^0.4.0":
+  "integrity" "sha512-qD2VWnGXgQBqvpQweRLMzhTx5+ETkWHpaFgy5ilm9mU3JCP/Mf1IZE2vaWV9KtRa1GHBWLqDUm+LlPyHuf2zDA=="
+  "resolved" "https://registry.npmjs.org/rn-checkbox-list/-/rn-checkbox-list-0.4.0.tgz"
+  "version" "0.4.0"
+  dependencies:
+    "@react-native-community/checkbox" "^0.5.1"
 
 "rn-round-checkbox@1.0.0":
   "integrity" "sha512-Ej57Vo3L99efUMDDxne+uWqCyyuoWzb6Iqre/3jZ6C16gGe7fuNtRs8icS8BSCcPZRuZXAtR1iCEBks2Z89URA=="
@@ -6754,9 +6794,9 @@
     "decamelize" "^1.2.0"
 
 "yargs-parser@^20.2.2":
-  "integrity" "sha512-FiNkvbeHzB/syOjIUxFDCnhSfzAL8R5vs40MgLFBorXACCOAEaWu0gRZl14vG8MR9AOJIZbmkjhusqBYZ3HTHw=="
-  "resolved" "https://registry.npmjs.org/yargs-parser/-/yargs-parser-20.2.7.tgz"
-  "version" "20.2.7"
+  "integrity" "sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w=="
+  "resolved" "https://registry.npmjs.org/yargs-parser/-/yargs-parser-20.2.9.tgz"
+  "version" "20.2.9"
 
 "yargs@^14.2.0":
   "integrity" "sha512-ZbotRWhF+lkjijC/VhmOT9wSgyBQ7+zr13+YLkhfsSiTriYsMzkTUFP18pFhWwBeMa5gUc1MzbhrO6/VB7c9Xg=="

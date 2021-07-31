@@ -1,7 +1,12 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-
+import {
+  NavigationContainer
+} from '@react-navigation/native';
+import {
+  createStackNavigator
+} from '@react-navigation/stack';
 import {
     createMaterialTopTabNavigator
   } from '@react-navigation/material-top-tabs';
@@ -9,7 +14,6 @@ import ManageFridge from './manageFridge';
 import ManageExp from './manageExp';
 
 const Tab = createMaterialTopTabNavigator();
-
 
 export default function manageTab() {
 
@@ -38,7 +42,7 @@ export default function manageTab() {
       }}>
       <Tab.Screen
         name="ManageFridge"
-        children={()=><ManageFridge/>}
+        children={()=><ManageFridge />}
         options={{
           tabBarLabel: '재료 관리',
         }}  />
