@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import * as React from 'react';
+import  React,{useState} from 'react';
 import { StyleSheet, SafeAreaView, Text, View, Button, TouchableOpacity } from 'react-native';
 import LoginScreen from './screens/login.js';
 import StartScreen from './screens/start.js';
@@ -20,12 +20,14 @@ import Logout from './screens/logout.js';
 import YoutubeList from './screens/youtubeList';
 import CameraCheck from './screens/cameraCheck';
 import CameraError from './screens/cameraError';
+import ModalPage from './screens/modal';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Modal } from 'react-native-paper';
 
 
 const MainTab = createBottomTabNavigator();
@@ -34,11 +36,16 @@ const SettingsStack = createStackNavigator();
 
 
 
+
 function BottomSH() {
 
 }
 
-function MainTabScreen() {
+function MainTabScreen(props) {
+  const[modalVisible,setModalVisible]=useState(false);
+  const pressButton=()=>{
+    setModalVisible(true);
+  }
   return (
     <MainTab.Navigator
       initialRouteName="MainScreen"
@@ -73,28 +80,55 @@ function MainTabScreen() {
         name="MainScreen"
         component={MainScreen}
         options={{
-          tabBarLabel: '냉장',
-          tabBarIcon: ({ tintColor }) => (
-            <Icon name='fridge-outline' color='#191919' size={30} />
+          tabBarLabel: '메인',
+          tabBarIcon: ({focused }) => (
+            <View>
+            <Icon name='fridge-outline' size={30}
+            style={{
+              color:focused?'#F59A23':'#191919'
+            }}/>
+            </View>
           )
         }} />
       <MainTab.Screen
         name="ManageScreen"
         component={ManageScreen}
         options={{
-          tabBarLabel: '냉장',
-          tabBarIcon: ({ tintColor }) => (
-            <Icon name='calendar-month-outline' color='#191919' size={30} />
+          tabBarLabel: '냉장고 관리',
+          tabBarIcon: ({ focused }) => (
+            <View>
+            <Icon name='calendar-month-outline' size={30} 
+            style={{
+              color:focused?'#F59A23':'#191919'
+            }}/>
+            </View>
           )
         }} />
       <MainTab.Screen
         name="ChoiceScreen"
         component={ChoiceScreen}
         options={{
-          tabBarLabel: '냉장',
-          tabBarIcon: ({ tintColor }) => (
-            <Icon name='plus' color='#191919' size={30} />
-          ),
+          tabBarLabel: '모달',
+          tabBarIcon: ({focused}) => (
+            <TouchableOpacity onPress={pressButton}>
+            <View>
+  
+            <Icon name='plus' size={40} style={{  
+              backgroundColor:'#F59A23',
+              color:'#fff',
+              padding:5,
+              borderRadius:100,
+              marginBottom:10
+
+            }}
+            />
+            <ModalPage
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            />
+            </View>
+            </TouchableOpacity>
+          )
 
         }}
       />
@@ -102,18 +136,28 @@ function MainTabScreen() {
         name="BasketScreen"
         component={BasketScreen}
         options={{
-          tabBarLabel: '냉장',
-          tabBarIcon: ({ tintColor }) => (
-            <Icon name='basket-outline' color='#191919' size={30} />
-          )
+          tabBarLabel: '장바구니',
+          tabBarIcon: ({ focused }) => (
+            <View>
+            <Icon name='basket-outline' size={30}
+             style={{
+              color:focused?'#F59A23':'#191919',
+            }}/>
+            </View>
+          ),
         }} />
       <MainTab.Screen
         name="MypageScreen"
         component={MypageScreen}
         options={{
-          tabBarLabel: '냉장',
-          tabBarIcon: ({ tintColor }) => (
-            <Icon name='account-outline' color='#191919' size={30} />
+          tabBarLabel: '마이페이지',
+          tabBarIcon: ({ focused }) => (
+            <View>
+            <Icon name='account-outline' size={30}
+              style={{
+                color:focused?'#F59A23':'#191919'
+              }}/>
+              </View>
           )
         }} />
 

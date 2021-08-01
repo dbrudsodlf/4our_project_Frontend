@@ -9,9 +9,10 @@ import Icon2 from 'react-native-vector-icons/Feather';
 import { API_URL } from '../config/constants.js';
 import axios from 'axios';
 
+
+
 export default function search(props) {
   const [ingredients, setIngredients] = React.useState([]);
-  const [ingredientsName, setIngredientsName] = React.useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
   const today = new Date();
   const [date, setDate] = useState(new Date(today));
@@ -25,7 +26,13 @@ export default function search(props) {
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [cartin,setCartin]=useState([]);
-  
+  const [cartdata,setCartdata]=useState({
+    name:'',
+    date:'',
+    frozen:0
+  })
+
+
   const pickfood=(name)=>{
     if(cartin.length===0){
       setCartin([...cartin,name]);
@@ -39,12 +46,14 @@ export default function search(props) {
 }
   const handleTabsChange = index => {
     setTabIndex(index);
+    console.log(index);
   };
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
+    console.log(date);
   };
 
   const showMode = (currentMode) => {
@@ -57,46 +66,31 @@ export default function search(props) {
   };
 
 
-  const toggleModal = (ingredients) => {//모달띄우기
+  const toggleModal = (item) => {//모달띄우기
     setModalVisible(!isModalVisible);
-    setModalName(ingredients);
-    //setModalFrozen(ingredients.frozen);
-    //setModalDate(ingredients.date);
+    setModalName(item.name);
+    setModalFrozen(item.frozen);
+    //setModalDate(item.date);
   };
+
 
   React.useEffect(() => {//데이터 받아오기
     axios.get(`${API_URL}/fridgecold`)
       .then((result) => {
         setIngredients(result.data.ingredients);
-        console.log(ingredients);
-        for (const value in ingredients) {
-          console.log(ingredients[value].name);
-          setIngredientsName(prev => [...prev, ingredients[value].name]);
-        }
-        console.log(ingredientsName);
+
       })
       .catch((error) => {
         console.error(error);
       })
   }, []);
 
-  const searchFilterFunction = (text) => {
-    
-    if (ingredientsName.includes(text)) { 
-      console.log("text", text);
-      console.log("일치");
-      // const newData = masterDataSource.filter(
-      //   function (ingredients) {
-      //     const itemData = ingredients
-      //       ? ingredients.name.toUpperCase()
-      //       : ''.toUpperCase();
-      //     const textData = text.toUpperCase();
-      //     return itemData.indexOf(textData) > -1;
-      //   });
-      // setFilteredDataSource(newData);
-      // setSearch(text);
+  const searchFilterFunction = (text) => {//검색필터
+    if (text) { //빈칸이 아니면
+  
       setSearch(text);
-      toggleModal(text);
+    
+
     } else {
       // Inserted text is blank
       // Update FilteredDataSource with masterDataSource
@@ -108,6 +102,7 @@ export default function search(props) {
   return (
 
     <View style={styles.container}>
+
 
       <View>
         <View style={styles.titleArea}>
@@ -145,6 +140,7 @@ export default function search(props) {
           );
         }
         }
+
       />
 
       <Modal
@@ -156,6 +152,7 @@ export default function search(props) {
           <View style={styles.modal2}>
             <Text style={styles.food} key={ingredients.id}>{modalName}</Text>
             <Text style={styles.date} >유통 기한</Text>
+
             <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
               <View style={styles.showdate} >
                 <Icon name="calendar" size={30} color="#8C9190" />
@@ -171,13 +168,14 @@ export default function search(props) {
                 is24Hour={true}
                 display="spinner"
                 onChange={onChange}
+                format="YYYY-MM-DD"
               />
             )}
 
             <Text style={styles.fridge}>보관 방법</Text>
 
             <SegmentedControl
-              tabs={['냉장', '냉동']}
+              tabs={['냉장', '냉동']}//냉장:0 , 냉동:1
               currentIndex={tabIndex}
               onChange={handleTabsChange}
               segmentedControlBackgroundColor='#fff'
