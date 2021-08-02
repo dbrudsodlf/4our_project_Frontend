@@ -7,7 +7,6 @@ import MainScreen from './screens/main.js';
 import ManageScreen from './screens/manage.js';
 import BasketScreen from './screens/basket.js';
 import MypageScreen from './screens/mypage.js';
-import ChoiceScreen from './screens/choice.js';
 import SearchScreen from './screens/search.js';
 import CartScreen from './screens/cart.js';
 import CookScreen from './screens/cook.js';
@@ -27,7 +26,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Modal } from 'react-native-paper';
+
 
 
 const MainTab = createBottomTabNavigator();
@@ -53,6 +52,7 @@ function MainTabScreen(props) {
         activeTintColor: '#F59A23',
         inactiveTintColor: '#191919',
         style: {
+          height:60,
           paddingBottom: 20,
           backgroundColor: '#FFF',
           padding: 20,
@@ -85,7 +85,8 @@ function MainTabScreen(props) {
             <View>
             <Icon name='fridge-outline' size={30}
             style={{
-              color:focused?'#F59A23':'#191919'
+              color:focused?'#F59A23':'#191919',
+              padding:15
             }}/>
             </View>
           )
@@ -99,14 +100,15 @@ function MainTabScreen(props) {
             <View>
             <Icon name='calendar-month-outline' size={30} 
             style={{
-              color:focused?'#F59A23':'#191919'
+              color:focused?'#F59A23':'#191919',
+              padding:15
             }}/>
             </View>
           )
         }} />
       <MainTab.Screen
         name="ChoiceScreen"
-        component={ChoiceScreen}
+        component={ModalPage}
         options={{
           tabBarLabel: '모달',
           tabBarIcon: ({focused}) => (
@@ -118,7 +120,7 @@ function MainTabScreen(props) {
               color:'#fff',
               padding:5,
               borderRadius:100,
-              marginBottom:10
+              
 
             }}
             />
@@ -142,6 +144,7 @@ function MainTabScreen(props) {
             <Icon name='basket-outline' size={30}
              style={{
               color:focused?'#F59A23':'#191919',
+              padding:15
             }}/>
             </View>
           ),
@@ -155,7 +158,8 @@ function MainTabScreen(props) {
             <View>
             <Icon name='account-outline' size={30}
               style={{
-                color:focused?'#F59A23':'#191919'
+                color:focused?'#F59A23':'#191919',
+                padding:15
               }}/>
               </View>
           )

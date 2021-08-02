@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
+    marginBottom:20
   },
   selectedCookBtn: {
     padding: 10,
@@ -122,12 +123,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
+    marginBottom:20
   },
   cookBtnText: {
     color: '#191919',
     fontSize: 18,
     fontWeight: 'bold',
-    color: 'white'
+    color: 'white',
+
   },
   selectedCookBtnText: {
     color: '#191919',
