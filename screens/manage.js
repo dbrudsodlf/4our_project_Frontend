@@ -34,22 +34,25 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
-    padding: 30,
+    marginTop:20,
+    marginLeft:20,
+    marginBottom:10
   },
   alert: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 6,
+    paddingTop: 10,
   },
   text: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#000'
   },
   text2: {
     color: '#797979',
     marginLeft: 5,
-    marginBottom: 2
+    marginBottom: 2,
+    fontSize: 12,
   },
 });

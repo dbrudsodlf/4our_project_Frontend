@@ -73,7 +73,7 @@ export default function CookScreen (props) {
               <TouchableOpacity style={styles.icon} onPress={() => {
                       props.navigation.navigate("youtubeList")
                     }} >
-                <Icon name="silverware-fork-knife" size={40} color="#fff" />
+                <Icon name="silverware-fork-knife" size={38} color="#fff" />
               </TouchableOpacity>
             </View>
           </View>
@@ -108,12 +108,14 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   container3: {
-    alignItems: 'flex-end',
+alignItems:'center',
+justifyContent:'space-between'
   },
+  
   food_text: {
     flex: 5,
     fontWeight: 'bold',
-    fontSize: 25,
+    fontSize: 22,
     marginLeft:25,
     marginTop:20
   },

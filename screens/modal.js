@@ -31,7 +31,7 @@ const ModalPage = (props) => {
 
     const resetBottomSheet = Animated.timing(panY, {
         toValue: 0,
-        duration: 300,
+        duration: 0,
         useNativeDriver: true,
     });
 
@@ -113,10 +113,20 @@ const ModalPage = (props) => {
             console.log(result.uri);
         }
     };
+  
+    // useEffect(()=>{
+    //     console.log('나타남');
+       
+    //     return()=>{
+    //         console.log('닫힘');
+    //         closeModal();
+    //     }
+       
+    // },[navigation])
 
-    const gosearch = () => {
-        navigation.navigate('search');
-    }
+    
+
+  
     return (
         <Modal
             visible={modalVisible}
@@ -164,7 +174,9 @@ const ModalPage = (props) => {
                             <Text style={styles.texts} >라이브러리에서 사진 가져오기</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.contents}
-                            onPress={gosearch}>
+                            onPress={()=> {
+                                navigation.navigate('search');
+                            }}>
                             <Icon name='magnify' color='#191919' size={32}
                                 style={{
                                     backgroundColor: '#ffe4c4',

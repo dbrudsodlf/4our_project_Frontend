@@ -1,18 +1,39 @@
-import React from "react";
+import React,{useState} from "react";
 import {Text,TouchableOpacity,View,StyleSheet,Image,Dimensions} from "react-native";
 import camera from '../assets/camera.png';
 import hand from '../assets/hand.png';
 import avocado from '../assets/avocado.png';
-
+import * as ImagePicker from 'expo-image-picker';
 export default function StartScreen(props) {
+  const [pickedImagePath, setPickedImagePath] = useState('');
+  const openCamera = async () => {
+    // Ask the user for the permission to access the camera
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+        alert("You've refused to allow this appp to access your camera!");
+        return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync();
+
+    // Explore the result
+    console.log(result);
+
+    if (!result.cancelled) {
+        setPickedImagePath(result.uri);
+        console.log(result.uri);
+    }
+}
+
     return (
      <View style={styles.container}>
-        <Image style={styles.avocado} source={avocado} />
+        {/* <Image style={styles.avocado} source={avocado} /> */}
         <View style={styles.hand}>
           <Image style={styles.hand} source={hand} />
              </View>
              <View>
-        <TouchableOpacity style={styles.flex1} >
+        <TouchableOpacity style={styles.flex1}  onPress={openCamera} >
         <View style={styles.cameraicon}>
           <Image style={styles.camera} source={camera} /></View>
         <View style={styles.btn1}>
@@ -38,30 +59,32 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFD098',
         alignItems:'center',
         justifyContent: 'center',
+        height:'100%'
       },
       hand:{
         position:'absolute',
-        top: 40,
-        right:-10,
-        width: 600,
-        height: 500, 
+        top:Dimensions.get('screen').height/100,
+        right:25,
+        width:Dimensions.get('screen').width ,
+        height: Dimensions.get('screen').height/1.5 ,
       },
       avocado:{
         position:'absolute',
-        width: 200,
+        width: Dimensions.get('screen').width/2.5,
         height: 400, 
        top:105,
        left: 103
       },
      flex1:{
         flexDirection:"row",
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems:"center",
-        width: 300,
+        width: Dimensions.get('screen').width*0.9,
         height: 110,
         backgroundColor: '#fff' ,
         borderRadius: 10,
-        marginTop:500
+        marginTop:Dimensions.get('screen').height/1.8,
+        paddingLeft: Dimensions.get('screen').width/20
       },
       flex2:{
         flexDirection:"row",
@@ -70,7 +93,7 @@ const styles = StyleSheet.create({
         marginTop:20,
         borderWidth:1,
         borderColor:"#000",
-        width: 300,
+        width: Dimensions.get('screen').width*0.9,
         paddingLeft:40,
         borderRadius:10
       },
@@ -90,7 +113,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems:"center",
         justifyContent: "center",
-       marginLeft:20,
     },
 
   });

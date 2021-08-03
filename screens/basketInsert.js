@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { Button, StyleSheet, TextInput, View } from 'react-native';
 
-const BasketInsert = ({ onAddTodo }) => {
-  const [newTodoItem, setNewTodoItem] = useState('');
+const BasketInsert = ({ onAddBasket }) => {
+  const [newBasketItem, setNewBasketItem] = useState('');
 
-  const todoInputHandler = newTodo => {
-    setNewTodoItem(newTodo);
+  const BasketInputHandler = newBasket => {
+    setNewBasketItem(newBasket);
   };
 
-  const addTodoHandler = () => {
-    onAddTodo(newTodoItem);
-    setNewTodoItem('');
+  const addBasketHandler = () => {
+    onAddBasket(newBasketItem);
+    setNewBasketItem('');
   };
 
   return (
@@ -20,11 +20,11 @@ const BasketInsert = ({ onAddTodo }) => {
         placeholder="사야할 재료를 입력해주세요"
         placeholderTextColor={'#999'}
         autoCorrect={false}
-        onChangeText={todoInputHandler}
-        value={newTodoItem}
+        onChangeText={BasketInputHandler}
+        value={newBasketItem}
       />
       <View style={styles.button}>
-        <Button title={'추가'} color={'#F59A23'} onPress={addTodoHandler} />
+        <Button title={'추가'} color={'#F59A23'} onPress={addBasketHandler} />
       </View>
     </View>
   );
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     borderBottomColor: '#bbb',
     borderBottomWidth: 1,
-    fontSize: 20,
+    fontSize: 15,
     marginLeft: 20,
   },
   button: {

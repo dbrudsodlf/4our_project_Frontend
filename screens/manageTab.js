@@ -2,12 +2,6 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import {
-  NavigationContainer
-} from '@react-navigation/native';
-import {
-  createStackNavigator
-} from '@react-navigation/stack';
-import {
     createMaterialTopTabNavigator
   } from '@react-navigation/material-top-tabs';
 import ManageFridge from './manageFridge';
@@ -59,7 +53,7 @@ export default function manageTab() {
 const styles = StyleSheet.create({
   fridge: {
     flex: 1,
-  }
+  },
 });
 
 

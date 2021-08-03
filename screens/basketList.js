@@ -2,11 +2,11 @@ import React from 'react';
 import {StyleSheet, ScrollView, Text} from 'react-native';
 import BasketListItem from './basketListItem.js';
 
-const BasketList = ({todos,onRemove, onToggle}) => {
+const BasketList = ({baskets,onRemove, onToggle}) => {
   return (
     <ScrollView contentContainerStyle={styles.listContainer}>
-        {todos.map(todo => (
-        <BasketListItem key={todo.id} {...todo} onRemove={onRemove}  onToggle={onToggle}/>
+        {baskets.map(basket => (
+        <BasketListItem key={basket.id} {...basket} onRemove={onRemove}  onToggle={onToggle}/>
       ))}
     </ScrollView>
   );

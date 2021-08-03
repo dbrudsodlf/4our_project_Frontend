@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
   text: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold'
   },
   TextInputStyleClass: {

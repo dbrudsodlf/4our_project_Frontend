@@ -5,23 +5,23 @@ import BasketList from './basketList.js';
 
 
 export default function BasketScreen() {
-  const [todos, setTodos] = useState([]);
+  const [baskets, setBaskets] = useState([]);
 
-  const addTodo = text => { //장바구니 추가
-    setTodos([
-      ...todos,
+  const addBasket = text => { //장바구니 추가
+    setBaskets([
+      ...baskets,
       { id: Math.random().toString(), textValue: text, checked: false },
     ]);
   };
 
   const onRemove = id => e => { //장바구니 삭제
-    setTodos(todos.filter(todo => todo.id !== id));
+    setBaskets(baskets.filter(basket => basket.id !== id));
   };
 
   const onToggle = id => e => {//누르면 완료 표시
-    setTodos(
-      todos.map(todo =>
-        todo.id === id ? { ...todo, checked: !todo.checked } : todo,
+    setBaskets(
+      baskets.map(basket =>
+        basket.id === id ? { ...basket, checked: !basket.checked } : basket,
       ),
     );
   };
@@ -30,8 +30,8 @@ export default function BasketScreen() {
     <SafeAreaView style={styles.container}>
       <Text style={styles.appTitle}>장바구니</Text>
       <View style={styles.card}>
-        <BasketInsert onAddTodo={addTodo} />
-        <BasketList todos={todos} onRemove={onRemove} onToggle={onToggle} />
+        <BasketInsert onAddBasket={addBasket} />
+        <BasketList baskets={baskets} onRemove={onRemove} onToggle={onToggle} />
       </View>
     </SafeAreaView>
   );
@@ -44,9 +44,9 @@ const styles = StyleSheet.create({
   },
   appTitle: {
     color: '#000',
-    fontSize: 30,
-    marginTop: 30,
-    marginBottom: 30,
+    fontSize: 28,
+    marginTop: 20,
+    marginBottom: 20,
     marginLeft: 20,
     fontWeight: '300',
     textAlign: 'left',
