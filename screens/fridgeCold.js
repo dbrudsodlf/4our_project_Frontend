@@ -38,7 +38,6 @@ export default function FridgeCold ({ isSelectBtn }) {
     isSelectBtn(flagstate, select);
   }, [selectedIngredients]);
 
-
   const renderIngredients = ({ item, index }) => {
     const { name, slug, imgUrl, dday, id } = item;
     const isSelected = selectedIngredients.filter((i) => i === slug).length > 0;

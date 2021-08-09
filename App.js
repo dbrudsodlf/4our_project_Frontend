@@ -33,9 +33,6 @@ const MainTab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const SettingsStack = createStackNavigator();
 
-
-
-
 function BottomSH() {
 
 }
@@ -114,14 +111,11 @@ function MainTabScreen(props) {
           tabBarIcon: ({focused}) => (
             <TouchableOpacity onPress={pressButton}>
             <View>
-  
             <Icon name='plus' size={40} style={{  
               backgroundColor:'#F59A23',
               color:'#fff',
               padding:5,
               borderRadius:100,
-              
-
             }}
             />
             <ModalPage
