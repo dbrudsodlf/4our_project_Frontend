@@ -12,6 +12,7 @@ export default function manageFridge () {
   const [insertData, setInsertData] = React.useState([]);
   const [selectAll, setSelectAll] = React.useState(false);
   const [cartItemIsLoading, setCartItemIsLoading] = React.useState(false);
+  const [unchecked, setUnchecked] = React.useState([]);
 
   React.useEffect(()=>{
     axios.get(`${API_URL}/fridgecold`).then((result)=>{
@@ -21,7 +22,7 @@ export default function manageFridge () {
         console.log(ingredients[value].name);
         let ingId = ingredients[value].id;
         let ingName = ingredients[value].name;
-        let tempData = {id: ingId, name: ingName, checked: 1};
+        let tempData = {id: ingId, name: ingName, checked: 0};
         setInsertData(prev => [...prev, tempData]);
       }
       console.log(insertData);
@@ -62,6 +63,25 @@ export default function manageFridge () {
 			],
 			{ cancelable: false }
 		);
+  }
+  
+  const deleteSelectedHandler = () => {
+    const deleteSelected = [...insertData];
+		Alert.alert(
+			'선택 항목을 관리 페이지에서 정말 삭제하시겠습니까?',
+			'',
+			[
+				{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+				{text: 'Delete', onPress: () => {
+          deleteSelected.map((item, index) => {
+            if(deleteSelected[index]['checked'] === false)
+              unchecked = [...deleteSelected[index]]
+          });
+          setInsertData(unchecked); /* Update the state */
+				}},
+      ],
+			{ cancelable: false }
+		);
 	}
 
   return (
@@ -87,22 +107,26 @@ export default function manageFridge () {
           checkboxProp={{ boxType: 'square' }} // iOS (supported from v0.3.0)
         />
       </SafeAreaView> */}
-      <View style={{flexDirection: 'row'}}>
+      <View style={{paddingHorizontal: 20, paddingTop: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
         <View style={[styles.centerElement, {width: 60}]}>
           <TouchableOpacity style={[styles.centerElement, {width: 32, height: 32}]} onPress={() => selectHandlerAll(selectAll)}>
-            <Ionicons name={selectAll == true ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"} size={25} color={selectAll == true ? "#0faf9a" : "#aaaaaa"} />
+            <Ionicons name={selectAll == true ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"} size={25} color={selectAll == true ? "black" : "#aaaaaa"} />
           </TouchableOpacity>
-          <View style={{flexDirection: 'row', flexGrow: 1, flexShrink: 1, justifyContent: 'space-between', alignItems: 'center'}}>
+          <View style={{ justifyContent: 'space-between', alignItems: 'center'}}>
             <Text>전체 선택</Text>
           </View>
         </View>
+        <TouchableOpacity style={styles.centerElement} onPress={() => deleteSelectedHandler()}>
+          {/* <Ionicons name="md-trash" size={25} color="#ee4d2d" /> */}
+          <Text style={styles.textBox}>선택 삭제</Text>
+        </TouchableOpacity>
       </View>
       <ScrollView>	
         {insertData && insertData.map((item, i) => (
-          <View key={i} style={{flexDirection: 'row', backgroundColor: '#fff', marginBottom: 2, height: 120}}>
+          <View key={i} style={[styles.itemList, {flexDirection: 'row', backgroundColor: '#fff', marginBottom: 2, height: 60}]}>
             <View style={[styles.centerElement, {width: 60}]}>
             <TouchableOpacity style={[styles.centerElement, {width: 32, height: 32}]} onPress={() => selectHandler(i, item.checked)}>
-                <Ionicons name={item.checked == 1 ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"} size={25} color={item.checked == 1 ? "#0faf9a" : "#aaaaaa"} />
+                <Ionicons name={item.checked == 1 ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"} size={25} color={item.checked == 1 ? "black" : "#aaaaaa"} />
               </TouchableOpacity>
             </View>
             <View style={{flexDirection: 'row', flexGrow: 1, flexShrink: 1, alignSelf: 'center'}}>
@@ -130,6 +154,17 @@ const styles = StyleSheet.create({
   },
   centerElement:{
     justifyContent: 'center', 
-    alignItems: 'center'
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
+  itemList: {
+    borderWidth: 1,
+    borderRadius: 10,
+    margin: 20,
+  },
+  textBox: {
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 5,
   }
 });
