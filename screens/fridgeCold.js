@@ -5,7 +5,8 @@ import {
   Text,
   ScrollView,
   Image,
-  FlatList
+  FlatList,
+  Dimensions
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import axios from 'axios';
@@ -118,9 +119,9 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   ingredientsCard: {
-    marginTop: 40,
-    marginLeft: 40,
-    width: 150,
+    marginTop: Dimensions.get('screen').width*0.09,
+    marginLeft: Dimensions.get('screen').width*0.09,
+    width: Dimensions.get('screen').width*0.36,
     borderColor: "#191919",
     backgroundColor: 'white',
     borderRadius: 20,

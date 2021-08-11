@@ -1,5 +1,16 @@
 import React, {useState} from 'react';
-import { StyleSheet, Button, Text, View, TouchableOpacity, ScrollView, Image, ActivityIndicator, TextInput, Alert } from 'react-native';
+import { 
+  StyleSheet, 
+  Button, 
+  Text, 
+  View, 
+  TouchableOpacity, 
+  ScrollView, 
+  Image, 
+  ActivityIndicator, 
+  Alert,
+  Dimensions
+ } from 'react-native';
 import { MaterialIcons, AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import CheckboxList from 'rn-checkbox-list';
 import { Checkbox } from 'react-native-paper';
@@ -7,7 +18,6 @@ import {API_URL} from "../config/constants";
 import axios from 'axios';
 
 export default function manageFridge () {
-
   const [ingredients, setIngredients] = React.useState([]);
   const [insertData, setInsertData] = React.useState([]);
   const [selectAll, setSelectAll] = React.useState(false);
@@ -31,7 +41,6 @@ export default function manageFridge () {
     })
   }, []);
 
-  //const data = [{id: 1, name: '계란'}, {id: 2, name: '토마토'}, {id: 3, name: '오이'}];
 	const selectHandler = (index, value) => {
 		const newItems = [...insertData]; // clone the array 
 		newItems[index]['checked'] = value == 1 ? 0 : 1; // set the new value 
@@ -146,7 +155,6 @@ export default function manageFridge () {
   );
 }
 
-
 const styles = StyleSheet.create({
   container:{
     backgroundColor:'#fff',
@@ -160,7 +168,7 @@ const styles = StyleSheet.create({
   itemList: {
     borderWidth: 1,
     borderRadius: 10,
-    margin: 20,
+    margin: Dimensions.get('screen').width*0.05,
   },
   textBox: {
     borderWidth: 1,
