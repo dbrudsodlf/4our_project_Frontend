@@ -181,7 +181,7 @@ export default function search(props) {
               segmentedControlBackgroundColor='#fff'
               activeSegmentBackgroundColor='#ffe0ad'
               paddingVertical={15}
-              width={Dimensions.get('screen').width / 2}
+              width={Dimensions.get('screen').width *0.6}
               textStyle={{
                 fontWeight: '300',
               }}

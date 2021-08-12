@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as React from 'react';
+import  React , {useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -17,6 +17,11 @@ export default function CookScreen (props) {
   const Array =props.route.params;
   const [ingredient, setIngredient] = React.useState([]);
   const aLoop = [];
+  const [checked, setChecked] = useState(false);
+
+  const pushHeart =()=>{
+    setChecked(!checked);
+  };
 
   React.useEffect(()=>{
     axios.get(`${API_URL}/fridgecold`).then((result)=>{
@@ -39,6 +44,8 @@ export default function CookScreen (props) {
   if(!ingredient) {
     return <ActivityIndicator />
   }
+
+ 
 
   return (
     <SafeAreaView style={styles.container}>
@@ -73,8 +80,15 @@ export default function CookScreen (props) {
               <TouchableOpacity style={styles.icon} onPress={() => {
                       props.navigation.navigate("youtubeList")
                     }} >
-                <Icon name="silverware-fork-knife" size={38} color="#fff" />
+                <Icon name="silverware-fork-knife" size={30} color="#fff" />
               </TouchableOpacity>
+              <View style={styles.icon2}>
+              <TouchableOpacity  onPress={()=>{pushHeart()}} >
+            <Icon name={checked? 'heart-outline' : 'heart'} size={30} color="#fff" />
+      
+        
+               
+              </TouchableOpacity></View>
             </View>
           </View>
         </ScrollView>
@@ -108,8 +122,9 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   container3: {
-alignItems:'center',
-justifyContent:'space-between'
+    flex:1,
+    flexDirection:'row',
+alignItems:'center'
   },
   
   food_text: {
@@ -127,12 +142,22 @@ justifyContent:'space-between'
     marginLeft:10,
     },
  icon:{
-   width:90,
-   padding:7,
+   width:53,
+   padding:10,
+   marginRight:1,
    backgroundColor:'#F59A23',
    alignItems:'center',
-   borderRadius:25
+   borderTopLeftRadius:25,
+   borderBottomLeftRadius:25
  },
+ icon2:{
+  width:53,
+  padding:10,
+  backgroundColor:'#F59A23',
+  alignItems:'center',
+  borderTopRightRadius:25,
+  borderBottomRightRadius:25
+},
  menu:{
   borderBottomColor: '#FFD098',
   borderBottomWidth: 2,

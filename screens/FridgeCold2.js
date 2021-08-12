@@ -11,14 +11,14 @@ import EggImage from '../assets/egg.jpeg';
 // import axios from 'axios';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function FridgeFrozen() {//냉동 식품이 없을 때 화면
+export default function FridgeCold2() {//냉장 재료가 없을 때 화면
 
 
 
   return (
     <View style={styles.container}>
-       <Icon name='snowflake' color='#81D3F8' size={50} />
-    <Text style={styles.text}>아직 보관중인 냉동식품이 없어요</Text>
+       <Icon name='leaf' color='#95F204' size={50} />
+    <Text style={styles.text}>아직 보관중인 냉장식품이 없어요</Text>
     </View>
   );
 }

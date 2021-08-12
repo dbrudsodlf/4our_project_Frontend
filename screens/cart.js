@@ -3,11 +3,9 @@ import { StyleSheet, View, Image, Text, TouchableHighlight, Dimensions, ScrollVi
 import DateTimePicker from '@react-native-community/datetimepicker';
 import SegmentedControl from 'rn-segmented-control';
 import Icon from 'react-native-vector-icons/AntDesign';
-import EggImage from '../assets/egg.jpeg';
 import { API_URL } from '../config/constants.js';
 import axios from 'axios';
-import SelectMultiple from 'react-native-select-multiple'
-import { Checkbox } from 'react-native-paper';
+import { TouchableOpacity } from 'react-native';
 
 export default function cart(props) {
   const Food =props.route.params;
@@ -17,8 +15,17 @@ export default function cart(props) {
   const [show, setShow] = useState(false);
   const [tabIndex, setTabIndex] = React.useState(0);
   const [ingredients, setIngredients] = React.useState([]);
-  const [checked, setChecked] = React.useState(false);
+  const [checked, setChecked] = useState(false);
+  const [allchecked,setAllChecked]= useState(false);
  
+  const checkHandle=()=>{
+      setChecked(!checked);
+  };
+
+  const allCheckHandle=()=>{
+    setAllChecked(!allchecked);
+};
+
   const handleTabsChange = index => {
     setTabIndex(index);
   };
@@ -55,20 +62,24 @@ export default function cart(props) {
     return (
       <View style={styles.container}>
       <View style={styles.boxtop}>
-      {/* <View style={styles.checkboxtop}>
-        <Checkbox
-          color="#F59A23"
-          status={checked ? 'checked' : 'unchecked'}
-          onPress={() => {
-            setChecked(!checked);
-          }}
-
-        ></Checkbox>
-        <Text style={styles.checkboxtop2}>전체 선택</Text></View> */}
+       <View style={styles.checkboxtop}>
+        <TouchableOpacity
+          onPress={() => allCheckHandle()}>
+             {allchecked ? (
+          <View style={styles.completeCircle}>
+            <Icon name="checkcircle" size={30} color="#F59A23" />
+          </View>
+        ) : (
+          <View style={styles.circle} />
+        )}
+          </TouchableOpacity >
+          <View style={styles.texttop}>
+        <Text style={styles.checkboxtop2}>전체 선택</Text></View>
+        </View> 
 
 
       <TouchableHighlight underlayColor='#fff' style={styles.add}
-        onPress={() => { props.navigation.navigate("cart") }}>
+        onPress={() => { props.navigation.navigate("MainScreen") }}>
         <Text style={styles.add2}>선택 추가하기</Text>
       </TouchableHighlight>
     </View>
@@ -77,15 +88,20 @@ export default function cart(props) {
        {
          Food.map((food,index)=>{
            return(
-            <View style={styles.box}  key={index}>
-            <Checkbox
-              color="#F59A23"
-              status={checked ? 'checked' : 'unchecked'}
-              onPress={() => {
-                setChecked(!checked);
-              }}
-  
-            ></Checkbox>
+            <View style={styles.box}  key={index}> 
+            <View style={styles.boxtop2}>          
+          <TouchableOpacity onPress={() => checkHandle()}>
+          {checked ? (
+          <View style={styles.completeCircle}>
+            <Icon name="checkcircle" size={30} color="#F59A23" />
+          </View>
+        ) : (
+          <View style={styles.circle} />
+        )}
+          </TouchableOpacity>
+         <TouchableOpacity>
+         <Icon name="close" size={30} color="#000" />
+         </TouchableOpacity></View>
           <View style={styles.box2} width={Dimensions.get('screen').width * 0.89}>
             <Image style={styles.ingredientsImage} 
            // source={{uri:item.imgUrl}}
@@ -120,15 +136,12 @@ export default function cart(props) {
                 activeSegmentBackgroundColor='#ffe0ad'
                 paddingVertical={14}
                 width={Dimensions.get('screen').width / 2}
-  
                 textStyle={{
                   fontWeight: '300',
                 }}
               />
             </View>
           </View>
-  
-  
         </View>
            );
          })
@@ -146,10 +159,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'flex-start'
   },
+  circle: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    borderColor: '#F59A23',
+    borderWidth: 2,
+
+  },
   boxtop: {
     flexDirection: 'row',
-    //justifyContent: 'space-between',
-    justifyContent:'flex-end',
+    justifyContent: 'space-between',
+
     backgroundColor: '#fff',
     padding: 20,
     borderBottomWidth: 2,
@@ -158,11 +179,21 @@ const styles = StyleSheet.create({
   checkboxtop: {
     marginTop: 5,
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+
   },
   checkboxtop2: {
-    fontSize: 15,
-    marginTop: 7
+    fontSize: 17,
+    marginTop: 7,
+    fontWeight:'400'
+  },
+  texttop:{
+      marginLeft:7,
+  },
+  boxtop2:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginRight:10
   },
   add: {
     borderRadius: 10,
@@ -192,6 +223,8 @@ const styles = StyleSheet.create({
   },
   box2: {
     flexDirection: 'row',
+    marginTop:8,
+    marginBottom:8
   },
   box3: {
     paddingLeft: 20,
@@ -207,7 +240,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   date1: {
-    marginLeft: 15
+    marginLeft: 15,
+   
   },
   showdate: {
     flexDirection: 'row',
@@ -217,7 +251,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 15,
-    marginBottom: 15
+    marginBottom: 15,
+    width:Dimensions.get('screen').width *0.45
   },
   fridge: {
     fontSize: 23,
@@ -227,7 +262,8 @@ const styles = StyleSheet.create({
   },
   date2: {
     fontSize: 20,
-    marginRight: 50
+    marginRight: 50,
+    
   },
   touch: {
     flexDirection: 'row',
