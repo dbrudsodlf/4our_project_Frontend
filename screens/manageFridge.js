@@ -6,6 +6,7 @@ import {
   View, 
   TouchableOpacity, 
   ScrollView, 
+  TouchableHighlight,
   Image, 
   ActivityIndicator, 
   Alert,
@@ -16,6 +17,10 @@ import CheckboxList from 'rn-checkbox-list';
 import { Checkbox } from 'react-native-paper';
 import {API_URL} from "../config/constants";
 import axios from 'axios';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import Modal from 'react-native-modal';
+import Icon from 'react-native-vector-icons/AntDesign';
+import SegmentedControl from 'rn-segmented-control';
 
 export default function manageFridge () {
   const [ingredients, setIngredients] = React.useState([]);
@@ -23,6 +28,17 @@ export default function manageFridge () {
   const [selectAll, setSelectAll] = React.useState(false);
   const [cartItemIsLoading, setCartItemIsLoading] = React.useState(false);
   const [unchecked, setUnchecked] = React.useState([]);
+
+  const [isModalVisible, setModalVisible] = useState(false);
+  const today = new Date();
+  const [date, setDate] = useState(new Date(today));
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+  const [tabIndex, setTabIndex] = React.useState(0);
+  const [modalName, setModalName] = useState('');
+  const [modalDate, setModalDate] = useState([]);
+  const [modalFrozen, setModalFrozen] = useState(1);
+
 
   React.useEffect(()=>{
     axios.get(`${API_URL}/fridgecold`).then((result)=>{
@@ -91,7 +107,39 @@ export default function manageFridge () {
       ],
 			{ cancelable: false }
 		);
-	}
+  }
+  
+
+  const handleTabsChange = index => {
+    setTabIndex(index);
+    console.log(index);
+  };
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+    console.log(date);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
+
+  const toggleModal = (item) => {//모달띄우기
+    setModalVisible(!isModalVisible);
+    setModalName(item.name);
+    setModalFrozen(item.frozen);
+    //setModalDate(item.date);
+  };
+
+
 
   return (
     <View style={styles.container}>
@@ -132,25 +180,93 @@ export default function manageFridge () {
       </View>
       <ScrollView>	
         {insertData && insertData.map((item, i) => (
-          <View key={i} style={[styles.itemList, {flexDirection: 'row', backgroundColor: '#fff', marginBottom: 2, height: 60}]}>
-            <View style={[styles.centerElement, {width: 60}]}>
-            <TouchableOpacity style={[styles.centerElement, {width: 32, height: 32}]} onPress={() => selectHandler(i, item.checked)}>
-                <Ionicons name={item.checked == 1 ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"} size={25} color={item.checked == 1 ? "black" : "#aaaaaa"} />
-              </TouchableOpacity>
-            </View>
-            <View style={{flexDirection: 'row', flexGrow: 1, flexShrink: 1, alignSelf: 'center'}}>
-              <View style={{flexGrow: 1, flexShrink: 1, alignSelf: 'center'}}>
-                <Text numberOfLines={1} style={{fontSize: 15}}>{item.name}</Text>
+          <TouchableOpacity onPress={()=>toggleModal(item)}>
+            <View key={i} style={[styles.itemList, {flexDirection: 'row', backgroundColor: '#fff', marginBottom: 2, height: 60}]}>
+              <View style={[styles.centerElement, {width: 60}]}>
+              <TouchableOpacity style={[styles.centerElement, {width: 32, height: 32}]} onPress={() => selectHandler(i, item.checked)}>
+                  <Ionicons name={item.checked == 1 ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"} size={25} color={item.checked == 1 ? "black" : "#aaaaaa"} />
+                </TouchableOpacity>
+              </View>
+              <View style={{flexDirection: 'row', flexGrow: 1, flexShrink: 1, alignSelf: 'center'}}>
+                <View style={{flexGrow: 1, flexShrink: 1, alignSelf: 'center'}}>
+                  <Text numberOfLines={1} style={{fontSize: 15}}>{item.name}</Text>
+                </View>
+              </View>
+              <View style={[styles.centerElement, {width: 60}]}>
+                <TouchableOpacity style={[styles.centerElement, {width: 32, height: 32}]} onPress={() => deleteHandler(i)}>
+                  <Ionicons name="md-trash" size={25} color="#ee4d2d" />
+                </TouchableOpacity>
               </View>
             </View>
-            <View style={[styles.centerElement, {width: 60}]}>
-              <TouchableOpacity style={[styles.centerElement, {width: 32, height: 32}]} onPress={() => deleteHandler(i)}>
-                <Ionicons name="md-trash" size={25} color="#ee4d2d" />
-              </TouchableOpacity>
-            </View>
-          </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
+
+      <Modal
+        transparent={true}
+        closeOnTouchOutside={true}
+        isVisible={isModalVisible}
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={styles.modal}>
+          <View style={styles.modal2}>
+            <Text style={styles.food} key={ingredients.id}>{modalName}</Text>
+            <Text style={styles.date} >유통 기한</Text>
+
+            <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
+              <View style={styles.showdate} >
+                <Icon name="calendar" size={30} color="#8C9190" />
+                <Text style={styles.date2}>{date.toLocaleDateString('ko-KR')}
+                </Text></View>
+            </TouchableHighlight>
+
+            {show && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={mode}
+                is24Hour={true}
+                display="spinner"
+                onChange={onChange}
+                format="YYYY-MM-DD"
+              />
+            )}
+
+            <Text style={styles.fridge}>보관 방법</Text>
+
+            <SegmentedControl
+              tabs={['냉장', '냉동']}//냉장:0 , 냉동:1
+              currentIndex={tabIndex}
+              onChange={handleTabsChange}
+              segmentedControlBackgroundColor='#fff'
+              activeSegmentBackgroundColor='#ffe0ad'
+              paddingVertical={15}
+              width={Dimensions.get('screen').width / 2}
+              textStyle={{
+                fontWeight: '300',
+              }}
+            />
+          </View>
+
+          <View style={styles.touch} >
+            <TouchableOpacity
+              style={styles.button1}
+              onPress={() => {
+                setModalVisible(!isModalVisible);
+              }}>
+              <Text style={styles.txt}>취소</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.button2}
+              onPress={() => {
+                pickfood(modalName)
+                setModalVisible(!isModalVisible);
+              }}>
+              <Text style={styles.txt}>담기</Text>
+            </TouchableOpacity></View>
+        </View>
+      </Modal>
+
     </View>
   );
 }
@@ -174,5 +290,73 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     padding: 5,
+  },
+  modal: {
+    margin: 0,
+    width: 300,
+    height: 400,
+    backgroundColor: '#fff',
+    borderRadius: 20
+  },
+  modal2: {
+    padding: 30,
+  },
+  food: {
+    fontSize: 30,
+    fontWeight: "bold",
+    marginBottom: 30
+  },
+  date: {
+    fontSize: 23,
+    fontWeight: "bold",
+    marginBottom: 10,
+
+  },
+  showdate: {
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderColor: '#8C9190',
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 15,
+    marginBottom: 30
+  },
+  fridge: {
+    fontSize: 23,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  date2: {
+    fontSize: 20,
+    marginRight: 50
+  },
+  touch: {
+    flexDirection: 'row',
+    width: 300,
+    borderBottomEndRadius: 20
+  },
+  button1: {
+    width: 150,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F59A23',
+    height: 60,
+    borderColor: '#fff',
+    borderBottomLeftRadius: 20
+  },
+  button2: {
+    width: 150,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F59A23',
+    height: 60,
+    borderColor: '#fff',
+    borderBottomRightRadius: 20,
+    borderStartWidth: 1
+  },
+  txt: {
+    fontSize: 20,
+    color: '#fff'
   }
 });
