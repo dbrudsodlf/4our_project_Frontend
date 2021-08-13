@@ -167,7 +167,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MainScreen">
+        <Stack.Navigator initialRouteName="start" screenOptions={{headerShown:false}}>
           <Stack.Screen
             name="login"
             component={LoginScreen}
@@ -195,6 +195,12 @@ export default function App() {
           <Stack.Screen
             name="MainScreen"
             component={MainTabScreen}
+            options={{
+              title: "메인 화면"
+            }} />
+               <Stack.Screen
+            name="main"
+            component={MainScreen}
             options={{
               title: "메인 화면"
             }} />

@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, TextComponent, View, Image, Button, TouchableOpacity, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, Dimensions, View, Image, Button, TouchableOpacity, SafeAreaView } from 'react-native';
 
 const title = '나의 재료'
 export default function TopBar(props) {
   return (
-      <View>
+      <View style={styles.container}>
         <View style={styles.titleArea}>
           <View>
             <Text style={styles.text}>{title}</Text>  
@@ -25,17 +25,16 @@ export default function TopBar(props) {
 }
 
 const styles = StyleSheet.create({
-  bottomBar: {
-    flexDirection: 'row',
-    backgroundColor: '#FFE812',
-    alignItems: 'center',
-    justifyContent: 'space-evenly'
+  container:{
+      flex:1,
+      
   },
   titleArea: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 30,
+   
   },
   text: {
     fontSize: 32,

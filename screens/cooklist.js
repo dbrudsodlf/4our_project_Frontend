@@ -12,6 +12,10 @@ import Icon from 'react-native-vector-icons/EvilIcons';
 export default function CookList(props) {
     return (
     <SafeAreaView style={styles.container}>
+         <View style={styles.top}>
+         <Icon name="sc-youtube" size={60} color="#ff0000" />
+        <Text style={styles.text}>시청한 요리 내역</Text>
+        </View>
         <ScrollView contentContainerStyle={styles.scroll}>
             <TouchableOpacity  onPress={() => { props.navigation.navigate("youtubeList") }}> 
                 <View style={styles.list}>
@@ -27,8 +31,21 @@ export default function CookList(props) {
 const styles = StyleSheet.create({
     container:{
         height:'100%',
-        backgroundColor:'#fff'
+        paddingTop:50
     },
+    top:{
+        flexDirection:'row',
+        alignItems:'center',
+        paddingLeft:20,
+        backgroundColor: '#fff',
+    },
+    text:{
+        fontWeight:'bold',
+        fontSize: 28,
+        marginTop: 20,
+        marginBottom: 20,
+        marginLeft: 10,
+      },
     list:{
         flexDirection:'row',
         justifyContent:'space-between',

@@ -6,6 +6,7 @@ import Modal from 'react-native-modal';
 import SegmentedControl from 'rn-segmented-control';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/Feather';
+import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons';
 import { API_URL } from '../config/constants.js';
 import axios from 'axios';
 
@@ -216,6 +217,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     flex: 1,
+    paddingTop:50
   },
   titleArea: {
     flexDirection: 'row',
@@ -227,6 +229,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     backgroundColor: '#fff'
   },
+
   text: {
     fontSize: 28,
     fontWeight: 'bold'
@@ -238,9 +241,6 @@ const styles = StyleSheet.create({
     borderColor: '#FFFFFF',
     borderRadius: 7,
     backgroundColor: "#FFFFFF",
-
-  },
-  foodList: {
 
   },
   flatList: {

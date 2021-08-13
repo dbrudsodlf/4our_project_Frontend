@@ -25,7 +25,8 @@ export default function UserInfo () {
 const styles = StyleSheet.create({
   container: {
 height:'100%',
-backgroundColor:'#fff'
+backgroundColor:'#fff',
+paddingTop:50
   },
   area:{
     alignItems:'center',

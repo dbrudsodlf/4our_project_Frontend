@@ -24,7 +24,8 @@ export default function Notice () {
 const styles = StyleSheet.create({
   container:{
     backgroundColor:'#fff',
-    height:'100%'
+    height:'100%',
+    paddingTop:50
   },
   text:{
   padding:30,

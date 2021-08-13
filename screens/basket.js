@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, View, Text } from 'react-native';
 import BasketInsert from './basketInsert.js';
 import BasketList from './basketList.js';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 export default function BasketScreen() {
@@ -28,7 +29,10 @@ export default function BasketScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.top}>
+       <Icon name='basket-outline' size={40} color={'#F59A23'}/>
       <Text style={styles.appTitle}>장바구니</Text>
+      </View>
       <View style={styles.card}>
         <BasketInsert onAddBasket={addBasket} />
         <BasketList baskets={baskets} onRemove={onRemove} onToggle={onToggle} />
@@ -41,16 +45,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingTop:50
   },
   appTitle: {
     color: '#000',
     fontSize: 28,
     marginTop: 20,
     marginBottom: 20,
-    marginLeft: 20,
-    fontWeight: '300',
+    marginLeft: 10,
     textAlign: 'left',
     backgroundColor: '#fff',
+    fontWeight:'bold'
+  },
+  top:{
+flexDirection:'row',
+alignItems:'center',
+marginLeft:20
   },
   card: {
     backgroundColor: '#fff',

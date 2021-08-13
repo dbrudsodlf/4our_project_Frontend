@@ -4,14 +4,21 @@ import {
   StyleSheet,
   View,
   Text,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import MyPageUser from './mypageUser';
+import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function MypageScreen(props) {
   return (
     <SafeAreaView style={styles.container}>
+    <View style={styles.top}>
+      <Icon2 name='account-outline' size={45} color={'#F59A23'}/> 
+      <Text style={styles.appTitle}>마이페이지</Text>
+    </View>
+    <ScrollView>
       <MyPageUser />
       <TouchableOpacity style={styles.cooklist} onPress={() => { props.navigation.navigate("cooklist") }}>
         <Text style={styles.text}> 요리내역 </Text>
@@ -37,6 +44,7 @@ export default function MypageScreen(props) {
         <Text style={styles.text}> 로그아웃 </Text>
         <Icon name="right" size={30} color="#a9a9a9" />
       </TouchableOpacity>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -44,7 +52,25 @@ export default function MypageScreen(props) {
 
 const styles = StyleSheet.create({
   container: {
-    //backgroundColor:'#ffefd5'
+    paddingTop:50,
+    flex: 1,
+  },
+  top:{
+    flexDirection: "row",
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingLeft:20,
+    marginBottom:20
+  },
+  appTitle: {
+    color: '#000',
+    fontSize: 28,
+    marginTop: 20,
+    marginBottom: 20,
+    marginLeft: 10,
+    fontWeight: '300',
+    textAlign: 'left',
+    fontWeight:'bold'
   },
   cooklist: {
     flexDirection: "row",

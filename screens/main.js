@@ -1,9 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, TextComponent, View, Image, Button, TouchableOpacity, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, Dimensions, View, Image, Button, TouchableOpacity, SafeAreaView } from 'react-native';
 import TopBar from './topBar.js';
 import Fridge from './fridge.js';
-import { set } from 'react-native-reanimated';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 import {API_URL} from '../config/constants.js';
 
@@ -66,7 +66,10 @@ export default function MainScreen(props) {
         <View>
           <View style={styles.titleArea}>
             <View>
+            <View style={styles.titleArea2}>
+            <Icon name='fridge-outline' size={40} color={'#F59A23'}/>
               <Text style={styles.text}>{title}</Text>  
+              </View>
               <Text style={{color: '#797979', paddingTop: 6}}>아래 추가하기 버튼을 눌러 재료를 넣어주세요.</Text>
             </View>
             <TouchableOpacity style={[styles.cookBtn, selectedBtn.flag ? styles.selectedCookBtn : styles.cookBtn]} 
@@ -94,16 +97,22 @@ const styles = StyleSheet.create({
       flexDirection: 'column',
       flexWrap: 'nowrap',
       justifyContent: 'center',
+      width:Dimensions.get('screen').width,
+      paddingTop:50
   },
   titleArea: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 30,
+    padding: 20,
+  },
+  titleArea2:{
+flexDirection:'row',
   },
   text: {
     fontSize: 32,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginLeft:10
   },
   cookBtn: {
     padding: 10,

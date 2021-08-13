@@ -61,6 +61,7 @@ export default function cart(props) {
 
     return (
       <View style={styles.container}>
+        <Text style={styles.text}>담은 재료</Text>
       <View style={styles.boxtop}>
        <View style={styles.checkboxtop}>
         <TouchableOpacity
@@ -157,7 +158,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    paddingTop:50
+  },
+  text:{
+    fontWeight:'bold',
+    fontSize: 28,
+    marginTop: 20,
+    marginLeft: 20,
   },
   circle: {
     width: 30,
@@ -180,11 +188,11 @@ const styles = StyleSheet.create({
     marginTop: 5,
     flexDirection: 'row',
     justifyContent: 'center',
-
+    alignItems:'center',
   },
   checkboxtop2: {
     fontSize: 17,
-    marginTop: 7,
+    alignItems:'center',
     fontWeight:'400'
   },
   texttop:{

@@ -63,7 +63,7 @@ export default function CookScreen (props) {
         <ScrollView>
           <View style={styles.menu}>
             <View 
-              width={Dimensions.get('screen').width *0.6}>
+              width={Dimensions.get('screen').width *0.58}>
               <Text style={styles.food_text}>토마토 달걀 볶음</Text>
                 <View style={styles.ing_container}>
                 {
@@ -84,10 +84,7 @@ export default function CookScreen (props) {
               </TouchableOpacity>
               <View style={styles.icon2}>
               <TouchableOpacity  onPress={()=>{pushHeart()}} >
-            <Icon name={checked? 'heart-outline' : 'heart'} size={30} color="#fff" />
-      
-        
-               
+            <Icon name={checked? 'heart-outline' : 'heart'} size={30} color="#fff" />  
               </TouchableOpacity></View>
             </View>
           </View>
@@ -103,15 +100,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFD098',
+    paddingTop:50
   },
   appTitle: {
     color: '#000',
-    fontSize: 25,
-    marginTop: 30,
-    marginBottom: 15,
-    fontWeight: 'bold',
-    marginLeft:30,
+    fontSize: 28,
+    marginTop: 20,
+    marginBottom: 20,
+    marginLeft: 20,
+    textAlign: 'left',
     backgroundColor: '#FFD098',
+    fontWeight:'bold'
   },
   card: {
     backgroundColor: '#fff',
@@ -162,7 +161,8 @@ alignItems:'center'
   borderBottomColor: '#FFD098',
   borderBottomWidth: 2,
   flexDirection:'row',
-  alignItems:'center'
+  alignItems:'center',
+  height:70
  },
  mypicks:{
   backgroundColor:"#FFD098",
