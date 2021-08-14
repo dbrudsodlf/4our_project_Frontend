@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Image, Text, TouchableHighlight, Dimensions, ScrollView, FlatList} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import SegmentedControl from 'rn-segmented-control';
@@ -6,6 +6,8 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { API_URL } from '../config/constants.js';
 import axios from 'axios';
 import { TouchableOpacity } from 'react-native';
+import { Ionicons} from '@expo/vector-icons';
+
 
 export default function cart(props) {
   const Food =props.route.params;
@@ -15,15 +17,33 @@ export default function cart(props) {
   const [show, setShow] = useState(false);
   const [tabIndex, setTabIndex] = React.useState(0);
   const [ingredients, setIngredients] = React.useState([]);
-  const [checked, setChecked] = useState(false);
   const [allchecked,setAllChecked]= useState(false);
- 
-  const checkHandle=()=>{
-      setChecked(!checked);
-  };
+  const [checked,setChecked]= useState(0);
+  const [gomain,setGomain]=useState([]);
+  const [insertData, setInsertData] = React.useState([]);
 
+  useEffect(()=>{
+    for (const value in Food){
+      let ingName = Food[value];
+      let check=checked;
+      let tempData = { name: ingName, select:check};
+      setInsertData(prev => [...prev, tempData]);
+      //console.log("이거시다",Food[value]);
+      console.log("요것이다",insertData);
+    }
+  },[])
+  const checkHandle=(index,value)=>{
+    const newItems = [...insertData]; // clone the array 
+		newItems[index]['select'] === 1 ? 
+    newItems[index]['select']=0 : newItems[index]['select']=1; // set the new value 
+		setInsertData(newItems); // set new state
+      console.log(index);
+      console.log("인서트데이터",newItems[index]['checked'])
+      console.log(newItems);
+  }
   const allCheckHandle=()=>{
     setAllChecked(!allchecked);
+    setChecked(!checked);
 };
 
   const handleTabsChange = index => {
@@ -46,16 +66,16 @@ export default function cart(props) {
   };
 
 
-  React.useEffect(() => {
-    axios.get(`${API_URL}/fridgecold`)
-      .then((result) => {
-        console.log("result : ", result.data);
-        setIngredients(result.data.ingredients);
-      })
-      .catch((error) => {
-        console.error(error);
-      })
-  }, []);
+  // React.useEffect(() => {
+  //   axios.get(`${API_URL}/fridgecold`)
+  //     .then((result) => {
+  //       console.log("result : ", result.data);
+  //       setIngredients(result.data.ingredients);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     })
+  // }, []);
 
  
 
@@ -66,13 +86,7 @@ export default function cart(props) {
        <View style={styles.checkboxtop}>
         <TouchableOpacity
           onPress={() => allCheckHandle()}>
-             {allchecked ? (
-          <View style={styles.completeCircle}>
-            <Icon name="checkcircle" size={30} color="#F59A23" />
-          </View>
-        ) : (
-          <View style={styles.circle} />
-        )}
+         <Ionicons name={allchecked == true ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"} size={35} color={allchecked == true ? "#F59A23" : "#aaaaaa"} />
           </TouchableOpacity >
           <View style={styles.texttop}>
         <Text style={styles.checkboxtop2}>전체 선택</Text></View>
@@ -87,18 +101,12 @@ export default function cart(props) {
 
      <ScrollView>
        {
-         Food.map((food,index)=>{
+         Food.map((food,i)=>{
            return(
-            <View style={styles.box}  key={index}> 
+            <View style={styles.box}  key={i}> 
             <View style={styles.boxtop2}>          
-          <TouchableOpacity onPress={() => checkHandle()}>
-          {checked ? (
-          <View style={styles.completeCircle}>
-            <Icon name="checkcircle" size={30} color="#F59A23" />
-          </View>
-        ) : (
-          <View style={styles.circle} />
-        )}
+          <TouchableOpacity onPress={() => checkHandle(i)}>
+          <Ionicons name={checked == 1 ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"} size={35} color={checked == 1 ? "#F59A23" : "#aaaaaa"} />
           </TouchableOpacity>
          <TouchableOpacity>
          <Icon name="close" size={30} color="#000" />
@@ -109,7 +117,7 @@ export default function cart(props) {
              resizeMode={"contain"} />
             <View style={styles.box3}
               width={Dimensions.get('screen').width * 0.5}>
-              <Text style={styles.food} key={index}>{food}</Text>
+              <Text style={styles.food} key={i}>{food}</Text>
               <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
                 <View style={styles.showdate} >
                   <Icon name="calendar" size={30} color="#8C9190" />
@@ -224,7 +232,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     margin: 15,
     borderRadius: 10,
-    borderColor: "#000",
+    borderColor: "#808080",
     backgroundColor: '#fff',
     borderWidth: 1,
     padding: 10
@@ -245,22 +253,23 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 13,
   },
   date1: {
-    marginLeft: 15,
-   
+    marginLeft: 20,
+    width:Dimensions.get('screen').width
   },
   showdate: {
     flexDirection: 'row',
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: '#8C9190',
     height: 50,
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 15,
-    marginBottom: 15,
-    width:Dimensions.get('screen').width *0.45
+    marginBottom: 20,
+    borderRadius:20,
+    width:Dimensions.get('screen').width *0.49
   },
   fridge: {
     fontSize: 23,

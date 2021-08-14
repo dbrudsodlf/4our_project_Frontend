@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
   modal: {
     margin: 0,
     width: 300,
-    height: 400,
+    height: 390,
     backgroundColor: '#fff',
     borderRadius: 20
   },
@@ -269,18 +269,19 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 23,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 13,
 
   },
   showdate: {
     flexDirection: 'row',
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: '#8C9190',
     height: 50,
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 15,
-    marginBottom: 30
+    marginBottom: 20,
+    borderRadius:20
   },
   fridge: {
     fontSize: 23,

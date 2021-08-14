@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 import {API_URL} from '../config/constants.js';
 
-const title = '나의 재료'
+const title = '나의 냉장고'
 export default function MainScreen(props) {
 
   const [selectedIngredients, setSelectedIngredients] = React.useState([]);
@@ -67,10 +67,10 @@ export default function MainScreen(props) {
           <View style={styles.titleArea}>
             <View>
             <View style={styles.titleArea2}>
-            <Icon name='fridge-outline' size={40} color={'#F59A23'}/>
+            {/* <Icon name='fridge-outline' size={40} color={'#F59A23'}/> */}
               <Text style={styles.text}>{title}</Text>  
               </View>
-              <Text style={{color: '#797979', paddingTop: 6}}>아래 추가하기 버튼을 눌러 재료를 넣어주세요.</Text>
+              <Text style={{color: '#797979', paddingTop: 6}}>재료를 선택하면 다양한 요리를 추천해드려요</Text>
             </View>
             <TouchableOpacity style={[styles.cookBtn, selectedBtn.flag ? styles.selectedCookBtn : styles.cookBtn]} 
             onPress={()=> {
@@ -112,7 +112,7 @@ flexDirection:'row',
   text: {
     fontSize: 32,
     fontWeight: 'bold',
-    marginLeft:10
+  
   },
   cookBtn: {
     padding: 10,
