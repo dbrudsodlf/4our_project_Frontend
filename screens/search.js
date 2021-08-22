@@ -69,17 +69,16 @@ export default function search(props) {
 
   const toggleModal = (item) => {//모달띄우기
     setModalVisible(!isModalVisible);
-    setModalName(item.name);
-    setModalFrozen(item.frozen);
-    //setModalDate(item.date);
+    setModalName(item);
+    // setModalFrozen(item.frozen);
+    // setModalDate(item.date);
   };
 
 
   React.useEffect(() => {//데이터 받아오기
-    axios.get(`${API_URL}/fridgecold`)
+    axios.get(`${API_URL}/main/all`)
       .then((result) => {
-        setIngredients(result.data.ingredients);
-
+        setIngredients(result.data);
       })
       .catch((error) => {
         console.error(error);
@@ -130,13 +129,13 @@ export default function search(props) {
 
       <FlatList
         data={ingredients}
-        keyExtractor={(id, index) => {
+        keyExtractor={(_id, index) => {
           return index.toString();
         }}
         renderItem={({ item }) => {
           return (
-            <TouchableHighlight underlayColor='#F59A23' onPress={() => toggleModal(item)}>
-              <Text style={styles.flatList}>{item.name}</Text>
+            <TouchableHighlight underlayColor='#F59A23' onPress={() => toggleModal(item.ing_name)}>
+              <Text style={styles.flatList}>{item.ing_name}</Text>
             </TouchableHighlight>
           );
         }
@@ -151,7 +150,7 @@ export default function search(props) {
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <View style={styles.modal}>
           <View style={styles.modal2}>
-            <Text style={styles.food} key={ingredients.id}>{modalName}</Text>
+            <Text style={styles.food} key={ingredients}>{modalName}</Text>
             <Text style={styles.date} >유통 기한</Text>
 
             <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
@@ -217,7 +216,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     flex: 1,
-    paddingTop:50
+    paddingTop:40
   },
   titleArea: {
     flexDirection: 'row',
