@@ -15,8 +15,9 @@ import axios from 'axios';
 export default function search(props) {
   const [ingredients, setIngredients] = React.useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
-  const today = new Date();
+  let today=new Date();
   const [date, setDate] = useState(new Date(today));
+  const [todate,setTodate]=useState('');
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [tabIndex, setTabIndex] = React.useState(0);
@@ -34,17 +35,35 @@ export default function search(props) {
   })
 
 
-  const pickfood=(name)=>{
-    if(cartin.length===0){
-      setCartin([...cartin,name]);
-  }else{
-    if(cartin.indexOf(name)<0){
-      setCartin([...cartin,name]);
-    }else{
-      alert("이미 담은 재료입니다.");
-    }
-  }
+//   const pickfood=(name)=>{
+//     if(cartin.length===0){
+//       setCartin([...cartin,name]);
+//   }else{
+//     if(cartin.indexOf(name)<0){
+//       setCartin([...cartin,name]);
+//     }else{
+//       alert("이미 담은 재료입니다.");
+//     }
+//   }
+// }
+
+const pickfood=()=>{ //날짜만 출력
+ let year = date.getFullYear();
+ let month = date.getMonth()+1;
+ let dt = date.getDate();
+
+if (dt < 10) {
+  dt = '0' + dt;
 }
+if (month < 10) {
+  month = '0' + month;
+}
+let tt=year+'-' + month + '-'+dt;
+setTodate(tt);
+console.log(tt);
+console.log(todate);
+}
+
   const handleTabsChange = index => {
     setTabIndex(index);
     console.log(index);
@@ -74,6 +93,11 @@ export default function search(props) {
     // setModalDate(item.date);
   };
 
+  // const gotocart = (name) => {
+  //   return axios.post(`${API_URL}/search/list`,{
+  //     ing_name : name
+  //   });
+  // };
 
   React.useEffect(() => {//데이터 받아오기
     axios.get(`${API_URL}/main/all`)
@@ -86,17 +110,9 @@ export default function search(props) {
   }, []);
 
   const searchFilterFunction = (text) => {//검색필터
-    if (text) { //빈칸이 아니면
-  
-      setSearch(text);
-    
-
-    } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
-      setFilteredDataSource(masterDataSource);
-      setSearch(text);
-    }
+      return axios.post(`${API_URL}/search`,{
+        name : text
+      })
   };
 
   return (
@@ -165,10 +181,9 @@ export default function search(props) {
                 testID="dateTimePicker"
                 value={date}
                 mode={mode}
-                is24Hour={true}
                 display="spinner"
                 onChange={onChange}
-                format="YYYY-MM-DD"
+                format="YYYY/MM/DD"
               />
             )}
 
@@ -201,6 +216,7 @@ export default function search(props) {
               style={styles.button2}
               onPress={() => {
                 pickfood(modalName)
+               // gotocart(modalName)
                 setModalVisible(!isModalVisible);
               }}>
               <Text style={styles.txt}>담기</Text>
@@ -253,7 +269,7 @@ const styles = StyleSheet.create({
   modal: {
     margin: 0,
     width: 300,
-    height: 390,
+    height: 400,
     backgroundColor: '#fff',
     borderRadius: 20
   },
@@ -263,7 +279,7 @@ const styles = StyleSheet.create({
   food: {
     fontSize: 30,
     fontWeight: "bold",
-    marginBottom: 30
+    marginBottom: 20
   },
   date: {
     fontSize: 23,
