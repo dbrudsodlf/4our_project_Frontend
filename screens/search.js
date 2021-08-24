@@ -189,7 +189,7 @@ console.log(todate);
 
             <Text style={styles.fridge}>보관 방법</Text>
 
-            <SegmentedControl
+            {/* <SegmentedControl
               tabs={['냉장', '냉동']}//냉장:0 , 냉동:1
               currentIndex={tabIndex}
               onChange={handleTabsChange}
@@ -200,7 +200,8 @@ console.log(todate);
               textStyle={{
                 fontWeight: '300',
               }}
-            />
+            /> */}
+            
           </View>
 
           <View style={styles.touch} >
