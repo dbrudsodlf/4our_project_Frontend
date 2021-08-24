@@ -24,6 +24,7 @@
     "expo-status-bar": "~1.0.4",
     "link": "0.1.5",
     "lodash.filter": "4.6.0",
+    "moment": "2.29.1",
     "prop-types": "15.7.2",
     "radio-buttons-react-native": "1.0.4",
     "react": "16.13.1",

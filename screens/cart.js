@@ -32,6 +32,7 @@ export default function cart(props) {
       console.log("요것이다",insertData);
     }
   },[])
+  
   const checkHandle=(index,value)=>{
     const newItems = [...insertData]; // clone the array 
 		newItems[index]['select'] === 1 ? 
@@ -66,16 +67,16 @@ export default function cart(props) {
   };
 
 
-  // React.useEffect(() => {
-  //   axios.get(`${API_URL}/fridgecold`)
-  //     .then((result) => {
-  //       console.log("result : ", result.data);
-  //       setIngredients(result.data.ingredients);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     })
-  // }, []);
+  React.useEffect(() => {
+    axios.get(`${API_URL}/search/list`)
+      .then((result) => {
+        setIngredients(result.data);
+        console.log("이것은 카트",ingredients);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+  }, []);
 
  
 
