@@ -27,7 +27,7 @@ export default function FridgeCold ({ isSelectBtn }) {
   // const aLoop = ['../assets/egg.jpeg', '../assets/egg.jpeg', '../assets/cucumber.jpeg'];
 
   React.useEffect(()=>{
-    axios.get(`${API_URL}/fridgecold`).then((result)=>{
+    axios.get(`${API_URL}/main/all`).then((result)=>{
       setIngredients(result.data.ingredients);
       console.log(ingredients);
     }).catch((error)=>{
@@ -62,6 +62,7 @@ export default function FridgeCold ({ isSelectBtn }) {
           }
           console.log('i', select);
         }}>
+          
           <View style={[styles.ingredientsCard, isSelected && { backgroundColor: 'gray'}]}>
            
             {/* {

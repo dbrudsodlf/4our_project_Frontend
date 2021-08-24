@@ -54,7 +54,7 @@
     "react-native-unimodules": "^0.13.3",
     "react-native-vector-icons": "8.1.0",
     "react-native-web": "~0.13.12",
-    "react-native-webview": "11.6.5",
+    "react-native-webview": "^11.6.5",
     "react-native-wheel-picker": "1.2.0",
     "react-radio-buttons": "1.2.2",
     "react-redux": "7.2.4",

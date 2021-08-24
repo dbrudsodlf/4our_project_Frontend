@@ -5500,7 +5500,7 @@
     "prop-types" "^15.6.0"
     "react-timer-mixin" "^0.13.4"
 
-"react-native-webview@11.6.5":
+"react-native-webview@^11.6.5":
   "integrity" "sha512-5U+hI8snkCrFeDy+bUTszwhzcJIenaaOy3ubhY77HZq7R0pFIZzRYWkT0YXe1ymRYW9mSU96nr6S0AVDk8qkMw=="
   "resolved" "https://registry.npmjs.org/react-native-webview/-/react-native-webview-11.6.5.tgz"
   "version" "11.6.5"
