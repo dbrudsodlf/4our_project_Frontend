@@ -20,19 +20,13 @@ export default function search(props) {
   const [todate,setTodate]=useState('');
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [tabIndex, setTabIndex] = React.useState(0);
   const [modalName, setModalName] = useState('');
-  const [modalDate, setModalDate] = useState([]);
-  const [modalFrozen, setModalFrozen] = useState(1);
+  const [fridge,setFridge]=useState(1);//디폴트 냉장선택
+  const [fridgeice,setFridgeice]=useState(0);
   const [search, setSearch] = useState('');
-  const [filteredDataSource, setFilteredDataSource] = useState([]);
-  const [masterDataSource, setMasterDataSource] = useState([]);
+  const [frozen, setFrozen]=useState(0);
   const [cartin,setCartin]=useState([]);
-  const [cartdata,setCartdata]=useState({
-    name:'',
-    date:'',
-    frozen:0
-  })
+
 
 
 //   const pickfood=(name)=>{
@@ -64,10 +58,7 @@ console.log(tt);
 console.log(todate);
 }
 
-  const handleTabsChange = index => {
-    setTabIndex(index);
-    console.log(index);
-  };
+
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -115,6 +106,34 @@ console.log(todate);
       })
   };
 
+  const frozenpick=(fridge,fridgeice)=>{
+    if (fridgeice==0){
+    setFridge(1);
+    setFridgeice(0);
+    }else if(fridgeice==1){
+      setFridge(1);
+      setFridgeice(0);
+    }
+   setFrozen(0);
+   console.log("냉장",fridge);
+   console.log("냉동",fridgeice);
+   console.log("결론",frozen);
+  }
+
+  const frozenpick2=(fridge,fridgeice)=>{
+    if (fridge==0){
+      setFridge(0);
+     setFridgeice(1);
+      }else if(fridge==1){
+        setFridge(0);
+       setFridgeice(1);
+      }
+      setFrozen(1);
+    console.log("냉장상태",fridge);
+    console.log("냉동상태",fridgeice);
+    console.log("결론",frozen);
+  
+  }
   return (
 
     <View style={styles.container}>
@@ -201,7 +220,16 @@ console.log(todate);
                 fontWeight: '300',
               }}
             /> */}
-            
+
+            <View  style={styles.frozenpick}>
+              <TouchableOpacity delayPressIn={0} style={fridge==0?styles.cold:styles.cold2} onPress={()=>{frozenpick(fridge,fridgeice)}}  >
+               <Text style={styles.coldd} >냉장</Text>                 
+              </TouchableOpacity>
+              <TouchableOpacity delayPressIn={0} style={fridgeice==0?styles.ice:styles.ice2} onPress={()=>{frozenpick2(fridge,fridgeice)}} >              
+               <Text style={styles.icee}>냉동</Text>                 
+              </TouchableOpacity>
+            </View>
+
           </View>
 
           <View style={styles.touch} >
@@ -246,6 +274,55 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
 
+  cold:{
+    marginRight:20,  
+    width: 110, 
+    height:50 ,
+    borderWidth:1,
+    borderRadius:10, 
+    alignItems:'center',
+    justifyContent:'center',
+  },
+  cold2:{
+    marginRight:20,  
+    width: 110, 
+    height:50 ,
+    borderWidth:1,
+    borderRadius:10, 
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor:'#9ACD32'
+  },
+coldd:{
+  fontSize:20,
+},
+  ice:{
+    marginRight:20,  
+    width: 110, 
+    height:50 ,
+    borderWidth:1,
+    borderRadius:10, 
+    alignItems:'center',
+    justifyContent:'center'
+  },
+  ice2:{
+    marginRight:20,  
+    width: 110, 
+    height:50 ,
+    borderWidth:1,
+    borderRadius:10, 
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor:'#add8e6'
+  },
+  icee:{
+    fontSize:20,
+  },
+  frozenpick:{
+    flex:1,
+    flexDirection:'row',
+    marginBottom:50
+  },
   text: {
     fontSize: 28,
     fontWeight: 'bold'
@@ -270,7 +347,7 @@ const styles = StyleSheet.create({
   modal: {
     margin: 0,
     width: 300,
-    height: 400,
+    height: 385,
     backgroundColor: '#fff',
     borderRadius: 20
   },

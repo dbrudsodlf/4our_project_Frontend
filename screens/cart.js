@@ -15,7 +15,9 @@ export default function cart(props) {
   const [date, setDate] = useState(new Date(today));
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [tabIndex, setTabIndex] =  React.useState(0); //0 냉장 1냉동
+  const [frozen, setFrozen]=useState(0);
+  const [fridge,setFridge]=useState(0);
+  const [fridgeice,setFridgeice]=useState(0);
   const [ingredients, setIngredients] =  React.useState([]);
   const [selectAll,setSelectAll]= React.useState(0); //false
   const [insertData, setInsertData] =  React.useState([]);
@@ -70,16 +72,6 @@ const deleteHandler = (index) => { //x표 삭제
       
 }
 
-  const handleTabsChange = (index,value) => {
-    const newItems = [...insertData];  
-    setTabIndex(index);
-    console.log("냉장동", tabIndex);
-		newItems[index]['frozen'] =value == tabIndex ? tabIndex : !tabIndex; 
-    setInsertData(newItems); 
-    console.log("값", value);
-   // console.log("결과", insertData);
-  };
-
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
@@ -95,7 +87,34 @@ const deleteHandler = (index) => { //x표 삭제
     showMode('date');
   };
 
+  const frozenpick=(fridge,fridgeice)=>{
+    if (fridgeice==0){
+    setFridge(1);
+    setFridgeice(0);
+    }else if(fridgeice==1){
+      setFridge(1);
+      setFridgeice(0);
+    }
+   setFrozen(0);
+   console.log("냉장",fridge);
+   console.log("냉동",fridgeice);
+   console.log("결론",frozen);
+  }
 
+  const frozenpick2=(fridge,fridgeice)=>{
+    if (fridge==0){
+      setFridge(0);
+     setFridgeice(1);
+      }else if(fridge==1){
+        setFridge(0);
+       setFridgeice(1);
+      }
+      setFrozen(1);
+    console.log("냉장상태",fridge);
+    console.log("냉동상태",fridgeice);
+    console.log("결론",frozen);
+  
+  }
 
 
  
@@ -158,18 +177,14 @@ const deleteHandler = (index) => { //x표 삭제
                 />
               )}
   
-              <SegmentedControl
-                tabs={['냉장', '냉동']}
-                currentIndex={tabIndex}
-                onChange={()=>{handleTabsChange(i,food.frozen)}}
-                segmentedControlBackgroundColor='#fff'
-                activeSegmentBackgroundColor='#ffe0ad'
-                paddingVertical={14}
-                width={Dimensions.get('screen').width / 2}
-                textStyle={{
-                  fontWeight: '300',
-                }}
-              />
+              <View  style={styles.frozenpick}>
+              <TouchableOpacity delayPressIn={0} style={fridge==0?styles.cold:styles.cold2} onPress={()=>{frozenpick(fridge,fridgeice)}}  >
+               <Text style={styles.coldd} >냉장</Text>                 
+              </TouchableOpacity>
+              <TouchableOpacity delayPressIn={0} style={fridgeice==0?styles.ice:styles.ice2} onPress={()=>{frozenpick2(fridge,fridgeice)}} >              
+               <Text style={styles.icee}>냉동</Text>                 
+              </TouchableOpacity>
+            </View>
             </View>
           </View>
         </View>
@@ -320,5 +335,56 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderWidth: 1,
     marginTop: 10
-  }
+  },
+  
+  cold:{
+    marginRight:20,  
+    width: Dimensions.get('screen').width *0.2, 
+    height:50 ,
+    borderWidth:1,
+    borderRadius:10, 
+    alignItems:'center',
+    justifyContent:'center',
+  },
+  cold2:{
+    marginRight:20,  
+    width: Dimensions.get('screen').width *0.2, 
+    height:50 ,
+    borderWidth:1,
+    borderRadius:10, 
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor:'#9ACD32'
+  },
+coldd:{
+  fontSize:20,
+},
+  ice:{
+    marginRight:20,  
+    width: Dimensions.get('screen').width *0.2, 
+    height:50 ,
+    borderWidth:1,
+    borderRadius:10, 
+    alignItems:'center',
+    justifyContent:'center'
+  },
+  ice2:{
+    marginRight:20,  
+    width: Dimensions.get('screen').width *0.2,  
+    height:50 ,
+    borderWidth:1,
+    borderRadius:10, 
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor:'#add8e6'
+  },
+  icee:{
+    fontSize:20,
+  },
+  frozenpick:{
+    flex:1,
+    flexDirection:'row',
+    marginBottom:10,
+    marginLeft:10
+  },
 });
