@@ -28,8 +28,8 @@ export default function FridgeCold ({ isSelectBtn }) {
 
   React.useEffect(()=>{
     axios.get(`${API_URL}/main/all`).then((result)=>{
-      setIngredients(result.data.ingredients);
-      console.log(ingredients);
+      setIngredients(result.data);
+      console.log(result.data);
     }).catch((error)=>{
       console.error(error);
     })
@@ -40,23 +40,23 @@ export default function FridgeCold ({ isSelectBtn }) {
   }, [selectedIngredients]);
 
   const renderIngredients = ({ item, index }) => {
-    const { name, slug, imgUrl, dday, id } = item;
-    const isSelected = selectedIngredients.filter((i) => i === slug).length > 0;
+    const { ing_name, slug, imgUrl, dday, _id } = item;
+    const isSelected = selectedIngredients.filter((i) => i === ing_name).length > 0;
 
     return (
       <TouchableOpacity
         onPress={() => {
           if (isSelected) {
-            setSelectedIngredients((prev) => prev.filter((i) => i !== slug));
+            setSelectedIngredients((prev) => prev.filter((i) => i !== ing_name));
             console.log('sfb: ', select, index);
-            setSelect(idd => [...idd, id]);
+            setSelect(idd => [...idd, _id]);
             setSelect(item => item.filter(num => num != index));
             console.log('sfa: ', select);
             setFlagstate({flag: false, add : -1, id:index});
           } else {
-            setSelectedIngredients(prev => [...prev, slug])
+            setSelectedIngredients(prev => [...prev, ing_name])
             console.log(id);
-            setSelect(select => [...select, id]);
+            setSelect(select => [...select, _id]);
             console.log("selectedIng: ", select);
             setFlagstate({flag: true, add : 1, id:index});
           }
@@ -86,7 +86,7 @@ export default function FridgeCold ({ isSelectBtn }) {
                 resizeMode="contain"/>
             
             <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont} key={name}>{name}</Text>
+              <Text style={styles.ingredientsFont} key={ing_name}>{ing_name}</Text>
               <Text style={styles.ingredientsFont} key={dday}>{dday}</Text>
             </View>
           </View>
