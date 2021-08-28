@@ -4,7 +4,10 @@ import camera from '../assets/camera.png';
 import hand from '../assets/hand.png';
 import avocado from '../assets/avocado.png';
 import * as ImagePicker from 'expo-image-picker';
-export default function StartScreen(props) {
+export default function StartScreen({props,route}) {
+  const { user } = route.params;//로그인
+  console.log("user from google", user);
+
   const [pickedImagePath, setPickedImagePath] = useState('');
   const openCamera = async () => {
     // Ask the user for the permission to access the camera
@@ -45,7 +48,7 @@ export default function StartScreen(props) {
             props.navigation.navigate("MainScreen")
           }}>
         <View style={styles.btn2}>
-          <Text style={{fontSize: 15,padding:10,marginRight:40}}>냉장고 바로가기 </Text>
+          <Text style={{fontSize: 15,padding:10,marginRight:40}}> {user.name}님의 냉장고 바로가기 </Text>
         </View>
         </TouchableOpacity>
       </View></View>

@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import  React,{useState} from 'react';
 import { StyleSheet, SafeAreaView, Text, View, Button, TouchableOpacity } from 'react-native';
 import LoginScreen from './screens/login.js';
+import Profile from './screens/loginprofile';
 import StartScreen from './screens/start.js';
 import MainScreen from './screens/main.js';
 import ManageScreen from './screens/manage.js';
@@ -20,6 +21,7 @@ import YoutubeList from './screens/youtubeList';
 import CameraCheck from './screens/cameraCheck';
 import CameraError from './screens/cameraError';
 import ModalPage from './screens/modal';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -167,10 +169,16 @@ export default function App() {
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="cook" screenOptions={{headerShown:false}}>
+        <Stack.Navigator initialRouteName="login" screenOptions={{headerShown:false}}>
           <Stack.Screen
             name="login"
             component={LoginScreen}
+            options={{
+              title: "로그인 화면"
+            }} />
+               <Stack.Screen
+            name="loginprofile"
+            component={Profile}
             options={{
               title: "로그인 화면"
             }} />
