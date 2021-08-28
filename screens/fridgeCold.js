@@ -29,7 +29,7 @@ export default function FridgeCold ({ isSelectBtn }) {
   React.useEffect(()=>{
     axios.get(`${API_URL}/main/all`).then((result)=>{
       setIngredients(result.data);
-      console.log(result.data);
+      //console.log(result.data);
     }).catch((error)=>{
       console.error(error);
     })

@@ -167,7 +167,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MainScreen" screenOptions={{headerShown:false}}>
+        <Stack.Navigator initialRouteName="cook" screenOptions={{headerShown:false}}>
           <Stack.Screen
             name="login"
             component={LoginScreen}

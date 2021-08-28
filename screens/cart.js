@@ -24,20 +24,20 @@ export default function cart(props) {
   const [unchecked, setUnchecked] = React.useState([]);
 
   React.useEffect(() => {
-    axios.get(`${API_URLL}/fridgecold`)
+    axios.get(`${API_URL}/search/list`)
       .then((result) => {
         setIngredients(result.data.ingredients);
         console.log("이것은 카트",ingredients);
         for (const value in ingredients) {
-          let ingId = ingredients[value].id;
-          let ingName = ingredients[value].name;
-          let ingFrozen = ingredients[value].frozen;
+        // let ingId = ingredients[value].ing_name;
+          let ingName = ingredients[value].ing_name;
+          let ingFrozen = ingredients[value].ing_frozen;
         //  console.log("이재료 들어감",ingId);
-         // console.log("이번호 들어감",ingName);
-        // console.log("냉냉",ingFrozen);
-          let tempData = {id: ingId, name: ingName, frozen :ingFrozen, checked: 0};
+          console.log("이번호 들어감",ingName);
+        console.log("냉냉",ingFrozen);
+          let tempData = { name: ingName, frozen :ingFrozen, checked: 0};
           setInsertData(prev => [...prev, tempData]);
-         // console.log("인서트데이터",insertData);
+         console.log("인서트데이터",insertData);
          }
        // console.log("인서트데이터",insertData);
       })

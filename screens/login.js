@@ -2,22 +2,18 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, TextComponent, View, Image, Button, TouchableOpacity } from 'react-native';
 import logo from '../assets/logoex.png';
+import { WebView } from 'react-native-webview';
 
-export default function LoginScreen(props) {
+export default function LoginScreen({navigation}) {
   return (
-    <View style={styles.container}>
-      <View style={styles.logo}>
-        <Image style={styles.logoImage} source={logo} />
-      </View>
-      <TouchableOpacity 
-        onPress={()=> {
-            props.navigation.navigate('start');
-        }}>
-        <View style={styles.kakaoBtn}>
-          <Text style={styles.kakaoBtnText}>카카오 계정으로 로그인</Text> 
-        </View>
-      </TouchableOpacity>
-    </View>
+    <View style={{flex: 1}}>
+    <WebView
+        originWhitelist={['*']}
+        scalesPageToFit={false}
+        style={{ marginTop: 30 }}
+        source = {{uri : 'https://kauth.kako.com/oauth/authorize?client_id=724be8a1af0b3f2aa1b5c14123aa1b68&redirect_uri=http://localhost:19002/login&response_type=code'}}
+    />
+  </View>
   );
 }
 

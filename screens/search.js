@@ -14,6 +14,7 @@ import axios from 'axios';
 
 export default function search(props) {
   const [ingredients, setIngredients] = React.useState([]);
+  const [ingredients2, setIngredients2] = React.useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
   let today=new Date();
   const [date, setDate] = useState(new Date(today));
@@ -26,7 +27,7 @@ export default function search(props) {
   const [search, setSearch] = useState('');
   const [frozen, setFrozen]=useState(0);
   const [cartin,setCartin]=useState([]);
-
+  const [change,setChange]=useState(0);
 
 
 //   const pickfood=(name)=>{
@@ -84,11 +85,11 @@ console.log(todate);
     // setModalDate(item.date);
   };
 
-  // const gotocart = (name) => {
-  //   return axios.post(`${API_URL}/search/list`,{
-  //     ing_name : name
-  //   });
-  // };
+  const gotocart = (name) => {
+    return axios.post(`${API_URL}/search/list`,{
+      ing_name : name
+    });
+  };
 
   React.useEffect(() => {//데이터 받아오기
     axios.get(`${API_URL}/main/all`)
@@ -101,10 +102,26 @@ console.log(todate);
   }, []);
 
   const searchFilterFunction = (text) => {//검색필터
-      return axios.post(`${API_URL}/search`,{
-        name : text
+      return axios.post(`${API_URL}/search/list`,{
+        user_id :'나나',
+        ing_name : text,
+        ing_expir:'12/12/21',
+        ing_frozen:0
       })
+
   };
+
+  
+  React.useEffect(() => {//데이터 받아오기
+    axios.get(`${API_URL}/search/list`)
+      .then((result) => {
+        setIngredients2(result.data);
+        console.log("여기담김",ingredients2)
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+  }, [change]);
 
   const frozenpick=(fridge,fridgeice)=>{
     if (fridgeice==0){
@@ -244,9 +261,10 @@ console.log(todate);
             <TouchableOpacity
               style={styles.button2}
               onPress={() => {
-                pickfood(modalName)
-               // gotocart(modalName)
+                //pickfood(modalName)
+                gotocart(modalName)
                 setModalVisible(!isModalVisible);
+                setChange(!change);
               }}>
               <Text style={styles.txt}>담기</Text>
             </TouchableOpacity></View>
