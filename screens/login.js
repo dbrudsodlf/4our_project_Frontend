@@ -17,6 +17,15 @@ const LoginScreen = ({ navigation }) => {
         // Then you can use the Google REST API
         console.log("LoginScreen.js 17 | success, navigating to profile");
         navigation.navigate("start", { user });
+
+        axios.post(`${API_URL}/`,
+        {user_id:user.id,
+         email:user.email,
+         name:user.name})
+        .then((res)=>{
+            console.log("대이터 보냄",res);
+        }).catch(error=>{
+            console.log(error);})
       }
     } catch (error) {
       console.log("LoginScreen.js 19 | error with login", error);

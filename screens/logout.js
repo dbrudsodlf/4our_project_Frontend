@@ -1,18 +1,25 @@
 import * as React from 'react';
+import { ImageBackground } from 'react-native';
 import {
   TouchableOpacity,
   StyleSheet,
   View,
-  Text,
+  
   SafeAreaView
 } from 'react-native';
 
-export default function Logout () {
+export default function Logout ({ route, navigation }) {
+  const { photo } = route.params;
+  const image = { uri: photo };
+  console.log("주소",photo);
   return (
     <View style={{ flex: 1 , padding: 16}}>
-        <Text>
-        로그아웃 하시겠습니까? 모달을 띄우는게 나으려나
-        </Text>
+        <ImageBackground
+          source={image}
+          style={{
+            width:'100%',
+            height:'100%'
+          }}/>
     </View>
   );
 }

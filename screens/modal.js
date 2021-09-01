@@ -13,7 +13,8 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
-
+import axios from 'axios';
+import { API_URL } from '../config/constants.js';
 
 //useEffect cleanup function 추가해야함
 //To fix, cancel all subscriptions and asynchronous tasks
@@ -81,12 +82,21 @@ const ModalPage = (props) => {
         const result = await ImagePicker.launchCameraAsync();
 
         // Explore the result
-        console.log(result);
+        console.log("성공",result);
 
         if (!result.cancelled) {
-            setPickedImagePath(result.uri);
-            console.log(result.uri);
+            setPickedImagePath(result.uri);  
+            navigation.navigate("cameraCheck", { photo:result.uri });
+            let photouri=result.uri;
+
+            axios.post(`${API_URL}/camera/result`,
+            {photouri})
+            .then((res)=>{
+                console.log("보냄",res);
+            }).catch(error=>{
+                console.log(error);})
         }
+
     }
 
     const pickImage = async () => {

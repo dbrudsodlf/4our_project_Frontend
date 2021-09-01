@@ -24,20 +24,22 @@ export default function cart(props) {
   const [unchecked, setUnchecked] = React.useState([]);
 
   React.useEffect(() => {
-    axios.get(`${API_URL}/search/list`)
+    axios.get(`${API_URL}/search/list?user_id=1`)
       .then((result) => {
-        setIngredients(result.data.ingredients);
+        setIngredients(result.data);
         console.log("이것은 카트",ingredients);
         for (const value in ingredients) {
-        // let ingId = ingredients[value].ing_name;
+          let ingId = ingredients[value]._id;
+          let ingImg = ingredients[value].ing_img;
           let ingName = ingredients[value].ing_name;
+          let ingDate =ingredients[value].ing_expir;
           let ingFrozen = ingredients[value].ing_frozen;
-        //  console.log("이재료 들어감",ingId);
-          console.log("이번호 들어감",ingName);
-        console.log("냉냉",ingFrozen);
-          let tempData = { name: ingName, frozen :ingFrozen, checked: 0};
+        //  console.log("이재료 들어감",ingImg);
+         // console.log("이번호 들어감",ingName);
+       // console.log("냉냉",ingFrozen);
+          let tempData = { id:ingId, image:ingImg,name: ingName,date:ingDate, frozen :ingFrozen, checked: 0};
           setInsertData(prev => [...prev, tempData]);
-         console.log("인서트데이터",insertData);
+        console.log("인서트데이터",insertData);
          }
        // console.log("인서트데이터",insertData);
       })
@@ -153,7 +155,7 @@ const deleteHandler = (index) => { //x표 삭제
          </TouchableOpacity></View>
           <View style={styles.box2} width={Dimensions.get('screen').width * 0.89}>
             <Image style={styles.ingredientsImage} 
-           // source={{uri:item.imgUrl}}
+            source={food.image}
              resizeMode={"contain"} />
             <View style={styles.box3}
               width={Dimensions.get('screen').width * 0.5}>

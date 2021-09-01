@@ -28,7 +28,8 @@ export default function search(props) {
   const [frozen, setFrozen]=useState(0);
   const [cartin,setCartin]=useState([]);
   const [change,setChange]=useState(0);
-
+  const [gogo,setGogo]=useState(0);
+  const [insertData, setInsertData] =  React.useState([]);
 
 //   const pickfood=(name)=>{
 //     if(cartin.length===0){
@@ -42,7 +43,7 @@ export default function search(props) {
 //   }
 // }
 
-const pickfood=()=>{ //날짜만 출력
+const shortdate=()=>{ //날짜만 출력
  let year = date.getFullYear();
  let month = date.getMonth()+1;
  let dt = date.getDate();
@@ -65,7 +66,7 @@ console.log(todate);
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
-    console.log(date);
+    shortdate(date);
   };
 
   const showMode = (currentMode) => {
@@ -81,14 +82,21 @@ console.log(todate);
   const toggleModal = (item) => {//모달띄우기
     setModalVisible(!isModalVisible);
     setModalName(item);
-    // setModalFrozen(item.frozen);
-    // setModalDate(item.date);
   };
 
-  const gotocart = (name) => {
-    return axios.post(`${API_URL}/search/list`,{
-      ing_name : name
-    });
+ /* const gotocart = () => {
+    let tempData = {  ing_name: modalName, ing_frozen :frozen, ing_expir: todate};
+    setInsertData(prev => [...prev, tempData]);
+    console.log("냉장고속",insertData)
+    setGogo(!gogo);
+
+  };*/
+  const gotocart = () => {
+    axios.post(`${API_URL}/search/list`,{  ing_name: modalName, ing_frozen :frozen, ing_expir: todate}).then((res)=>{
+      console.log("보냄",res.data);
+  }).catch(error=>{
+      console.log(error);})
+  
   };
 
   React.useEffect(() => {//데이터 받아오기
@@ -101,14 +109,20 @@ console.log(todate);
       })
   }, []);
 
-  const searchFilterFunction = (text) => {//검색필터
-      return axios.post(`${API_URL}/search/list`,{
-        user_id :'나나',
-        ing_name : text,
-        ing_expir:'12/12/21',
-        ing_frozen:0
-      })
+  /*React.useEffect(() => {//데이터 보내
+    axios.post(`${API_URL}/search/list`,{
+      user_id :'54',
+      ing_name : 'text',
+      ing_expir:"",
+      ing_frozen:0
+    }).then((res)=>{
+      console.log("보냄",res.data);
+  }).catch(error=>{
+      console.log(error);})
+  }, [gogo]);*/
 
+  const searchFilterFunction = (text) => {//검색필터
+    //setGogo(!gogo);
   };
 
   
@@ -116,7 +130,7 @@ console.log(todate);
     axios.get(`${API_URL}/search/list`)
       .then((result) => {
         setIngredients2(result.data);
-        console.log("여기담김",ingredients2)
+        console.log("여기담김",ingredients2.data)
       })
       .catch((error) => {
         console.error(error);
@@ -160,7 +174,7 @@ console.log(todate);
         <View style={styles.titleArea}>
           <Text style={styles.text}>재료 검색</Text>
           <TouchableOpacity onPress={() => {//장바구니로 이동
-            props.navigation.navigate("cart",cartin)}}>
+            props.navigation.navigate("cart",cartin),setChange(!change);}}>
             <Icon2 name="shopping-cart" size={30} color="#000" />
           </TouchableOpacity>
         </View>
@@ -261,10 +275,10 @@ console.log(todate);
             <TouchableOpacity
               style={styles.button2}
               onPress={() => {
-                //pickfood(modalName)
+
                 gotocart(modalName)
                 setModalVisible(!isModalVisible);
-                setChange(!change);
+                
               }}>
               <Text style={styles.txt}>담기</Text>
             </TouchableOpacity></View>

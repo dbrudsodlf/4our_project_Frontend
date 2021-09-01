@@ -6,9 +6,11 @@ import {
   Text,
   Image
 } from 'react-native';
-import tomato from '../assets/tomato.jpeg';
+import { ImageBackground } from 'react-native';
 
-export default function cameraCheck () {
+export default function cameraCheck ({ route, navigation }) {
+  const { photo } = route.params;
+  const image = { uri: photo };
   return (
     <View  style={styles.container}>
       <View style={styles.container2}> 
@@ -16,7 +18,7 @@ export default function cameraCheck () {
           촬영한 재료가 맞나요?
         </Text>
         <View style={styles.imgborder}>
-            <Image style={styles.img} source={tomato} />
+            <ImageBackground style={styles.img} source={image} />
         </View>
         <Text style={styles.name}>토마토</Text>
         <TouchableOpacity style={styles.tbtn1}>
