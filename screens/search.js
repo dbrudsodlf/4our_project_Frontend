@@ -28,8 +28,7 @@ export default function search(props) {
   const [frozen, setFrozen]=useState(0);
   const [cartin,setCartin]=useState([]);
   const [change,setChange]=useState(0);
-  const [gogo,setGogo]=useState(0);
-  const [insertData, setInsertData] =  React.useState([]);
+  const [name, setName] = useState('')
 
 //   const pickfood=(name)=>{
 //     if(cartin.length===0){
@@ -180,8 +179,12 @@ console.log(todate);
         </View>
       </View>
       <SearchBar platform='ios' cancelButtonTitle='취소'
-        onChangeText={(text) => searchFilterFunction(text)}
-        value={search}
+        value={name}
+        onChange={(event) => {
+            const {eventCount, target, text} = event.nativeEvent;
+            setName(text);
+            console.log("문자",text)
+          }}
         underlineColorAndroid='transparent'
         placeholder="원하는 재료를 검색해보세요"
       //   onKeyPress={ (event) => {
