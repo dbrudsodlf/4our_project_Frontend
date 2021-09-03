@@ -13,10 +13,6 @@ import axios from 'axios';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {API_URL} from "../config/constants";
 import { State } from 'react-native-gesture-handler';
-import {EggImage} from '../assets/egg.jpeg';
-import {TomatoImage} from '../assets/egg.jpeg';
-import {CucumberImage} from '../assets/cucumber.jpeg';
-
 
 export default function FridgeCold ({ isSelectBtn }) {
 
@@ -40,7 +36,7 @@ export default function FridgeCold ({ isSelectBtn }) {
   }, [selectedIngredients]);
 
   const renderIngredients = ({ item, index }) => {
-    const { ing_name, slug, imgUrl, dday, _id } = item;
+    const { ing_name, slug, ing_img, dday, _id } = item;
     const isSelected = selectedIngredients.filter((i) => i === ing_name).length > 0;
 
     return (
@@ -55,7 +51,7 @@ export default function FridgeCold ({ isSelectBtn }) {
             setFlagstate({flag: false, add : -1, id:index});
           } else {
             setSelectedIngredients(prev => [...prev, ing_name])
-            console.log(id);
+            console.log(_id);
             setSelect(select => [...select, _id]);
             console.log("selectedIng: ", select);
             setFlagstate({flag: true, add : 1, id:index});
@@ -80,9 +76,7 @@ export default function FridgeCold ({ isSelectBtn }) {
                 } */}
               <Image 
                 style={styles.ingredientsImage} 
-                source={{ 
-                  uri:'${API_URL}/${item.imgUrl}'
-                    }}
+                source={{uri : ing_img}}
                 resizeMode="contain"/>
             
             <View style={styles.ingredientsContents}>
@@ -96,7 +90,7 @@ export default function FridgeCold ({ isSelectBtn }) {
 
   return (
     <View>
-
+      <ScrollView>
         <View style={styles.ingredientsList} >
           <FlatList
             data={ingredients}
@@ -106,7 +100,7 @@ export default function FridgeCold ({ isSelectBtn }) {
             scrollEnabled={true}
           />
         </View>
-   
+      </ScrollView>
     </View>
   );
 }
