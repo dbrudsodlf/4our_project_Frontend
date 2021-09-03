@@ -36,7 +36,8 @@ export default function cameraCheck ({ route, navigation }) {
 const styles = StyleSheet.create({
   container:{
     backgroundColor:'#fff',
-    height:'100%'
+    height:'100%',
+    paddingTop:40
   },
   container2:{
     flexDirection:'column',

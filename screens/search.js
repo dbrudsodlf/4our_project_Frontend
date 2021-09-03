@@ -91,8 +91,9 @@ console.log(todate);
 
   };*/
   const gotocart = () => {
-    axios.post(`${API_URL}/search/list`,{  ing_name: modalName, ing_frozen :frozen, ing_expir: todate}).then((res)=>{
-      console.log("보냄",res.data);
+    axios.post(`${API_URL}/search/list`,{ user_id:3, ing_expir: todate, ing_frozen :frozen, ing_name: modalName})
+    .then((res)=>{
+      console.log("보냄",res.config.data);
   }).catch(error=>{
       console.log(error);})
   
@@ -128,8 +129,8 @@ console.log(todate);
   React.useEffect(() => {//데이터 받아오기
     axios.get(`${API_URL}/search/list`)
       .then((result) => {
-        setIngredients2(result.data);
-        console.log("여기담김",ingredients2.data)
+        setIngredients2(result);
+        console.log("여기담김",ingredients2)
       })
       .catch((error) => {
         console.error(error);

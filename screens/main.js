@@ -8,8 +8,8 @@ import axios from 'axios';
 import {API_URL} from '../config/constants.js';
 
 const title = '나의 냉장고'
-export default function MainScreen(props) {
-
+export default function MainScreen(props,route,navigation) {
+  const { user } = route.params;//로그인
   const [selectedIngredients, setSelectedIngredients] = React.useState([]);
   React.useEffect(()=>{
     axios.get(`${API_URL}/fridgecold`).then((result)=>{
@@ -85,7 +85,7 @@ export default function MainScreen(props) {
             </TouchableOpacity>
           </View>
         </View>
-        <Fridge isSelectBtn={isSelectBtn}/>
+        <Fridge isSelectBtn={isSelectBtn} />
     </SafeAreaView>
   );
 }

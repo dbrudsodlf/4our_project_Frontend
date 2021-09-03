@@ -4,6 +4,8 @@ import * as Google from "expo-google-app-auth";
 import Icon from 'react-native-vector-icons/AntDesign';
 import { Button } from 'react-native-elements';
 import logo from '../assets/logoex.png'
+import axios from 'axios';
+import { API_URL } from '../config/constants.js';
 
 const LoginScreen = ({ navigation }) => {
   const signInAsync = async () => {
@@ -18,12 +20,12 @@ const LoginScreen = ({ navigation }) => {
         console.log("LoginScreen.js 17 | success, navigating to profile");
         navigation.navigate("start", { user });
 
-        axios.post(`${API_URL}/`,
+        axios.post(`${API_URL}/login`,
         {user_id:user.id,
          email:user.email,
          name:user.name})
         .then((res)=>{
-            console.log("대이터 보냄",res);
+            console.log("데이터 보냄",res.config.data);
         }).catch(error=>{
             console.log(error);})
       }

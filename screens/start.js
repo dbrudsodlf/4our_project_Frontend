@@ -4,7 +4,8 @@ import camera from '../assets/camera.png';
 import hand from '../assets/hand.png';
 import avocado from '../assets/avocado.png';
 import * as ImagePicker from 'expo-image-picker';
-export default function StartScreen({props,route}) {
+
+export default function StartScreen({props,route,navigation}) {
   const { user } = route.params;//로그인
   console.log("user from google", user);
 
@@ -45,7 +46,7 @@ export default function StartScreen({props,route}) {
         </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.flex2} onPress={() => {
-            props.navigation.navigate("MainScreen")
+            navigation.navigate("MainScreen", { user });
           }}>
         <View style={styles.btn2}>
           <Text style={{fontSize: 15,padding:10,marginRight:40}}> {user.name}님의 냉장고 바로가기 </Text>

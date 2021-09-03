@@ -19,7 +19,9 @@ import { API_URL } from '../config/constants.js';
 //useEffect cleanup function 추가해야함
 //To fix, cancel all subscriptions and asynchronous tasks
 
-const ModalPage = (props) => {
+const ModalPage = ({props,route,navigation}) => {
+    const { user } = route.params;//로그인
+    console.log("user from google", user);
     const { modalVisible, setModalVisible } = props;
     const [pickedImagePath, setPickedImagePath] = useState('');
     const screenHeight = Dimensions.get("screen").height;
@@ -89,7 +91,7 @@ const ModalPage = (props) => {
             navigation.navigate("cameraCheck", { photo:result.uri });
             let photouri=result.uri;
 
-            axios.post(`${API_URL}/camera/result`,
+            axios.post(`${API_URL}/camera/predict`,
             {photouri})
             .then((res)=>{
                 console.log("보냄",res);
@@ -185,7 +187,7 @@ const ModalPage = (props) => {
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.contents}
                             onPress={()=> {
-                                navigation.navigate('search');
+                                navigation.navigate('search',{user});
                             }}>
                             <Icon name='magnify' color='#191919' size={32}
                                 style={{
