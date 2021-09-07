@@ -18,10 +18,8 @@ import { API_URL } from '../config/constants.js';
 
 //useEffect cleanup function 추가해야함
 //To fix, cancel all subscriptions and asynchronous tasks
-
-const ModalPage = ({props,route,navigation}) => {
-    const { user } = route.params;//로그인
-    console.log("user from google", user);
+const ModalPage = (props) => {
+   
     const { modalVisible, setModalVisible } = props;
     const [pickedImagePath, setPickedImagePath] = useState('');
     const screenHeight = Dimensions.get("screen").height;

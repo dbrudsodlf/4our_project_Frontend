@@ -25,19 +25,19 @@ import ModalPage from './screens/modal';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import Animated from 'react-native-reanimated';
-import BottomSheet from 'reanimated-bottom-sheet';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import { combineReducers, createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import ReduxThunk from 'redux-thunk';
 
+
+import store from './screens/reducer/store'
 
 const MainTab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const SettingsStack = createStackNavigator();
 
-function BottomSH() {
-
-}
 
 function MainTabScreen(props) {
   const[modalVisible,setModalVisible]=useState(false);
@@ -167,9 +167,10 @@ function MainTabScreen(props) {
 
 export default function App() {
   return (
+    <Provider store={store}>
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="login" screenOptions={{headerShown:false}}>
+        <Stack.Navigator initialRouteName="search" screenOptions={{headerShown:false}}>
           <Stack.Screen
             name="login"
             component={LoginScreen}
@@ -293,6 +294,7 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
+    </Provider>
   );
 }
 
