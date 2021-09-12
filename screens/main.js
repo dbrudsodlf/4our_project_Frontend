@@ -8,8 +8,7 @@ import axios from 'axios';
 import {API_URL} from '../config/constants.js';
 
 const title = '나의 냉장고'
-export default function MainScreen(props,route,navigation) {
-  const { user } = route.params;//로그인
+export default function MainScreen(props,route) {
   const [selectedIngredients, setSelectedIngredients] = React.useState([]);
   React.useEffect(()=>{
     axios.get(`${API_URL}/fridgecold`).then((result)=>{

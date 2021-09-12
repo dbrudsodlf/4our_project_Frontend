@@ -9,7 +9,7 @@ import Icon2 from 'react-native-vector-icons/Feather';
 import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons';
 import { API_URL } from '../config/constants.js';
 import axios from 'axios';
-
+import { useNavigation } from '@react-navigation/native';
 
 
 export default function search(props) {
@@ -29,6 +29,8 @@ export default function search(props) {
   const [cartin,setCartin]=useState([]);
   const [change,setChange]=useState(0);
   const [name, setName] = useState('')
+  const [insertData, setInsertData] = useState([]);
+  const [tempData, setTempData] = useState();
 
 //   const pickfood=(name)=>{
 //     if(cartin.length===0){
@@ -47,17 +49,17 @@ const shortdate=()=>{ //날짜만 출력
  let month = date.getMonth()+1;
  let dt = date.getDate();
 
-if (dt < 10) {
-  dt = '0' + dt;
-}
-if (month < 10) {
-  month = '0' + month;
-}
-let tt=year+'-' + month + '-'+dt;
-setTodate(tt);
-console.log(tt);
-console.log(todate);
-}
+  if (dt < 10) {
+    dt = '0' + dt;
+  }
+  if (month < 10) {
+    month = '0' + month;
+  }
+  let tt=year+'-' + month + '-'+dt;
+  setTodate(tt);
+  console.log(tt);
+  console.log(todate);
+  }
 
 
 
@@ -90,14 +92,23 @@ console.log(todate);
     setGogo(!gogo);
 
   };*/
+
+  React.useEffect(() => {
+    setInsertData(prev => [...prev, tempData]);
+  }, tempData);
+
   const gotocart = () => {
+    setTempData({  ing_name: modalName, ing_frozen :frozen, ing_expir: todate});
+    console.log('tempData', tempData);
+    
+    console.log("냉장고속",insertData);
+
     axios.post(`${API_URL}/search/list`,{ user_id:3, ing_expir: todate, ing_frozen :frozen, ing_name: modalName})
     .then((res)=>{
       console.log("보냄",res.config.data);
-  }).catch(error=>{
-      console.log(error);})
-  
-  };
+    }).catch(error=>{
+        console.log(error);})
+    };
 
   React.useEffect(() => {//데이터 받아오기
     axios.get(`${API_URL}/main/all`)
@@ -281,7 +292,7 @@ console.log(todate);
               onPress={() => {
 
                 gotocart(modalName)
-                setModalVisible(!isModalVisible);
+                setModalVisible(!isModalVisible)
                 
               }}>
               <Text style={styles.txt}>담기</Text>

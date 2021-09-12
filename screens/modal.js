@@ -14,14 +14,27 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import { API_URL } from '../config/constants.js';
+import { API_URL, flask_url } from '../config/constants.js';
+import FormData from 'form-data';
 
 //useEffect cleanup function 추가해야함
 //To fix, cancel all subscriptions and asynchronous tasks
 
-const ModalPage = ({props,route,navigation}) => {
-    const { user } = route.params;//로그인
-    console.log("user from google", user);
+const createFormData = (photo) => {
+    const data = new FormData();
+    console.log(photo);
+  
+    data.append('image', {
+      name: '이미지',
+      type: 'image/jpeg',
+      uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
+    });
+    // data.append('image', {type: 'image/jpeg',image: photo})
+  
+    return data;
+  };
+
+const ModalPage = (props) => {
     const { modalVisible, setModalVisible } = props;
     const [pickedImagePath, setPickedImagePath] = useState('');
     const screenHeight = Dimensions.get("screen").height;
@@ -87,16 +100,34 @@ const ModalPage = ({props,route,navigation}) => {
         console.log("성공",result);
 
         if (!result.cancelled) {
-            setPickedImagePath(result.uri);  
             navigation.navigate("cameraCheck", { photo:result.uri });
-            let photouri=result.uri;
+            //let img_url =result.uri;
+            console.log(createFormData(result));
 
-            axios.post(`${API_URL}/camera/predict`,
-            {photouri})
-            .then((res)=>{
-                console.log("보냄",res);
-            }).catch(error=>{
-                console.log(error);})
+            // axios.post(`${flask_url}/camera/predict`,
+            // createFormData(result), {
+            //     headers: {
+            //         'content-type': 'multipart/form-data',
+            //     }
+            // })
+            // //{image: Platform.OS === 'ios' ? result.uri.replace('file://', '') : result.uri})
+            // .then((res)=>{
+            //     console.log("보냄", res);
+            //     console.log(res.data.label);
+            // }).catch(error=>{
+            //     console.log(error);})
+
+            axios({
+                method: 'post',
+                url: `${flask_url}/camera/predict`,
+                headers: { 'content-type': 'multipart/form-data' }, 
+                data: createFormData(result)
+              })
+              .then((res)=>{
+                    console.log("보냄", res);
+                    console.log(res.data.label);
+                }).catch(error=>{
+                    console.log(error);})
         }
 
     }
@@ -187,7 +218,7 @@ const ModalPage = ({props,route,navigation}) => {
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.contents}
                             onPress={()=> {
-                                navigation.navigate('search',{user});
+                                navigation.navigate('search');
                             }}>
                             <Icon name='magnify' color='#191919' size={32}
                                 style={{

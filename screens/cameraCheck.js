@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   TouchableOpacity,
   StyleSheet,
@@ -7,10 +7,42 @@ import {
   Image
 } from 'react-native';
 import { ImageBackground } from 'react-native';
+import { API_URL } from '../config/constants.js';
+import { flask_url } from '../config/constants.js';
+import axios from 'axios';
 
 export default function cameraCheck ({ route, navigation }) {
   const { photo } = route.params;
   const image = { uri: photo };
+  // const [label, setLabel] = useState('');
+
+  // React.useEffect(() => {
+  //   axios.post(`${flask_url}/camera/predict`)
+  //     .then((result) => {
+  //       console.log(result.label);
+  //       setLabel(result.label);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     })
+  // }, []);
+
+  const handleUploadPhoto = async () => {
+        axios.post(`${flask_url}/predict`, createFormData(photo, { userId: '1' })
+        // ,
+        // {
+        //   name: photo.fileName,
+        //   type: photo.type,
+        //   uri: photo.uri
+        //  }
+         )
+        .then((res)=>{
+            console.log("데이터 보냄",res.config.data);
+        }).catch(error=>{
+            console.log(error);})
+      };
+
+
   return (
     <View  style={styles.container}>
       <View style={styles.container2}> 
@@ -24,7 +56,7 @@ export default function cameraCheck ({ route, navigation }) {
         <TouchableOpacity style={styles.tbtn1}>
             <Text style={styles.btn1}>다시 촬영하러 가기</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tbtn2}>
+        <TouchableOpacity style={styles.tbtn2} onPress={handleUploadPhoto}>
             <Text style={styles.btn2}>저장하고 다른 재료도 추가하기</Text>
         </TouchableOpacity>
       </View>

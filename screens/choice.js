@@ -66,7 +66,7 @@ const ChoiceScreen = (props) => {
     const result = await ImagePicker.launchCameraAsync();
 
     // Explore the result
-    console.log(result);
+    console.log('카메라 결과', result);
 
     if (!result.cancelled) {
       setPickedImagePath(result.uri);
