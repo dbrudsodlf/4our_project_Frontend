@@ -2,13 +2,14 @@ import React,{useState} from "react";
 import {Text,TouchableOpacity,View,StyleSheet,Image,Dimensions} from "react-native";
 import camera from '../assets/camera.png';
 import hand from '../assets/hand.png';
-import avocado from '../assets/avocado.png';
 import * as ImagePicker from 'expo-image-picker';
 
-export default function StartScreen({props,route,navigation}) {
-  const { user } = route.params;//로그인
-  console.log("user from google", user);
+import { useSelector } from 'react-redux';
 
+
+export default function StartScreen(props) {
+ const name = useSelector((state) => state.name);
+ console.log("이름",name)
   const [pickedImagePath, setPickedImagePath] = useState('');
   const openCamera = async () => {
     // Ask the user for the permission to access the camera
@@ -46,10 +47,10 @@ export default function StartScreen({props,route,navigation}) {
         </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.flex2} onPress={() => {
-            navigation.navigate("MainScreen", { user });
+             props.navigation.navigate("MainScreen");
           }}>
         <View style={styles.btn2}>
-          <Text style={{fontSize: 15,padding:10,marginRight:40}}> {user.name}님의 냉장고 바로가기 </Text>
+          <Text style={{fontSize: 15,padding:10,marginRight:40}}> {name}님의 냉장고 바로가기 </Text>
         </View>
         </TouchableOpacity>
       </View></View>
