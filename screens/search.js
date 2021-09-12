@@ -28,8 +28,8 @@ export default function search(props) {
   const [frozen, setFrozen]=useState(0);
   const [cartin,setCartin]=useState([]);
   const [change,setChange]=useState(0);
-  const [name, setName] = useState('')
-
+  const [name, setName] = useState('');
+  const[result,setResult]=React.useState([]);
 //   const pickfood=(name)=>{
 //     if(cartin.length===0){
 //       setCartin([...cartin,name]);
@@ -165,6 +165,20 @@ console.log(todate);
     console.log("결론",frozen);
   
   }
+
+  const searchword=(word)=>{
+    console.log("문자지롱",word);
+    axios.get(`${API_URL}/search`,{params:{name:word, ing_name:''}})
+    .then((res)=>{
+     // console.log("단어검색",res.config.params);
+     console.log("단어검색",res.data);
+     setResult(res.data);
+     console.log("결과",result);
+
+  }).catch(error=>{
+      console.log(error);})
+  
+  }
   return (
 
     <View style={styles.container}>
@@ -184,7 +198,7 @@ console.log(todate);
         onChange={(event) => {
             const {eventCount, target, text} = event.nativeEvent;
             setName(text);
-            console.log("문자",text)
+            {searchword(text)}
           }}
         underlineColorAndroid='transparent'
         placeholder="원하는 재료를 검색해보세요"
@@ -198,7 +212,7 @@ console.log(todate);
         
 
       <FlatList
-        data={ingredients}
+        data={result}
         keyExtractor={(_id, index) => {
           return index.toString();
         }}
