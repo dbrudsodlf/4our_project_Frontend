@@ -1,19 +1,13 @@
 import { SearchBar } from 'react-native-elements';
 import React, { useState, useEffect, Component } from 'react';
-import { StyleSheet, View, FlatList, ScrollView, Text, TouchableHighlight, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, View, FlatList, ScrollView, Text, TouchableHighlight, TouchableOpacity } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';
-import SegmentedControl from 'rn-segmented-control';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/Feather';
 import { API_URL } from '../config/constants.js';
 import axios from 'axios';
-<<<<<<< HEAD
 import { useSelector } from 'react-redux';
-=======
-import { useNavigation } from '@react-navigation/native';
->>>>>>> d565dbadb242a19b87e28b987904bb79fcb65647
-
 
 export default function search(props) {
   const [ingredients, setIngredients] = React.useState([]);
@@ -27,61 +21,13 @@ export default function search(props) {
   const [modalName, setModalName] = useState('');
   const [fridge, setFridge] = useState(1);//디폴트 냉장선택
   const [fridgeice, setFridgeice] = useState(0);
-  const [search, setSearch] = useState('');
-<<<<<<< HEAD
   const [frozen, setFrozen] = useState(0);
   const [cartin, setCartin] = useState([]);
   const [change, setChange] = useState(0);
   const [name, setName] = useState('');
   const [result, setResult] = React.useState([]);
   const id = useSelector((state) => state.id);
-  //   const pickfood=(name)=>{
-  //     if(cartin.length===0){
-  //       setCartin([...cartin,name]);
-  //   }else{
-  //     if(cartin.indexOf(name)<0){
-  //       setCartin([...cartin,name]);
-  //     }else{
-  //       alert("이미 담은 재료입니다.");
-  //     }
-  //   }
-  // }
 
-  const shortdate = () => { //날짜만 출력
-    let year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    let dt = date.getDate();
-
-    if (dt < 10) {
-      dt = '0' + dt;
-    }
-    if (month < 10) {
-      month = '0' + month;
-    }
-    let tt = year + '-' + month + '-' + dt;
-    setTodate(tt);
-    console.log(tt);
-    console.log(todate);
-  }
-=======
-  const [frozen, setFrozen]=useState(0);
-  const [cartin,setCartin]=useState([]);
-  const [change,setChange]=useState(0);
-  const [name, setName] = useState('')
-  const [insertData, setInsertData] = useState([]);
-  const [tempData, setTempData] = useState();
-
-//   const pickfood=(name)=>{
-//     if(cartin.length===0){
-//       setCartin([...cartin,name]);
-//   }else{
-//     if(cartin.indexOf(name)<0){
-//       setCartin([...cartin,name]);
-//     }else{
-//       alert("이미 담은 재료입니다.");
-//     }
-//   }
-// }
 
 const shortdate=()=>{ //날짜만 출력
  let year = date.getFullYear();
@@ -100,8 +46,6 @@ const shortdate=()=>{ //날짜만 출력
   console.log(todate);
   }
 
-
->>>>>>> d565dbadb242a19b87e28b987904bb79fcb65647
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -125,14 +69,6 @@ const shortdate=()=>{ //날짜만 출력
     setModalName(item);
   };
 
-<<<<<<< HEAD
-  /* const gotocart = () => {
-     let tempData = {  ing_name: modalName, ing_frozen :frozen, ing_expir: todate};
-     setInsertData(prev => [...prev, tempData]);
-     console.log("냉장고속",insertData)
-     setGogo(!gogo);
- 
-   };*/
   const gotocart = () => {
     axios.post(`${API_URL}/search/list`,
      {user_id: id,ing_expir: todate, ing_frozen: frozen, ing_name: modalName })
@@ -140,56 +76,11 @@ const shortdate=()=>{ //날짜만 출력
         console.log("보냄", res.config.data);
       }).catch(error => {
         console.log(error);
-=======
- /* const gotocart = () => {
-    let tempData = {  ing_name: modalName, ing_frozen :frozen, ing_expir: todate};
-    setInsertData(prev => [...prev, tempData]);
-    console.log("냉장고속",insertData)
-    setGogo(!gogo);
-
-  };*/
-
+      })
+    }
   React.useEffect(() => {
     setInsertData(prev => [...prev, tempData]);
   }, tempData);
-
-  const gotocart = () => {
-    setTempData({  ing_name: modalName, ing_frozen :frozen, ing_expir: todate});
-    console.log('tempData', tempData);
-    
-    console.log("냉장고속",insertData);
-
-    axios.post(`${API_URL}/search/list`,{ user_id:3, ing_expir: todate, ing_frozen :frozen, ing_name: modalName})
-    .then((res)=>{
-      console.log("보냄",res.config.data);
-    }).catch(error=>{
-        console.log(error);})
-    };
-
-  React.useEffect(() => {//데이터 받아오기
-    axios.get(`${API_URL}/main/all`)
-      .then((result) => {
-        setIngredients(result.data);
-      })
-      .catch((error) => {
-        console.error(error);
->>>>>>> d565dbadb242a19b87e28b987904bb79fcb65647
-      })
-
-  };
-
-  /*React.useEffect(() => {//데이터 보내
-    axios.post(`${API_URL}/search/list`,{
-      user_id :'54',
-      ing_name : 'text',
-      ing_expir:"",
-      ing_frozen:0
-    }).then((res)=>{
-      console.log("보냄",res.data);
-  }).catch(error=>{
-      console.log(error);})
-  }, [gogo]);*/
-
 
   React.useEffect(() => {//데이터 받아오기
     axios.get(`${API_URL}/search/list`)
@@ -211,9 +102,6 @@ const shortdate=()=>{ //날짜만 출력
       setFridgeice(0);
     }
     setFrozen(0);
-    //console.log("냉장", fridge);
-    //console.log("냉동", fridgeice);
-    //console.log("결론", frozen);
   }
 
   const frozenpick2 = (fridge, fridgeice) => {
@@ -225,19 +113,12 @@ const shortdate=()=>{ //날짜만 출력
       setFridgeice(1);
     }
     setFrozen(1);
-    //console.log("냉장상태", fridge);
-    //console.log("냉동상태", fridgeice);
-    //console.log("결론", frozen);
   }
 
   const searchword = (word) => {
     axios.get(`${API_URL}/search`, { params: { name: word, ing_name: '' } })
       .then((res) => {
-        // console.log("단어검색",res.config.params);
-       // console.log("단어검색", res.data);
         setResult(res.data);
-        //console.log("결과", result);
-
       }).catch(error => {
         console.log(error);
       })
@@ -332,12 +213,12 @@ const shortdate=()=>{ //날짜만 출력
               style={styles.button2}
               onPress={() => {
                 gotocart(modalName)
-<<<<<<< HEAD
+
                 setModalVisible(!isModalVisible);
-=======
+
                 setModalVisible(!isModalVisible)
                 
->>>>>>> d565dbadb242a19b87e28b987904bb79fcb65647
+
               }}>
               <Text style={styles.txt}>담기</Text>
             </TouchableOpacity></View>
