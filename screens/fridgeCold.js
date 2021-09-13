@@ -57,7 +57,8 @@ export default function FridgeCold ({ isSelectBtn }) {
             setFlagstate({flag: true, add : 1, id:index});
           }
           console.log('i', select);
-        }}>
+        }}
+        >
           
           <View style={[styles.ingredientsCard, isSelected && { backgroundColor: 'gray'}]}>
            
@@ -76,7 +77,7 @@ export default function FridgeCold ({ isSelectBtn }) {
                 } */}
               <Image 
                 style={styles.ingredientsImage} 
-                source={{uri : ing_img}}
+                source={ing_img === '' ? {uri: 'nothing'} : {uri : ing_img}}
                 resizeMode="contain"/>
             
             <View style={styles.ingredientsContents}>
