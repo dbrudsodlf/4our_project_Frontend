@@ -1,6 +1,6 @@
 import { SearchBar } from 'react-native-elements';
-import React, { useState, useEffect, Component } from 'react';
-import { StyleSheet, View, FlatList, ScrollView, Text, TouchableHighlight, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, FlatList,  Text, TouchableHighlight, TouchableOpacity } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -11,7 +11,6 @@ import { useSelector } from 'react-redux';
 
 export default function search(props) {
   const [ingredients, setIngredients] = React.useState([]);
-  const [ingredients2, setIngredients2] = React.useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
   let today = new Date();
   const [date, setDate] = useState(new Date(today));
@@ -22,14 +21,20 @@ export default function search(props) {
   const [fridge, setFridge] = useState(1);//디폴트 냉장선택
   const [fridgeice, setFridgeice] = useState(0);
   const [frozen, setFrozen] = useState(0);
-  const [cartin, setCartin] = useState([]);
-  const [change, setChange] = useState(0);
   const [name, setName] = useState('');
   const [result, setResult] = React.useState([]);
   const id = useSelector((state) => state.id);
+  const[ cart, setCart]=useState([]);
 
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    console.log("고른날짜",currentDate)
+    shortdate(currentDate);
+    setDate(currentDate);
+  };
 
-const shortdate=()=>{ //날짜만 출력
+const shortdate=(date)=>{ //날짜만 출력
  let year = date.getFullYear();
  let month = date.getMonth()+1;
  let dt = date.getDate();
@@ -42,17 +47,8 @@ const shortdate=()=>{ //날짜만 출력
   }
   let tt=year+'-' + month + '-'+dt;
   setTodate(tt);
-  console.log(tt);
-  console.log(todate);
+  console.log("1",todate);
   }
-
-
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
-    setDate(currentDate);
-    shortdate(date);
-  };
 
   const showMode = (currentMode) => {
     setShow(true);
@@ -63,36 +59,26 @@ const shortdate=()=>{ //날짜만 출력
     showMode('date');
   };
 
-
   const toggleModal = (item) => {//모달띄우기
     setModalVisible(!isModalVisible);
     setModalName(item);
   };
 
-  const gotocart = () => {
-    axios.post(`${API_URL}/search/list`,
-     {user_id: id,ing_expir: todate, ing_frozen: frozen, ing_name: modalName })
-      .then((res) => {
-        console.log("보냄", res.config.data);
-      }).catch(error => {
-        console.log(error);
-      })
+  const gotocart = (modalName) => {
+    let cartdata={user_id: id,ing_expir: todate, ing_frozen: frozen, ing_name: modalName }
+    setCart([...cart,cartdata]);
+   
     }
-  React.useEffect(() => {
-    setInsertData(prev => [...prev, tempData]);
-  }, tempData);
 
-  React.useEffect(() => {//데이터 받아오기
-    axios.get(`${API_URL}/search/list`)
-      .then((result) => {
-        setIngredients2(result);
-        console.log("여기담김", ingredients2)
-      })
-      .catch((error) => {
-        console.error(error);
-      })
-  }, [change]);
-
+const putincart=()=>{
+  axios.post(`${API_URL}/search`,
+  cart)
+   .then((res) => {
+     console.log("보냄", res.config.data);
+   }).catch(error => {
+     console.log(error);
+   })
+}
   const frozenpick = (fridge, fridgeice) => {
     if (fridgeice == 0) {
       setFridge(1);
@@ -130,7 +116,8 @@ const shortdate=()=>{ //날짜만 출력
         <View style={styles.titleArea}>
           <Text style={styles.text}>재료 검색</Text>
           <TouchableOpacity onPress={() => {//장바구니로 이동
-            props.navigation.navigate("cart", cartin), setChange(!change);
+            props.navigation.navigate("cart");
+            putincart();
           }}>
             <Icon2 name="shopping-cart" size={30} color="#000" />
           </TouchableOpacity>
@@ -205,6 +192,9 @@ const shortdate=()=>{ //날짜만 출력
               style={styles.button1}
               onPress={() => {
                 setModalVisible(!isModalVisible);
+                setDate(today);
+                setFridge(1);
+                setFridgeice(0);
               }}>
               <Text style={styles.txt}>취소</Text>
             </TouchableOpacity>
@@ -213,12 +203,11 @@ const shortdate=()=>{ //날짜만 출력
               style={styles.button2}
               onPress={() => {
                 gotocart(modalName)
-
                 setModalVisible(!isModalVisible);
-
-                setModalVisible(!isModalVisible)
-                
-
+                setDate(today);
+                setFridge(1);
+                setFridgeice(0);
+                console.log("----",cart);
               }}>
               <Text style={styles.txt}>담기</Text>
             </TouchableOpacity></View>

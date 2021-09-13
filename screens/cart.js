@@ -10,8 +10,8 @@ import { Ionicons} from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 
 export default function cart(props) {
-  const today = new Date();
-  const [date, setDate] = useState(new Date(today));
+  const [thedate, setThedate] = useState('');
+  const [date, setDate] = useState(thedate);
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [frozen, setFrozen]=useState(0);
@@ -20,29 +20,27 @@ export default function cart(props) {
   const [ingredients, setIngredients] =  React.useState([]);
   const [selectAll,setSelectAll]= React.useState(0); //false
   const [insertData, setInsertData] =  React.useState([]);
-  const [unchecked, setUnchecked] = React.useState([]);
   const id = useSelector((state) => state.id);
-
+  let get =[{
+    ing_name:'',ing_expir:'',ing_frozen:'',ing_img:''
+  }]
 
   React.useEffect(() => {
-    axios.get(`${API_URL}/search/list`,{params:{user_id: id},ing_name:'',ing_expir:'',ing_frozen:'',ing_img:''})
+    axios.get(`${API_URL}/search/list`,{params:{user_id: id,
+      get}})
       .then((result) => {
-        setIngredients(result.config);
-        console.log("이것은 카트",result.config);
-      //   for (const value in ingredients) {
-      //     let ingId = ingredients[value]._id;
-      //     let ingImg = ingredients[value].ing_img;
-      //     let ingName = ingredients[value].ing_name;
-      //     let ingDate =ingredients[value].ing_expir;
-      //     let ingFrozen = ingredients[value].ing_frozen;
-      //    console.log("이재료 들어감",ingImg);
-      //    console.log("이번호 들어감",ingName);
-      //  console.log("냉냉",ingFrozen);
-      //     let tempData = { id:ingId, image:ingImg,name: ingName,date:ingDate, frozen :ingFrozen, checked: 0};
-      //     setInsertData(prev => [...prev, tempData]);
-      //   console.log("인서트데이터",insertData);
-       //  }
-       // console.log("인서트데이터",insertData);
+        setIngredients(result.data);
+        console.log("이것은 카트",result.data);
+        for (const value in ingredients) {
+          let ingImg = ingredients[value].ing.ing_img;
+          let ingName = ingredients[value].ing.ing_name;
+          let ingDate2 =ingredients[value].ing_expir;
+          let ingDate=ingDate2.substring(0,10);
+          let ingFrozen = ingredients[value].ing_frozen;
+          let tempData = {  image:ingImg,name: ingName,date:ingDate, frozen :ingFrozen, checked: 0};
+          setInsertData(prev => [...prev, tempData]);
+        console.log("인서트데이터1",insertData);
+        }
       })
       .catch((error) => {
         console.error(error);
@@ -99,9 +97,6 @@ const deleteHandler = (index) => { //x표 삭제
       setFridgeice(0);
     }
    setFrozen(0);
-   console.log("냉장",fridge);
-   console.log("냉동",fridgeice);
-   console.log("결론",frozen);
   }
 
   const frozenpick2=(fridge,fridgeice)=>{
@@ -113,10 +108,6 @@ const deleteHandler = (index) => { //x표 삭제
        setFridgeice(1);
       }
       setFrozen(1);
-    console.log("냉장상태",fridge);
-    console.log("냉동상태",fridgeice);
-    console.log("결론",frozen);
-  
   }
 
 
@@ -145,6 +136,8 @@ const deleteHandler = (index) => { //x표 삭제
      <ScrollView>
        {
          insertData && insertData.map((food,i)=>{
+          let photo= {uri:food.image};
+
            return(
             <View style={styles.box}  key={i}> 
             <View style={styles.boxtop2}>          
@@ -155,8 +148,8 @@ const deleteHandler = (index) => { //x표 삭제
          <Icon name="close" size={30} color="#000" />
          </TouchableOpacity></View>
           <View style={styles.box2} width={Dimensions.get('screen').width * 0.89}>
-            <Image style={styles.ingredientsImage} 
-            source={food.image}
+            <Image style={styles.ingredientsImage}          
+            source={photo}
              resizeMode={"contain"} />
             <View style={styles.box3}
               width={Dimensions.get('screen').width * 0.5}>
@@ -165,7 +158,7 @@ const deleteHandler = (index) => { //x표 삭제
                 <View style={styles.showdate} >
                   <Icon name="calendar" size={30} color="#8C9190" />
                   <View style={styles.date1} >
-                    <Text style={styles.date2}>{date.toLocaleDateString('ko-KR')}
+                    <Text style={styles.date2}>{food.date}
                     </Text></View></View>
               </TouchableHighlight>
               {show && (
@@ -175,16 +168,16 @@ const deleteHandler = (index) => { //x표 삭제
                   mode={mode}
                   is24Hour={true}
                   display="spinner"
-                  onChange={onChange}
+                  onChange={onChange(food.date)}
   
                 />
               )}
   
               <View  style={styles.frozenpick}>
-              <TouchableOpacity delayPressIn={0} style={fridge==0?styles.cold:styles.cold2} onPress={()=>{frozenpick(fridge,fridgeice)}}  >
+              <TouchableOpacity delayPressIn={0} style={food.frozen == 0 ? styles.cold2:styles.cold} onPress={()=>{frozenpick(fridge,fridgeice)}}  >
                <Text style={styles.coldd} >냉장</Text>                 
               </TouchableOpacity>
-              <TouchableOpacity delayPressIn={0} style={fridgeice==0?styles.ice:styles.ice2} onPress={()=>{frozenpick2(fridge,fridgeice)}} >              
+              <TouchableOpacity delayPressIn={0} style={food.frozen == 0 ? styles.ice:styles.ice2} onPress={()=>{frozenpick2(fridge,fridgeice)}} >              
                <Text style={styles.icee}>냉동</Text>                 
               </TouchableOpacity>
             </View>
