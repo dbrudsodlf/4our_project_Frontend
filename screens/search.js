@@ -6,60 +6,58 @@ import Modal from 'react-native-modal';
 import SegmentedControl from 'rn-segmented-control';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/Feather';
-import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons';
 import { API_URL } from '../config/constants.js';
 import axios from 'axios';
-
+import { useSelector } from 'react-redux';
 
 
 export default function search(props) {
   const [ingredients, setIngredients] = React.useState([]);
   const [ingredients2, setIngredients2] = React.useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
-  let today=new Date();
+  let today = new Date();
   const [date, setDate] = useState(new Date(today));
-  const [todate,setTodate]=useState('');
+  const [todate, setTodate] = useState('');
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [modalName, setModalName] = useState('');
-  const [fridge,setFridge]=useState(1);//디폴트 냉장선택
-  const [fridgeice,setFridgeice]=useState(0);
+  const [fridge, setFridge] = useState(1);//디폴트 냉장선택
+  const [fridgeice, setFridgeice] = useState(0);
   const [search, setSearch] = useState('');
-  const [frozen, setFrozen]=useState(0);
-  const [cartin,setCartin]=useState([]);
-  const [change,setChange]=useState(0);
+  const [frozen, setFrozen] = useState(0);
+  const [cartin, setCartin] = useState([]);
+  const [change, setChange] = useState(0);
   const [name, setName] = useState('');
-  const[result,setResult]=React.useState([]);
-//   const pickfood=(name)=>{
-//     if(cartin.length===0){
-//       setCartin([...cartin,name]);
-//   }else{
-//     if(cartin.indexOf(name)<0){
-//       setCartin([...cartin,name]);
-//     }else{
-//       alert("이미 담은 재료입니다.");
-//     }
-//   }
-// }
+  const [result, setResult] = React.useState([]);
+  const id = useSelector((state) => state.id);
+  //   const pickfood=(name)=>{
+  //     if(cartin.length===0){
+  //       setCartin([...cartin,name]);
+  //   }else{
+  //     if(cartin.indexOf(name)<0){
+  //       setCartin([...cartin,name]);
+  //     }else{
+  //       alert("이미 담은 재료입니다.");
+  //     }
+  //   }
+  // }
 
-const shortdate=()=>{ //날짜만 출력
- let year = date.getFullYear();
- let month = date.getMonth()+1;
- let dt = date.getDate();
+  const shortdate = () => { //날짜만 출력
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let dt = date.getDate();
 
-if (dt < 10) {
-  dt = '0' + dt;
-}
-if (month < 10) {
-  month = '0' + month;
-}
-let tt=year+'-' + month + '-'+dt;
-setTodate(tt);
-console.log(tt);
-console.log(todate);
-}
-
-
+    if (dt < 10) {
+      dt = '0' + dt;
+    }
+    if (month < 10) {
+      month = '0' + month;
+    }
+    let tt = year + '-' + month + '-' + dt;
+    setTodate(tt);
+    console.log(tt);
+    console.log(todate);
+  }
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -83,31 +81,23 @@ console.log(todate);
     setModalName(item);
   };
 
- /* const gotocart = () => {
-    let tempData = {  ing_name: modalName, ing_frozen :frozen, ing_expir: todate};
-    setInsertData(prev => [...prev, tempData]);
-    console.log("냉장고속",insertData)
-    setGogo(!gogo);
-
-  };*/
+  /* const gotocart = () => {
+     let tempData = {  ing_name: modalName, ing_frozen :frozen, ing_expir: todate};
+     setInsertData(prev => [...prev, tempData]);
+     console.log("냉장고속",insertData)
+     setGogo(!gogo);
+ 
+   };*/
   const gotocart = () => {
-    axios.post(`${API_URL}/search/list`,{ user_id:3, ing_expir: todate, ing_frozen :frozen, ing_name: modalName})
-    .then((res)=>{
-      console.log("보냄",res.config.data);
-  }).catch(error=>{
-      console.log(error);})
-  
-  };
+    axios.post(`${API_URL}/search/list`,
+     {user_id: id,ing_expir: todate, ing_frozen: frozen, ing_name: modalName })
+      .then((res) => {
+        console.log("보냄", res.config.data);
+      }).catch(error => {
+        console.log(error);
+      })
 
-  React.useEffect(() => {//데이터 받아오기
-    axios.get(`${API_URL}/main/all`)
-      .then((result) => {
-        setIngredients(result.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      })
-  }, []);
+  };
 
   /*React.useEffect(() => {//데이터 보내
     axios.post(`${API_URL}/search/list`,{
@@ -121,74 +111,67 @@ console.log(todate);
       console.log(error);})
   }, [gogo]);*/
 
-  const searchFilterFunction = (text) => {//검색필터
-    //setGogo(!gogo);
-  };
 
-  
   React.useEffect(() => {//데이터 받아오기
     axios.get(`${API_URL}/search/list`)
       .then((result) => {
         setIngredients2(result);
-        console.log("여기담김",ingredients2)
+        console.log("여기담김", ingredients2)
       })
       .catch((error) => {
         console.error(error);
       })
   }, [change]);
 
-  const frozenpick=(fridge,fridgeice)=>{
-    if (fridgeice==0){
-    setFridge(1);
-    setFridgeice(0);
-    }else if(fridgeice==1){
+  const frozenpick = (fridge, fridgeice) => {
+    if (fridgeice == 0) {
+      setFridge(1);
+      setFridgeice(0);
+    } else if (fridgeice == 1) {
       setFridge(1);
       setFridgeice(0);
     }
-   setFrozen(0);
-   console.log("냉장",fridge);
-   console.log("냉동",fridgeice);
-   console.log("결론",frozen);
+    setFrozen(0);
+    //console.log("냉장", fridge);
+    //console.log("냉동", fridgeice);
+    //console.log("결론", frozen);
   }
 
-  const frozenpick2=(fridge,fridgeice)=>{
-    if (fridge==0){
+  const frozenpick2 = (fridge, fridgeice) => {
+    if (fridge == 0) {
       setFridge(0);
-     setFridgeice(1);
-      }else if(fridge==1){
-        setFridge(0);
-       setFridgeice(1);
-      }
-      setFrozen(1);
-    console.log("냉장상태",fridge);
-    console.log("냉동상태",fridgeice);
-    console.log("결론",frozen);
-  
+      setFridgeice(1);
+    } else if (fridge == 1) {
+      setFridge(0);
+      setFridgeice(1);
+    }
+    setFrozen(1);
+    //console.log("냉장상태", fridge);
+    //console.log("냉동상태", fridgeice);
+    //console.log("결론", frozen);
   }
 
-  const searchword=(word)=>{
-    console.log("문자지롱",word);
-    axios.get(`${API_URL}/search`,{params:{name:word, ing_name:''}})
-    .then((res)=>{
-     // console.log("단어검색",res.config.params);
-     console.log("단어검색",res.data);
-     setResult(res.data);
-     console.log("결과",result);
+  const searchword = (word) => {
+    axios.get(`${API_URL}/search`, { params: { name: word, ing_name: '' } })
+      .then((res) => {
+        // console.log("단어검색",res.config.params);
+       // console.log("단어검색", res.data);
+        setResult(res.data);
+        //console.log("결과", result);
 
-  }).catch(error=>{
-      console.log(error);})
-  
+      }).catch(error => {
+        console.log(error);
+      })
   }
+
   return (
-
     <View style={styles.container}>
-
-
       <View>
         <View style={styles.titleArea}>
           <Text style={styles.text}>재료 검색</Text>
           <TouchableOpacity onPress={() => {//장바구니로 이동
-            props.navigation.navigate("cart",cartin),setChange(!change);}}>
+            props.navigation.navigate("cart", cartin), setChange(!change);
+          }}>
             <Icon2 name="shopping-cart" size={30} color="#000" />
           </TouchableOpacity>
         </View>
@@ -196,21 +179,13 @@ console.log(todate);
       <SearchBar platform='ios' cancelButtonTitle='취소'
         value={name}
         onChange={(event) => {
-            const {eventCount, target, text} = event.nativeEvent;
-            setName(text);
-            {searchword(text)}
-          }}
+          const { eventCount, target, text } = event.nativeEvent;
+          setName(text);
+          { searchword(text) }
+        }}
         underlineColorAndroid='transparent'
         placeholder="원하는 재료를 검색해보세요"
-      //   onKeyPress={ (event) => {
-      //     if(event.nativeEvent.key == "Enter"){
-      //       toggleModal(search);
-      //     } 
-         
-      // }} 
       />
-        
-
       <FlatList
         data={result}
         keyExtractor={(_id, index) => {
@@ -223,8 +198,7 @@ console.log(todate);
             </TouchableHighlight>
           );
         }
-        }
-
+       }
       />
 
       <Modal
@@ -256,29 +230,14 @@ console.log(todate);
             )}
 
             <Text style={styles.fridge}>보관 방법</Text>
-
-            {/* <SegmentedControl
-              tabs={['냉장', '냉동']}//냉장:0 , 냉동:1
-              currentIndex={tabIndex}
-              onChange={handleTabsChange}
-              segmentedControlBackgroundColor='#fff'
-              activeSegmentBackgroundColor='#ffe0ad'
-              paddingVertical={15}
-              width={Dimensions.get('screen').width *0.6}
-              textStyle={{
-                fontWeight: '300',
-              }}
-            /> */}
-
-            <View  style={styles.frozenpick}>
-              <TouchableOpacity delayPressIn={0} style={fridge==0?styles.cold:styles.cold2} onPress={()=>{frozenpick(fridge,fridgeice)}}  >
-               <Text style={styles.coldd} >냉장</Text>                 
+            <View style={styles.frozenpick}>
+              <TouchableOpacity delayPressIn={0} style={fridge == 0 ? styles.cold : styles.cold2} onPress={() => { frozenpick(fridge, fridgeice) }}  >
+                <Text style={styles.coldd} >냉장</Text>
               </TouchableOpacity>
-              <TouchableOpacity delayPressIn={0} style={fridgeice==0?styles.ice:styles.ice2} onPress={()=>{frozenpick2(fridge,fridgeice)}} >              
-               <Text style={styles.icee}>냉동</Text>                 
+              <TouchableOpacity delayPressIn={0} style={fridgeice == 0 ? styles.ice : styles.ice2} onPress={() => { frozenpick2(fridge, fridgeice) }} >
+                <Text style={styles.icee}>냉동</Text>
               </TouchableOpacity>
             </View>
-
           </View>
 
           <View style={styles.touch} >
@@ -293,16 +252,13 @@ console.log(todate);
             <TouchableOpacity
               style={styles.button2}
               onPress={() => {
-
                 gotocart(modalName)
                 setModalVisible(!isModalVisible);
-                
               }}>
               <Text style={styles.txt}>담기</Text>
             </TouchableOpacity></View>
         </View>
       </Modal>
-
     </View>
   );
 }
@@ -311,7 +267,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     flex: 1,
-    paddingTop:40
+    paddingTop: 35
   },
   titleArea: {
     flexDirection: 'row',
@@ -323,55 +279,54 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     backgroundColor: '#fff'
   },
-
-  cold:{
-    marginRight:20,  
-    width: 110, 
-    height:50 ,
-    borderWidth:1,
-    borderRadius:10, 
-    alignItems:'center',
-    justifyContent:'center',
+  cold: {
+    marginRight: 20,
+    width: 110,
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  cold2:{
-    marginRight:20,  
-    width: 110, 
-    height:50 ,
-    borderWidth:1,
-    borderRadius:10, 
-    alignItems:'center',
-    justifyContent:'center',
-    backgroundColor:'#9ACD32'
+  cold2: {
+    marginRight: 20,
+    width: 110,
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#9ACD32'
   },
-coldd:{
-  fontSize:20,
-},
-  ice:{
-    marginRight:20,  
-    width: 110, 
-    height:50 ,
-    borderWidth:1,
-    borderRadius:10, 
-    alignItems:'center',
-    justifyContent:'center'
+  coldd: {
+    fontSize: 20,
   },
-  ice2:{
-    marginRight:20,  
-    width: 110, 
-    height:50 ,
-    borderWidth:1,
-    borderRadius:10, 
-    alignItems:'center',
-    justifyContent:'center',
-    backgroundColor:'#add8e6'
+  ice: {
+    marginRight: 20,
+    width: 110,
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  icee:{
-    fontSize:20,
+  ice2: {
+    marginRight: 20,
+    width: 110,
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#add8e6'
   },
-  frozenpick:{
-    flex:1,
-    flexDirection:'row',
-    marginBottom:50
+  icee: {
+    fontSize: 20,
+  },
+  frozenpick: {
+    flex: 1,
+    flexDirection: 'row',
+    marginBottom: 50
   },
   text: {
     fontSize: 28,
@@ -424,7 +379,7 @@ coldd:{
     justifyContent: 'space-between',
     padding: 15,
     marginBottom: 20,
-    borderRadius:20
+    borderRadius: 20
   },
   fridge: {
     fontSize: 23,

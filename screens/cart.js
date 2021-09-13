@@ -4,11 +4,10 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import SegmentedControl from 'rn-segmented-control';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { API_URL,API_URLL } from '../config/constants.js';
-
 import axios from 'axios';
 import { TouchableOpacity } from 'react-native';
 import { Ionicons} from '@expo/vector-icons';
-
+import { useSelector } from 'react-redux';
 
 export default function cart(props) {
   const today = new Date();
@@ -22,25 +21,27 @@ export default function cart(props) {
   const [selectAll,setSelectAll]= React.useState(0); //false
   const [insertData, setInsertData] =  React.useState([]);
   const [unchecked, setUnchecked] = React.useState([]);
+  const id = useSelector((state) => state.id);
+
 
   React.useEffect(() => {
-    axios.get(`${API_URL}/search/list?user_id=1`)
+    axios.get(`${API_URL}/search/list`,{params:{user_id: id},ing_name:'',ing_expir:'',ing_frozen:'',ing_img:''})
       .then((result) => {
-        setIngredients(result.data);
-        console.log("이것은 카트",ingredients);
-        for (const value in ingredients) {
-          let ingId = ingredients[value]._id;
-          let ingImg = ingredients[value].ing_img;
-          let ingName = ingredients[value].ing_name;
-          let ingDate =ingredients[value].ing_expir;
-          let ingFrozen = ingredients[value].ing_frozen;
-        //  console.log("이재료 들어감",ingImg);
-         // console.log("이번호 들어감",ingName);
-       // console.log("냉냉",ingFrozen);
-          let tempData = { id:ingId, image:ingImg,name: ingName,date:ingDate, frozen :ingFrozen, checked: 0};
-          setInsertData(prev => [...prev, tempData]);
-        console.log("인서트데이터",insertData);
-         }
+        setIngredients(result.config);
+        console.log("이것은 카트",result.config);
+      //   for (const value in ingredients) {
+      //     let ingId = ingredients[value]._id;
+      //     let ingImg = ingredients[value].ing_img;
+      //     let ingName = ingredients[value].ing_name;
+      //     let ingDate =ingredients[value].ing_expir;
+      //     let ingFrozen = ingredients[value].ing_frozen;
+      //    console.log("이재료 들어감",ingImg);
+      //    console.log("이번호 들어감",ingName);
+      //  console.log("냉냉",ingFrozen);
+      //     let tempData = { id:ingId, image:ingImg,name: ingName,date:ingDate, frozen :ingFrozen, checked: 0};
+      //     setInsertData(prev => [...prev, tempData]);
+      //   console.log("인서트데이터",insertData);
+       //  }
        // console.log("인서트데이터",insertData);
       })
       .catch((error) => {

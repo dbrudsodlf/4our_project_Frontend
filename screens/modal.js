@@ -185,7 +185,7 @@ const ModalPage = (props) => {
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.contents}
                             onPress={()=> {
-                                navigation.navigate('search',{user});
+                                navigation.navigate('search');
                             }}>
                             <Icon name='magnify' color='#191919' size={32}
                                 style={{
