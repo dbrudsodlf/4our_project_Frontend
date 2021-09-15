@@ -7,9 +7,25 @@ import {
   Image
 } from 'react-native';
 import { ImageBackground } from 'react-native';
-import { API_URL } from '../config/constants.js';
-import { flask_url } from '../config/constants.js';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import { API_URL, flask_url } from '../config/constants.js';
+import FormData from 'form-data';
+import * as ImagePicker from 'expo-image-picker';
+
+const createFormData = (photo) => {
+  const data = new FormData();
+  console.log(photo);
+
+  data.append('image', {
+    name: '',
+    type: 'image/jpeg',
+    uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
+  });
+  // data.append('image', {type: 'image/jpeg',image: photo})
+
+  return data;
+};
 
 export default function cameraCheck ({ route, navigation }) {
   const { photo } = route.params;
@@ -42,6 +58,35 @@ export default function cameraCheck ({ route, navigation }) {
             console.log(error);})
       };
 
+  const openCamera = async () => {
+    // Ask the user for the permission to access the camera
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+        alert("You've refused to allow this appp to access your camera!");
+        return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync();
+
+    // Explore the result
+    console.log("성공",result);
+
+    if (!result.cancelled) {
+        navigation.navigate("cameraCheck", { photo:result.uri });
+        //let img_url =result.uri;
+        console.log(createFormData(result));
+
+        axios.post(`${flask_url}/camera/predict`,
+        createFormData(result))
+        .then((res)=>{
+            console.log("보냄", res);
+            console.log(res.data.label);
+        }).catch(error=>{
+            console.log(error);})
+      }
+    }
+
 
   return (
     <View  style={styles.container}>
@@ -53,7 +98,7 @@ export default function cameraCheck ({ route, navigation }) {
             <ImageBackground style={styles.img} source={image} />
         </View>
         <Text style={styles.name}>토마토</Text>
-        <TouchableOpacity style={styles.tbtn1}>
+        <TouchableOpacity style={styles.tbtn1} onPress={openCamera}>
             <Text style={styles.btn1}>다시 촬영하러 가기</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.tbtn2} onPress={handleUploadPhoto}>

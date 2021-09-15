@@ -25,7 +25,7 @@ const createFormData = (photo) => {
     console.log(photo);
   
     data.append('image', {
-      name: '이미지',
+      name: '',
       type: 'image/jpeg',
       uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
     });
@@ -104,30 +104,32 @@ const ModalPage = (props) => {
             //let img_url =result.uri;
             console.log(createFormData(result));
 
-            // axios.post(`${flask_url}/camera/predict`,
-            // createFormData(result), {
+            axios.post(`${flask_url}/camera/predict`,
+            createFormData(result)
+            // , {
             //     headers: {
             //         'content-type': 'multipart/form-data',
             //     }
-            // })
-            // //{image: Platform.OS === 'ios' ? result.uri.replace('file://', '') : result.uri})
-            // .then((res)=>{
-            //     console.log("보냄", res);
-            //     console.log(res.data.label);
-            // }).catch(error=>{
-            //     console.log(error);})
+            // }
+            )
+            //{image: Platform.OS === 'ios' ? result.uri.replace('file://', '') : result.uri})
+            .then((res)=>{
+                console.log("보냄", res);
+                console.log(res.data.label);
+            }).catch(error=>{
+                console.log(error);})
 
-            axios({
-                method: 'post',
-                url: `${flask_url}/camera/predict`,
-                headers: { 'content-type': 'multipart/form-data' }, 
-                data: createFormData(result)
-              })
-              .then((res)=>{
-                    console.log("보냄", res);
-                    console.log(res.data.label);
-                }).catch(error=>{
-                    console.log(error);})
+            // axios({
+            //     method: 'post',
+            //     url: `${flask_url}/camera/predict`,
+            //     headers: { 'content-type': 'multipart/form-data' }, 
+            //     data: createFormData(result)
+            //   })
+            //   .then((res)=>{
+            //         console.log("보냄", res);
+            //         console.log(res.data.label);
+            //     }).catch(error=>{
+            //         console.log(error);})
         }
 
     }

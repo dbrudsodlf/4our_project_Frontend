@@ -20,6 +20,7 @@ export default function cart(props) {
   const [ingredients, setIngredients] =  React.useState([]);
   const [selectAll,setSelectAll]= React.useState(0); //false
   const [insertData, setInsertData] =  React.useState([]);
+
   const id = useSelector((state) => state.id);
   let get =[{
     ing_name:'',ing_expir:'',ing_frozen:'',ing_img:''
@@ -31,21 +32,26 @@ export default function cart(props) {
       .then((result) => {
         setIngredients(result.data);
         console.log("이것은 카트",result.data);
-        for (const value in ingredients) {
-          let ingImg = ingredients[value].ing.ing_img;
-          let ingName = ingredients[value].ing.ing_name;
-          let ingDate2 =ingredients[value].ing_expir;
-          let ingDate=ingDate2.substring(0,10);
-          let ingFrozen = ingredients[value].ing_frozen;
-          let tempData = {  image:ingImg,name: ingName,date:ingDate, frozen :ingFrozen, checked: 0};
-          setInsertData(prev => [...prev, tempData]);
-        console.log("인서트데이터1",insertData);
-        }
+        console.log('잉그', ingredients);
       })
       .catch((error) => {
         console.error(error);
       })
   }, []);
+
+  React.useEffect(() => {
+        ingredients.map((ing)=> {
+          ing.ing_expir = changeDateFormat(ing.ing_expir);
+        });
+  }, [ingredients]);
+
+  const changeDateFormat = (oldDate) => {
+    if(oldDate === null) {
+      return '2021-01-01'
+    }
+    let newDate = oldDate.substr(0, 10);
+    return newDate
+  }
 
   const checkHandle=(index,value)=>{//일부 선택
     const newItems = [...insertData];  
@@ -135,8 +141,8 @@ const deleteHandler = (index) => { //x표 삭제
 
      <ScrollView>
        {
-         insertData && insertData.map((food,i)=>{
-          let photo= {uri:food.image};
+         ingredients && ingredients.map((food,i)=>{
+          let photo= {uri:food.ing.ing_img};
 
            return(
             <View style={styles.box}  key={i}> 
@@ -153,12 +159,12 @@ const deleteHandler = (index) => { //x표 삭제
              resizeMode={"contain"} />
             <View style={styles.box3}
               width={Dimensions.get('screen').width * 0.5}>
-              <Text style={styles.food} key={i}>{food.name}</Text>
+              <Text style={styles.food} key={i}>{food.ing.ing_name}</Text>
               <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
                 <View style={styles.showdate} >
                   <Icon name="calendar" size={30} color="#8C9190" />
                   <View style={styles.date1} >
-                    <Text style={styles.date2}>{food.date}
+                    <Text style={styles.date2}>{food.ing_expir}
                     </Text></View></View>
               </TouchableHighlight>
               {show && (
@@ -168,16 +174,16 @@ const deleteHandler = (index) => { //x표 삭제
                   mode={mode}
                   is24Hour={true}
                   display="spinner"
-                  onChange={onChange(food.date)}
+                  onChange={onChange(food.ing_expir)}
   
                 />
               )}
   
               <View  style={styles.frozenpick}>
-              <TouchableOpacity delayPressIn={0} style={food.frozen == 0 ? styles.cold2:styles.cold} onPress={()=>{frozenpick(fridge,fridgeice)}}  >
+              <TouchableOpacity delayPressIn={0} style={food.ing_frozen == 0 ? styles.cold2:styles.cold} onPress={()=>{frozenpick(fridge,fridgeice)}}  >
                <Text style={styles.coldd} >냉장</Text>                 
               </TouchableOpacity>
-              <TouchableOpacity delayPressIn={0} style={food.frozen == 0 ? styles.ice:styles.ice2} onPress={()=>{frozenpick2(fridge,fridgeice)}} >              
+              <TouchableOpacity delayPressIn={0} style={food.ing_frozen == 0 ? styles.ice:styles.ice2} onPress={()=>{frozenpick2(fridge,fridgeice)}} >              
                <Text style={styles.icee}>냉동</Text>                 
               </TouchableOpacity>
             </View>

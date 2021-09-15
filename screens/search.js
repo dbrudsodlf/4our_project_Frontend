@@ -65,9 +65,8 @@ const shortdate=(date)=>{ //날짜만 출력
   };
 
   const gotocart = (modalName) => {
-    let cartdata={user_id: id,ing_expir: todate, ing_frozen: frozen, ing_name: modalName }
+    let cartdata={user_id: id,ing_expir: date, ing_frozen: frozen, ing_name: modalName }
     setCart([...cart,cartdata]);
-   
     }
 
 const putincart=()=>{
