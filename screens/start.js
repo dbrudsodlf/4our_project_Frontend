@@ -46,7 +46,7 @@ export default function StartScreen(props) {
           <Text  style={{fontSize: 12,marginRight:10}}>간단한 촬영으로 나의 냉장고 완성하기</Text>
         </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.flex2} onPress={() => {
+        <TouchableOpacity style={styles.flex2} onPressIn={() => {
              props.navigation.navigate("MainScreen");
           }}>
         <View style={styles.btn2}>

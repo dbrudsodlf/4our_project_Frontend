@@ -111,7 +111,7 @@ function MainTabScreen(props) {
         options={{
           tabBarLabel: '모달',
           tabBarIcon: ({focused}) => (
-            <TouchableOpacity onPress={pressButton}>
+            <TouchableOpacity activeOpacity={0.8} onPressOut={pressButton}>
             <View>
             <Icon name='plus' size={40} style={{  
               backgroundColor:'#F59A23',

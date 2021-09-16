@@ -1,134 +1,108 @@
-import * as React from 'react';
+import React from 'react';
 import {
-  TouchableOpacity,
   StyleSheet,
   View,
   Text,
+  ScrollView,
   Image,
-  ScrollView
+  FlatList,
+  Dimensions
 } from 'react-native';
-import EggImage from '../assets/egg.jpeg';
-// import axios from 'axios';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import axios from 'axios';
+import {API_URL} from "../config/constants";
+import { useSelector } from 'react-redux';
 
-export default function FridgeFrozen() {
+export default function FridgeCold ({ isSelectBtn }) {
+  const id = useSelector((state) => state.id);
+  const [ingredients, setIngredients] = React.useState([]);
+  const [selectedIngredients, setSelectedIngredients] = React.useState([]);
+  const [select, setSelect] = React.useState([]);
+  const [flagstate, setFlagstate] = React.useState([]);
+  let get = [{
+    _id: '', ing_name: '', ing_expir: '',  ing_img: ''
+  }]
 
-  //재료 받아오기
-  // const [ingredients, setIngredients] = React.useState([])
-  // React.useEffect(()=>{
-  //   axios
-  //     .get(`${API_URL}/MainScreen`)
-  //     .tne((result)=>{
-  //       setIngredients(result.data.ingredients);
-  //     })
-  //     .catch((error)=>{
-  //       console.error(error)
-  //     });
-  // }, []);
+  React.useEffect(()=>{
+    axios.get(`${API_URL}/main`,{params:{user_id:id,ing_frozen:'',get}}
+    ).then((result)=>{
+      setIngredients(result.data);
+      console.log("루루루",result.data);
+    }).catch((error)=>{
+      console.error(error);
+    })
+  }, []);
+
+  React.useEffect(()=>{
+    isSelectBtn(flagstate, select);
+  }, [selectedIngredients]);
+
+  const renderIngredients = ({ item, index }) => {
+    const { ing_name, slug, ing_img, dday, _id } = item;
+    const isSelected = selectedIngredients.filter((i) => i === ing_name).length > 0;
+
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          if (isSelected) {
+            setSelectedIngredients((prev) => prev.filter((i) => i !== ing_name));
+            console.log('sfb: ', select, index);
+            setSelect(idd => [...idd, _id]);
+            setSelect(item => item.filter(num => num != index));
+            console.log('sfa: ', select);
+            setFlagstate({flag: false, add : -1, id:index});
+          } else {
+            setSelectedIngredients(prev => [...prev, ing_name])
+            console.log(_id);
+            setSelect(select => [...select, _id]);
+            console.log("selectedIng: ", select);
+            setFlagstate({flag: true, add : 1, id:index});
+          }
+          console.log('i', select);
+        }}
+        >
+          
+          <View style={[styles.ingredientsCard, isSelected && { backgroundColor: 'gray'}]}>
+           
+            {/* {
+                  aLoop.map((imgurl, index)=>{
+                    if(imgUrl == "EggImage"){
+                    return (
+                        <Image 
+                          key={index}
+                          style={styles.ingredientsImage} 
+                          source={EggImage} 
+                          resizeMode={"contain"}/>
+                      );
+                    }
+                  })
+                } */}
+              <Image 
+                style={styles.ingredientsImage} 
+                source={ing_img === '' ? {uri: 'nothing'} : {uri : ing_img}}
+                resizeMode="contain"/>
+            
+            <View style={styles.ingredientsContents}>
+              <Text style={styles.ingredientsFont} key={ing_name}>{ing_name}</Text>
+              <Text style={styles.ingredientsFont} key={dday}>{dday}</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+    );
+  };
 
   return (
     <View>
-      <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', overflow: 'hidden' }}>
-        {/* 재료 받아올 때 아래 코드로 대체할 것임 */}
-        {/* <View style={styles.ingredientsList} >
-          {
-            ingredients.map((ingredients, index)=>{
-              return (
-                <View style={styles.ingredientsCard}>
-                  <View>
-                    <Image 
-                      style={styles.ingredientsImage} 
-                      source={{
-                        uri: `${API_URL}/${ingredient.imgUrl}`
-                      }} 
-                      resizeMode={"contain"}/>
-                  </View>
-                  <View style={styles.ingredientsContents}>
-                    <Text style={styles.ingredientsFont}>{ingredient.name}</Text>
-                    <Text style={styles.ingredientsFont}>{ingredient.dday}</Text>
-                  </View>
-                </View>
-              );
-            })
-          }
-        </View> */}
-        <TouchableOpacity>
-          <View style={styles.ingredientsCard}>
-            <View>
-              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"} />
-            </View>
-            <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont}>계란</Text>
-              <Text style={styles.ingredientsFont}>D-3</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.ingredientsCard}>
-            <View>
-              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"} />
-            </View>
-            <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont}>계란</Text>
-              <Text style={styles.ingredientsFont}>D-3</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.ingredientsCard}>
-            <View>
-              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"} />
-            </View>
-            <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont}>계란</Text>
-              <Text style={styles.ingredientsFont}>D-3</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.ingredientsCard}>
-            <View>
-              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"} />
-            </View>
-            <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont}>계란</Text>
-              <Text style={styles.ingredientsFont}>D-3</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.ingredientsCard}>
-            <View>
-              <Image style={styles.ingredientsImage} source={EggImage} resizeMode={"contain"} />
-            </View>
-            <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont}>계란</Text>
-              <Text style={styles.ingredientsFont}>D-3</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity disabled={true}>
-          <View style={styles.ingredientsCard}>
-            <View style={{ alignItems: 'center', padding: 10 }}>
-              <Icon name='help-circle-outline' size={110} color='#191919' />
-            </View>
-            <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont}> </Text>
-              <Text style={styles.ingredientsFont}> </Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity disabled={true}>
-          <View style={styles.ingredientsCard}>
-            <View style={{ alignItems: 'center', padding: 10 }}>
-              <Icon name='help-circle-outline' size={110} color='#191919' />
-            </View>
-            <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont}> </Text>
-              <Text style={styles.ingredientsFont}> </Text>
-            </View>
-          </View>
-        </TouchableOpacity>
+      <ScrollView>
+        <View style={styles.ingredientsList} >
+          <FlatList
+            data={ingredients}
+            renderItem={renderIngredients}
+            isSelectBtn={isSelectBtn}
+            numColumns={2}
+            scrollEnabled={true}
+          />
+        </View>
       </ScrollView>
     </View>
   );
@@ -143,9 +117,9 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   ingredientsCard: {
-    marginTop: 40,
-    marginLeft: 40,
-    width: 150,
+    marginTop: Dimensions.get('screen').width*0.09,
+    marginLeft: Dimensions.get('screen').width*0.09,
+    width: Dimensions.get('screen').width*0.36,
     borderColor: "#191919",
     backgroundColor: 'white',
     borderRadius: 20,
@@ -171,8 +145,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   ingredientsList: {
-    flex: 1,
-    flexDirection: 'row',
+    flex: 1, 
+    flexDirection: 'row', 
     flexWrap: 'wrap'
   }
 });

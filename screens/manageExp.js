@@ -14,6 +14,7 @@ import CheckboxList from 'rn-checkbox-list';
 import { Checkbox } from 'react-native-paper';
 import { API_URL } from "../config/constants";
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 export default function manageExp () {
   const [ingredients, setIngredients] = React.useState([]);
@@ -21,9 +22,9 @@ export default function manageExp () {
   const [selectAll, setSelectAll] = React.useState(false);
   const [cartItemIsLoading, setCartItemIsLoading] = React.useState(false);
   const [unchecked, setUnchecked] = React.useState([]);
-
+  const id = useSelector((state) => state.id);
   React.useEffect(()=>{
-    axios.get(`${API_URL}/manage?user_id=103783810692615626282`).then((result)=>{
+    axios.get(`${API_URL}/manage?user_id=${id}`).then((result)=>{
       setIngredients(result.data);
     }).catch((error)=>{
       console.error(error);

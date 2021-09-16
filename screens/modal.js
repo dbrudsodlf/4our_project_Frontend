@@ -185,6 +185,7 @@ const ModalPage = (props) => {
             animationType={"fade"}
             transparent
             statusBarTranslucent
+            useNativeDriver={true}
         >
             <View style={styles.overlay}>
                 <TouchableWithoutFeedback
@@ -226,7 +227,7 @@ const ModalPage = (props) => {
                             <Text style={styles.texts} >라이브러리에서 사진 가져오기</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.contents}
-                            onPress={()=> {
+                            onPressIn={()=> {
                                 navigation.navigate('search');
                             }}>
                             <Icon name='magnify' color='#191919' size={32}

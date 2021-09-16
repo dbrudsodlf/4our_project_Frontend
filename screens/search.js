@@ -35,6 +35,9 @@ export default function search(props) {
   };
 
 const shortdate=(date)=>{ //날짜만 출력
+  if(date==null){
+    setDate(today);
+  }
  let year = date.getFullYear();
  let month = date.getMonth()+1;
  let dt = date.getDate();
@@ -65,7 +68,7 @@ const shortdate=(date)=>{ //날짜만 출력
   };
 
   const gotocart = (modalName) => {
-    let cartdata={user_id: id,ing_expir: date, ing_frozen: frozen, ing_name: modalName }
+    let cartdata={user_id: id,ing_expir: todate, ing_frozen: frozen, ing_name: modalName }
     setCart([...cart,cartdata]);
     }
 
@@ -114,7 +117,7 @@ const putincart=()=>{
       <View>
         <View style={styles.titleArea}>
           <Text style={styles.text}>재료 검색</Text>
-          <TouchableOpacity onPress={() => {//장바구니로 이동
+          <TouchableOpacity onPressIn={() => {//장바구니로 이동
             props.navigation.navigate("cart");
             putincart();
           }}>
@@ -139,7 +142,7 @@ const putincart=()=>{
         }}
         renderItem={({ item }) => {
           return (
-            <TouchableHighlight underlayColor='#F59A23' onPress={() => toggleModal(item.ing_name)}>
+            <TouchableHighlight underlayColor='#F59A23' onPressIn={() => toggleModal(item.ing_name)}>
               <Text style={styles.flatList}>{item.ing_name}</Text>
             </TouchableHighlight>
           );
@@ -157,7 +160,7 @@ const putincart=()=>{
             <Text style={styles.food} key={ingredients}>{modalName}</Text>
             <Text style={styles.date} >유통 기한</Text>
 
-            <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
+            <TouchableHighlight underlayColor='#fff' onPressIn={showDatepicker}>
               <View style={styles.showdate} >
                 <Icon name="calendar" size={30} color="#8C9190" />
                 <Text style={styles.date2}>{date.toLocaleDateString('ko-KR')}
@@ -177,10 +180,10 @@ const putincart=()=>{
 
             <Text style={styles.fridge}>보관 방법</Text>
             <View style={styles.frozenpick}>
-              <TouchableOpacity delayPressIn={0} style={fridge == 0 ? styles.cold : styles.cold2} onPress={() => { frozenpick(fridge, fridgeice) }}  >
+              <TouchableOpacity delayPressIn={0} style={fridge == 0 ? styles.cold : styles.cold2} onPressIn={() => { frozenpick(fridge, fridgeice) }}  >
                 <Text style={styles.coldd} >냉장</Text>
               </TouchableOpacity>
-              <TouchableOpacity delayPressIn={0} style={fridgeice == 0 ? styles.ice : styles.ice2} onPress={() => { frozenpick2(fridge, fridgeice) }} >
+              <TouchableOpacity delayPressIn={0} style={fridgeice == 0 ? styles.ice : styles.ice2} onPressIn={() => { frozenpick2(fridge, fridgeice) }} >
                 <Text style={styles.icee}>냉동</Text>
               </TouchableOpacity>
             </View>
@@ -188,6 +191,7 @@ const putincart=()=>{
 
           <View style={styles.touch} >
             <TouchableOpacity
+            activeOpacity={1}
               style={styles.button1}
               onPress={() => {
                 setModalVisible(!isModalVisible);
@@ -200,6 +204,7 @@ const putincart=()=>{
 
             <TouchableOpacity
               style={styles.button2}
+              activeOpacity={1}
               onPress={() => {
                 gotocart(modalName)
                 setModalVisible(!isModalVisible);

@@ -10,103 +10,94 @@ import {
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import axios from 'axios';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {API_URL} from "../config/constants";
-import { State } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
+import avo from "../assets/egg.jpeg"
 
 export default function FridgeCold ({ isSelectBtn }) {
-
+  const id = useSelector((state) => state.id);
   const [ingredients, setIngredients] = React.useState([]);
   const [selectedIngredients, setSelectedIngredients] = React.useState([]);
   const [select, setSelect] = React.useState([]);
   const [flagstate, setFlagstate] = React.useState([]);
-  // const aLoop = ['../assets/egg.jpeg', '../assets/egg.jpeg', '../assets/cucumber.jpeg'];
+  const [insertData, setInsertData] = React.useState([]);
+  let get = [{
+    _id: '', ing_name: '수박', ing_expir: '',  ing_img: ''
+  }]
 
   React.useEffect(()=>{
-    axios.get(`${API_URL}/main/all`).then((result)=>{
+    axios.get(`${API_URL}/main`,{params:{user_id:id,ing_frozen:0},get}
+    ).then((result)=>{
       setIngredients(result.data);
-      //console.log(result.data);
+      console.log("루루루",result.config.get);
     }).catch((error)=>{
       console.error(error);
     })
   }, []);
 
-  React.useEffect(()=>{
-    isSelectBtn(flagstate, select);
-  }, [selectedIngredients]);
+  // React.useEffect(() => {
+  //   ingredients.map((ing) => {
+  //     let tempData = { date: ing.ing_expir, name: ing.ing.ing_name, img: ing.ing.ing_img, frozen: ing.ing_frozen, idd: ing._id, checked: 0 };
+  //     if (ing.ing_expir == null) {
+  //       ing.ing_expir = today;
+  //     }
+  //     setDate(ing.ing_expir);
+  //     setInsertData(prev => [...prev, tempData]);
+  //     console.log("들어왔니",insertData);
+  //   });
+  // }, [ingredients]);
 
-  const renderIngredients = ({ item, index }) => {
-    const { ing_name, slug, ing_img, dday, _id } = item;
-    const isSelected = selectedIngredients.filter((i) => i === ing_name).length > 0;
+  // React.useEffect(()=>{
+  //   isSelectBtn(flagstate, select);
+  // }, [selectedIngredients]);
+
 
     return (
-      <TouchableOpacity
-        onPress={() => {
-          if (isSelected) {
-            setSelectedIngredients((prev) => prev.filter((i) => i !== ing_name));
-            console.log('sfb: ', select, index);
-            setSelect(idd => [...idd, _id]);
-            setSelect(item => item.filter(num => num != index));
-            console.log('sfa: ', select);
-            setFlagstate({flag: false, add : -1, id:index});
-          } else {
-            setSelectedIngredients(prev => [...prev, ing_name])
-            console.log(_id);
-            setSelect(select => [...select, _id]);
-            console.log("selectedIng: ", select);
-            setFlagstate({flag: true, add : 1, id:index});
-          }
-          console.log('i', select);
-        }}
-        >
-          
-          <View style={[styles.ingredientsCard, isSelected && { backgroundColor: 'gray'}]}>
-           
-            {/* {
-                  aLoop.map((imgurl, index)=>{
-                    if(imgUrl == "EggImage"){
-                    return (
-                        <Image 
-                          key={index}
-                          style={styles.ingredientsImage} 
-                          source={EggImage} 
-                          resizeMode={"contain"}/>
-                      );
-                    }
-                  })
-                } */}
+      <View>
+        <ScrollView>
+        <TouchableOpacity>         
+          <View style={styles.ingredientsCard}>
+              <Image 
+                style={styles.ingredientsImage} 
+                source={avo}
+                resizeMode="contain"/>
+            
+            <View style={styles.ingredientsContents}>
+              <Text style={styles.ingredientsFont}>수박</Text>
+              <Text style={styles.ingredientsFont} >d-3</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+       {/* {
+          ingredients && ingredients.map((food, i) => {
+            return (
+      <TouchableOpacity>         
+          <View style={styles.ingredientsCard}>
               <Image 
                 style={styles.ingredientsImage} 
                 source={ing_img === '' ? {uri: 'nothing'} : {uri : ing_img}}
                 resizeMode="contain"/>
             
             <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont} key={ing_name}>{ing_name}</Text>
-              <Text style={styles.ingredientsFont} key={dday}>{dday}</Text>
+              <Text style={styles.ingredientsFont} key={i}>수박</Text>
+              <Text style={styles.ingredientsFont} key={i}>d-3</Text>
             </View>
           </View>
         </TouchableOpacity>
-    );
-  };
+          );})
+              } */}
+                </ScrollView>
+              </View>);
 
-  return (
-    <View>
-      <ScrollView>
-        <View style={styles.ingredientsList} >
-          <FlatList
-            data={ingredients}
-            renderItem={renderIngredients}
-            isSelectBtn={isSelectBtn}
-            numColumns={2}
-            scrollEnabled={true}
-          />
-        </View>
-      </ScrollView>
-    </View>
-  );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    justifyContent: 'flex-start',
+    paddingTop: 50
+  },
   button: {
     alignItems: 'center',
     backgroundColor: '#DDDDDD',

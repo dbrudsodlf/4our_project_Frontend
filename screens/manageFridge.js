@@ -21,6 +21,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/AntDesign';
 import SegmentedControl from 'rn-segmented-control';
+import { useSelector } from 'react-redux';
 
 export default function manageFridge () {
   const [ingredients, setIngredients] = React.useState([]);
@@ -38,9 +39,10 @@ export default function manageFridge () {
   const [modalName, setModalName] = useState('');
   const [modalDate, setModalDate] = useState([]);
   const [modalFrozen, setModalFrozen] = useState(1);
+  const id = useSelector((state) => state.id);
 
   React.useEffect(()=>{
-    axios.get(`${API_URL}/manage?user_id=103783810692615626282`).then((result)=>{
+    axios.get(`${API_URL}/manage?user_id=${id}`).then((result)=>{
       setIngredients(result.data);
       console.log(ingredients);
       // for (const value in ingredients) {
@@ -291,7 +293,7 @@ const styles = StyleSheet.create({
   centerElement:{
     justifyContent: 'center', 
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   itemList: {
     borderWidth: 1,
