@@ -10,14 +10,14 @@ import {API_URL} from '../config/constants.js';
 const title = '나의 냉장고'
 export default function MainScreen(props) {
   const [selectedIngredients, setSelectedIngredients] = React.useState([]);
-  React.useEffect(()=>{
-    axios.get(`${API_URL}/fridgecold`).then((result)=>{
-      setSelectedIngredients(result.data.selectedIngredients);
-      console.log(selectedIngredients);
-    }).catch((error)=>{
-      console.error(error);
-    })
-  }, []);
+  // React.useEffect(()=>{
+  //   axios.get(`${API_URL}/fridgecold`).then((result)=>{
+  //     setSelectedIngredients(result.data.selectedIngredients);
+  //     console.log(selectedIngredients);
+  //   }).catch((error)=>{
+  //     console.error(error);
+  //   })
+  // }, []);
 
   React.useEffect(()=>{
     setCount(0);

@@ -39,23 +39,35 @@ export default function manageFridge () {
   const [modalDate, setModalDate] = useState([]);
   const [modalFrozen, setModalFrozen] = useState(1);
 
-
   React.useEffect(()=>{
-    axios.get(`${API_URL}/fridgecold`).then((result)=>{
-      setIngredients(result.data.ingredients);
+    axios.get(`${API_URL}/manage?user_id=103783810692615626282`).then((result)=>{
+      setIngredients(result.data);
       console.log(ingredients);
-      for (const value in ingredients) {
-        console.log(ingredients[value].name);
-        let ingId = ingredients[value].id;
-        let ingName = ingredients[value].name;
-        let tempData = {id: ingId, name: ingName, checked: 0};
-        setInsertData(prev => [...prev, tempData]);
-      }
-      console.log(insertData);
+      // for (const value in ingredients) {
+      //   console.log(ingredients[value].ing_name);
+      //   let ingId = ingredients[value]._id;
+      //   let ingName = ingredients[value].ing_name;
+      //   let tempData = {id: ingId, name: ingName, checked: 0};
+      //   setInsertData(prev => [...prev, tempData]);
+      // }
+      // console.log(insertData);
     }).catch((error)=>{
       console.error(error);
     })
   }, []);
+
+  React.useEffect(() => {
+    ingredients.map((ing)=> {
+      let tempData = {id: ing._id, name: ing.ing.ing_name, checked: 0};
+      setInsertData(prev => [...prev, tempData]);
+      console.log("tempData",tempData);
+      console.log('insssss', insertData);
+    });
+}, [ingredients]);
+
+  // const copyArray = ((fa) => {
+  //   setInsertData(prev => [...prev, fa])
+  // })
 
 	const selectHandler = (index, value) => {
 		const newItems = [...insertData]; // clone the array 
@@ -180,7 +192,7 @@ export default function manageFridge () {
       </View>
       <ScrollView>	
         {insertData && insertData.map((item, i) => (
-          <TouchableOpacity onPress={()=>toggleModal(item)}>
+          <TouchableOpacity key={i} onPress={()=>toggleModal(item)}>
             <View key={i} style={[styles.itemList, {flexDirection: 'row', backgroundColor: '#fff', marginBottom: 2, height: 60}]}>
               <View style={[styles.centerElement, {width: 60}]}>
               <TouchableOpacity style={[styles.centerElement, {width: 32, height: 32}]} onPress={() => selectHandler(i, item.checked)}>
@@ -209,7 +221,7 @@ export default function manageFridge () {
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <View style={styles.modal}>
           <View style={styles.modal2}>
-            <Text style={styles.food} key={ingredients.id}>{modalName}</Text>
+            <Text style={styles.food} key={ingredients._id}>{modalName}</Text>
             <Text style={styles.date} >유통 기한</Text>
 
             <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>

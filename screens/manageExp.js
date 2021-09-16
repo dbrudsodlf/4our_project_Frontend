@@ -12,7 +12,7 @@ import {
 import { MaterialIcons, AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import CheckboxList from 'rn-checkbox-list';
 import { Checkbox } from 'react-native-paper';
-import {API_URL} from "../config/constants";
+import { API_URL } from "../config/constants";
 import axios from 'axios';
 
 export default function manageExp () {
@@ -23,21 +23,32 @@ export default function manageExp () {
   const [unchecked, setUnchecked] = React.useState([]);
 
   React.useEffect(()=>{
-    axios.get(`${API_URL}/fridgecold`).then((result)=>{
-      setIngredients(result.data.ingredients);
-      console.log(ingredients);
-      for (const value in ingredients) {
-        console.log(ingredients[value].name);
-        let ingId = ingredients[value].id;
-        let ingName = ingredients[value].name;
-        let tempData = {id: ingId, name: ingName, checked: 0};
-        setInsertData(prev => [...prev, tempData]);
-      }
-      console.log(insertData);
+    axios.get(`${API_URL}/manage?user_id=103783810692615626282`).then((result)=>{
+      setIngredients(result.data);
     }).catch((error)=>{
       console.error(error);
     })
   }, []);
+
+  // React.useEffect(()=>{
+  //   for (const value in ingredients) {
+  //     console.log(ingredients[value].name);
+  //     let ingId = ingredients[value].id;
+  //     let ingName = ingredients[value].name;
+  //     let tempData = {id: ingId, name: ingName, checked: 0};
+  //     setInsertData(prev => [...prev, tempData]);
+  //   }
+  //   console.log('ins', insertData);
+  // }, [ingredients]);
+
+  React.useEffect(() => {
+    ingredients.map((ing)=> {
+      let tempData = {id: 1, name: ing.ing.ing_name, checked: 0};
+      setInsertData(prev => [...prev, tempData]);
+      console.log("tempData",tempData);
+      console.log('insssss', insertData);
+    });
+}, [ingredients]);
 
   //const data = [{id: 1, name: '계란'}, {id: 2, name: '토마토'}, {id: 3, name: '오이'}];
 	const selectHandler = (index, value) => {
@@ -48,8 +59,8 @@ export default function manageExp () {
 	
 	const selectHandlerAll = (value) => {
 		const newItems = [...insertData]; // clone the array 
-		newItems.map((item, index) => {
-			newItems[index]['checked'] = value == true ? 0 : 1; // set the new value 
+		newItems.map((item) => {
+			item['checked'] = value == true ? 0 : 1; // set the new value 
 		});
     //this.setState({ cartItems: newItems, selectAll: (value == true ? false : true) }); // set new state
     setInsertData(newItems);

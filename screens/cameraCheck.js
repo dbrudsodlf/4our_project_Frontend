@@ -18,17 +18,17 @@ const createFormData = (photo) => {
   console.log(photo);
 
   data.append('image', {
-    name: '',
+    name: 'image',
     type: 'image/jpeg',
     uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
   });
-  // data.append('image', {type: 'image/jpeg',image: photo})
 
   return data;
 };
 
 export default function cameraCheck ({ route, navigation }) {
   const { photo } = route.params;
+  const { ingLabel } = route.params;
   const image = { uri: photo };
   // const [label, setLabel] = useState('');
 
@@ -97,7 +97,7 @@ export default function cameraCheck ({ route, navigation }) {
         <View style={styles.imgborder}>
             <ImageBackground style={styles.img} source={image} />
         </View>
-        <Text style={styles.name}>토마토</Text>
+        <Text style={styles.name}>{ingLabel}</Text>
         <TouchableOpacity style={styles.tbtn1} onPress={openCamera}>
             <Text style={styles.btn1}>다시 촬영하러 가기</Text>
         </TouchableOpacity>

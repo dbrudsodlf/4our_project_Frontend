@@ -26,7 +26,7 @@ const createFormData = (photo) => {
   
     data.append('image', {
       name: '',
-      type: 'image/jpeg',
+      type: 'multipart/form-data',
       uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
     });
     // data.append('image', {type: 'image/jpeg',image: photo})
@@ -35,6 +35,7 @@ const createFormData = (photo) => {
   };
 
 const ModalPage = (props) => {
+    const [ ingLabel, setIngLabel ] = useState('');
     const { modalVisible, setModalVisible } = props;
     const [pickedImagePath, setPickedImagePath] = useState('');
     const screenHeight = Dimensions.get("screen").height;
@@ -100,42 +101,32 @@ const ModalPage = (props) => {
         console.log("성공",result);
 
         if (!result.cancelled) {
-            navigation.navigate("cameraCheck", { photo:result.uri });
+            // navigation.navigate("cameraCheck", { photo:result.uri });
             //let img_url =result.uri;
-            console.log(createFormData(result));
+            // console.log(createFormData(result));
+
+            const data = new FormData();
+        
+            data.append('image', {
+            name: 'image',
+            type: 'image/jpeg',
+            uri: Platform.OS === 'ios' ? result.uri.replace('file://', '') : result.uri,
+            });
 
             axios.post(`${flask_url}/camera/predict`,
-            createFormData(result)
-            // , {
-            //     headers: {
-            //         'content-type': 'multipart/form-data',
-            //     }
-            // }
+            data
             )
-            //{image: Platform.OS === 'ios' ? result.uri.replace('file://', '') : result.uri})
             .then((res)=>{
                 console.log("보냄", res);
                 console.log(res.data.label);
+                navigation.navigate('cameraCheck', {photo:result.uri, ingLabel: res.data.label});
             }).catch(error=>{
                 console.log(error);})
-
-            // axios({
-            //     method: 'post',
-            //     url: `${flask_url}/camera/predict`,
-            //     headers: { 'content-type': 'multipart/form-data' }, 
-            //     data: createFormData(result)
-            //   })
-            //   .then((res)=>{
-            //         console.log("보냄", res);
-            //         console.log(res.data.label);
-            //     }).catch(error=>{
-            //         console.log(error);})
         }
 
     }
 
     const pickImage = async () => {
-
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
         if (permissionResult.granted === false) {
@@ -146,16 +137,32 @@ const ModalPage = (props) => {
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
-            aspect: [4, 3],
             quality: 1,
         });
 
         // Explore the result
-        console.log(result);
+        console.log('이미지피커', result);
 
         if (!result.cancelled) {
-            setPickedImagePath(result.uri);
-            console.log(result.uri);
+            const data = new FormData();
+        
+            data.append('image', {
+            name: 'image',
+            type: 'image/jpeg',
+            uri: Platform.OS === 'ios' ? result.uri.replace('file://', '') : result.uri,
+            });
+            
+            console.log(data);
+             
+            axios.post(`${flask_url}/camera/predict`,
+            data
+            )
+            .then((res)=>{
+                console.log("보냄", res);
+                console.log(res.data.label);
+                navigation.navigate('cameraCheck', {photo:result.uri, ingLabel: res.data.label});
+            }).catch(error=>{
+                console.log(error);})
         }
     };
   
