@@ -7,7 +7,8 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/Feather';
 import { API_URL } from '../config/constants.js';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import {reload} from './reducer/action';
+import {useSelector, useDispatch} from 'react-redux';
 
 export default function search(props) {
   const [ingredients, setIngredients] = React.useState([]);
@@ -21,10 +22,12 @@ export default function search(props) {
   const [fridge, setFridge] = useState(1);//디폴트 냉장선택
   const [fridgeice, setFridgeice] = useState(0);
   const [frozen, setFrozen] = useState(0);
+
   const [name, setName] = useState('');
   const [result, setResult] = React.useState([]);
   const id = useSelector((state) => state.id);
   const[ cart, setCart]=useState([]);
+
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -111,6 +114,8 @@ const putincart=()=>{
         console.log(error);
       })
   }
+
+
 
   return (
     <View style={styles.container}>

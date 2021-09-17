@@ -22,70 +22,55 @@ export default function FridgeCold ({ isSelectBtn }) {
   const [flagstate, setFlagstate] = React.useState([]);
   const [insertData, setInsertData] = React.useState([]);
   let get = [{
-    _id: '', ing_name: '수박', ing_expir: '',  ing_img: ''
+    ing_name: '', ing_expir: '',  ing_img: ''
   }]
 
   React.useEffect(()=>{
     axios.get(`${API_URL}/main`,{params:{user_id:id,ing_frozen:0},get}
     ).then((result)=>{
       setIngredients(result.data);
-      console.log("루루루",result.config.get);
+      console.log("루루루",result.data);
+      //console.log("루루루",result.config.get);
     }).catch((error)=>{
       console.error(error);
     })
   }, []);
 
-  // React.useEffect(() => {
-  //   ingredients.map((ing) => {
-  //     let tempData = { date: ing.ing_expir, name: ing.ing.ing_name, img: ing.ing.ing_img, frozen: ing.ing_frozen, idd: ing._id, checked: 0 };
-  //     if (ing.ing_expir == null) {
-  //       ing.ing_expir = today;
-  //     }
-  //     setDate(ing.ing_expir);
-  //     setInsertData(prev => [...prev, tempData]);
-  //     console.log("들어왔니",insertData);
-  //   });
-  // }, [ingredients]);
+  React.useEffect(() => {
+    ingredients.map((ing) => {
+      let tempData = {  name: ing.ing_name, img: ing.ing_img, checked: 0 };
+      setInsertData(prev => [...prev, tempData]);
+      console.log("들어왔니",insertData);
+    });
+  }, [ingredients]);
 
-  // React.useEffect(()=>{
-  //   isSelectBtn(flagstate, select);
-  // }, [selectedIngredients]);
+  React.useEffect(()=>{
+    isSelectBtn(flagstate, select);
+  }, [selectedIngredients]);
 
 
     return (
       <View>
         <ScrollView>
-        <TouchableOpacity>         
-          <View style={styles.ingredientsCard}>
-              <Image 
-                style={styles.ingredientsImage} 
-                source={avo}
-                resizeMode="contain"/>
-            
-            <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont}>수박</Text>
-              <Text style={styles.ingredientsFont} >d-3</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-       {/* {
-          ingredients && ingredients.map((food, i) => {
+       {
+          insertData && insertData.map((food, i) => {
+            let photo = { uri: food.img };
             return (
-      <TouchableOpacity>         
-          <View style={styles.ingredientsCard}>
+      <TouchableOpacity key={i}>         
+          <View style={styles.ingredientsCard} >
               <Image 
                 style={styles.ingredientsImage} 
-                source={ing_img === '' ? {uri: 'nothing'} : {uri : ing_img}}
+                source={photo}
                 resizeMode="contain"/>
             
             <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont} key={i}>수박</Text>
-              <Text style={styles.ingredientsFont} key={i}>d-3</Text>
+              <Text style={styles.ingredientsFont} >{food.name}</Text>
+              {/* <Text style={styles.ingredientsFont} >12</Text> */}
             </View>
           </View>
         </TouchableOpacity>
           );})
-              } */}
+              }
                 </ScrollView>
               </View>);
 

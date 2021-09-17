@@ -7,6 +7,7 @@ import axios from 'axios';
 import { TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
+import { ScreenStackHeaderLeftView } from 'react-native-screens';
 
 export default function cart(props) {
   let today = new Date();
@@ -26,12 +27,7 @@ export default function cart(props) {
   }]
 
   React.useEffect(() => {
-    axios.get(`${API_URL}/search/list`, {
-      params: {
-        user_id: id,
-        get
-      }
-    })
+    axios.get(`${API_URL}/search/list`, {params: {user_id: id},get})
       .then((result) => {
         setIngredients(result.data);
         console.log("이것은 카트", result.data);
@@ -95,6 +91,7 @@ export default function cart(props) {
     console.log(idd);
     axios.delete(`${API_URL}/search/list?user_id=${id}`, { _id: idd })
       .then((res) => {
+        window.location.reload(false);
         alert("d");
         console.log("지움", idd);
       }).catch(error => {
