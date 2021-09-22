@@ -1,11 +1,11 @@
-const initialState={
-    id:'',
-    name:'',
-    email:''
-};
+// const initialState={
+//     id:'',
+//     name:'',
+//     email:''
+// };
 
 
-export const counterReducer = (state=initialState, action) =>{
+export const counterReducer = (state={ id:'',name:'',email:''}, action) =>{
     switch (action.type) {
     case 'LOGIN':
     return {
@@ -16,6 +16,6 @@ export const counterReducer = (state=initialState, action) =>{
     };
     
     default:
-    return initialState.state;
+    return state;
     }
     }

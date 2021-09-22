@@ -31,8 +31,7 @@ export default function FridgeCold ({ isSelectBtn }) {
     axios.get(`${API_URL}/main`,{params:{user_id:id,ing_frozen:0},get}
     ).then((result)=>{
       setIngredients(result.data);
-      console.log("루루루",result.data);
-      //console.log("루루루",result.config.get);
+      console.log("냉장고 재료",result.data);
     }).catch((error)=>{
       console.error(error);
     })
@@ -63,8 +62,9 @@ export default function FridgeCold ({ isSelectBtn }) {
   }
 
     return (
-      <View>
-        <ScrollView>
+      <View  style={styles.container}>
+        <ScrollView style={styles.scroll} horizontal={false}>
+          <View style={styles.cardview}>
        {
           insertData && insertData.map((food, i) => {
             let photo = { uri: food.img };
@@ -83,18 +83,31 @@ export default function FridgeCold ({ isSelectBtn }) {
           </View>
         </TouchableOpacity>
           );})
-              }
+              }</View>
                 </ScrollView>
               </View>);
 
 }
 
 const styles = StyleSheet.create({
+  scroll:{
+    flex: 1,
+    width:"100%",
+    backgroundColor:"#f2f2f2"
+  },
+  cardview:{
+    flexDirection:"row",
+    flexWrap:"wrap",
+    //paddingHorizontal:16,
+    paddingTop:5,
+    justifyContent:"space-between",
+
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'flex-start',
-    paddingTop: 50
+    flexWrap:"wrap",
+    width:'100%',
+    justifyContent:"space-between",
   },
   button: {
     alignItems: 'center',
@@ -104,9 +117,11 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   ingredientsCard: {
+    flex:1,
     marginTop: Dimensions.get('screen').width*0.09,
-    marginLeft: Dimensions.get('screen').width*0.09,
-    width: Dimensions.get('screen').width*0.36,
+    marginLeft: Dimensions.get('screen').width*0.06,
+    marginRight: Dimensions.get('screen').width*0.06,
+    width: Dimensions.get('screen').width*0.38,
     borderColor: "#191919",
     backgroundColor: 'white',
     borderRadius: 20,
@@ -116,12 +131,16 @@ const styles = StyleSheet.create({
       height: -3
     },
     shadowOpacity: 0.3,
-    shadowRadius: 6
+    shadowRadius: 6,
+    alignItems:'center',
+    justifyContent:'center'
   },
   ingredientsCard2: {
+    flex:1,
     marginTop: Dimensions.get('screen').width*0.09,
-    marginLeft: Dimensions.get('screen').width*0.09,
-    width: Dimensions.get('screen').width*0.36,
+    marginLeft: Dimensions.get('screen').width*0.06,
+    marginRight: Dimensions.get('screen').width*0.06,
+    width: Dimensions.get('screen').width*0.38,
     borderColor: "#191919",
     backgroundColor: 'white',
     opacity: 0.6,
@@ -131,13 +150,14 @@ const styles = StyleSheet.create({
       width: 0,
       height: -3
     },
-    
+    alignItems:'center',
+    justifyContent:'center',
     shadowOpacity: 0.3,
     shadowRadius: 6
   },
   ingredientsImage: {
-    width: "100%",
-    height: 130,
+    width: Dimensions.get('screen').width*0.30,
+    height: 150,
   },
   ingredientsContents: {
     flexDirection: 'row',

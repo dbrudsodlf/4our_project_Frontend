@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Image, Text, TouchableHighlight, Dimensions, ScrollView, Alert } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableHighlight, Dimensions, ScrollView, Alert,Button } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { API_URL } from '../config/constants.js';
@@ -30,12 +30,14 @@ export default function cart(props) {
     axios.get(`${API_URL}/search/list`, {params: {user_id: id},get})
       .then((result) => {
         setIngredients(result.data);
+       
         console.log("이것은 카트", result.data);
       })
       .catch((error) => {
         console.error(error);
       })
   }, []);
+  
 
   React.useEffect(() => {
     ingredients.map((ing) => {
@@ -65,7 +67,7 @@ export default function cart(props) {
     setInsertData(newItems);
     let maindata = { _id:food.idd,user_id: id, ing_expir: food.ing_expir, ing_frozen: food.frozen, ing_name: food.name,ing_img:food.img } //체크 된 배열 
     if (food.checked == 1) { //체크 한 배열
-      setMain([...main, maindata]);
+      setMain( maindata);
        console.log("들어감",main);
     }
     else if (food.checked == 0) {//체크 취소한 배열 빼기
@@ -87,14 +89,13 @@ export default function cart(props) {
 
   };
 
-  const deleteHandler = (idd) => { //x표 삭제
-    console.log(idd);
+  const deleteHandler = (idd,index) => { //x표 삭제
     axios.delete(`${API_URL}/search/list`, {data:{ _id: idd }})
       .then((res) => {
-       // window.location.reload(false);
-       console.log("지움w222222222222", res);
-        alert("d");
-        console.log("지움", idd);
+        alert("삭제완료");
+        const updatedCart = [...insertData];
+        updatedCart.splice(index, 1);
+        setInsertData(updatedCart);
       }).catch(error => {
         console.log(error);
       })
@@ -184,7 +185,7 @@ export default function cart(props) {
                   <TouchableOpacity onPress={() => checkHandle(i, food)} >
                     <Ionicons name={food.checked == 1 ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"} size={35} color={food.checked == 1 ? "#F59A23" : "#aaaaaa"} />
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => deleteHandler(food.idd)}>
+                  <TouchableOpacity onPress={() => deleteHandler(food.idd,i)}>
                     <Icon name="close" size={30} color="#000" />
                   </TouchableOpacity></View>
                 <View style={styles.box2} width={Dimensions.get('screen').width * 0.89}>

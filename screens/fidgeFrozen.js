@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -12,24 +12,26 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import axios from 'axios';
 import {API_URL} from "../config/constants";
 import { useSelector } from 'react-redux';
-import avo from "../assets/egg.jpeg"
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default function FridgeFrozen ({ isSelectBtn }) {
+export default function FridgeCold ({ isSelectBtn }) {
   const id = useSelector((state) => state.id);
   const [ingredients, setIngredients] = React.useState([]);
   const [selectedIngredients, setSelectedIngredients] = React.useState([]);
   const [select, setSelect] = React.useState([]);
   const [flagstate, setFlagstate] = React.useState([]);
   const [insertData, setInsertData] = React.useState([]);
+  const [cook, setCook] = useState([]);
+
   let get = [{
-    ing_name: '', ing_expir: '',  ing_img: ''
+    _id:'',ing_name: '', ing_expir: '',  ing_img: ''
   }]
 
   React.useEffect(()=>{
     axios.get(`${API_URL}/main`,{params:{user_id:id,ing_frozen:1},get}
     ).then((result)=>{
       setIngredients(result.data);
-      console.log("루루루",result.data);
+      console.log("냉장고 재료",result.data);
     }).catch((error)=>{
       console.error(error);
     })
@@ -37,24 +39,38 @@ export default function FridgeFrozen ({ isSelectBtn }) {
 
   React.useEffect(() => {
     ingredients.map((ing) => {
-      let tempData = {  name: ing.ing_name, img: ing.ing_img, checked: 0 };
+      let tempData = {  id:ing._id,name: ing.ing_name, img: ing.ing_img, checked: 0 };
       setInsertData(prev => [...prev, tempData]);
       console.log("들어왔니",insertData);
     });
   }, [ingredients]);
 
 
-
+  const checkHandle = (index, food) => {//일부 선택
+    const newItems = [...insertData];
+    newItems[index]['checked'] = food.checked == 1 ? 0 : 1;
+    setInsertData(newItems);
+    let cookdata = { _id:food.idd,user_id: id, ing_name: food.name} //체크 된 배열 
+    if (food.checked == 1) { //체크 한 배열
+      setCook([...cook, cookdata]);
+       console.log("들어감",cook);
+    }
+    else if (food.checked == 0) {//체크 취소한 배열 빼기
+      cook.splice(index, 1);
+       console.log("나감",cook);
+    }
+  }
 
     return (
-      <View>
-        <ScrollView>
+      <View  style={styles.container}>
+        <ScrollView style={styles.scroll} horizontal={false}>
+          <View style={styles.cardview}>
        {
           insertData && insertData.map((food, i) => {
             let photo = { uri: food.img };
             return (
-      <TouchableOpacity key={i}>         
-          <View style={styles.ingredientsCard} >
+      <TouchableOpacity key={i} onPress={() => checkHandle(i, food)} >        
+          <View style={food.checked==0 ? styles.ingredientsCard:styles.ingredientsCard2} >
               <Image 
                 style={styles.ingredientsImage} 
                 source={photo}
@@ -67,18 +83,31 @@ export default function FridgeFrozen ({ isSelectBtn }) {
           </View>
         </TouchableOpacity>
           );})
-              }
+              }</View>
                 </ScrollView>
               </View>);
 
 }
 
 const styles = StyleSheet.create({
+  scroll:{
+    flex: 1,
+    width:"100%",
+    backgroundColor:"#f2f2f2"
+  },
+  cardview:{
+    flexDirection:"row",
+    flexWrap:"wrap",
+    //paddingHorizontal:16,
+    paddingTop:5,
+    justifyContent:"space-between",
+
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'flex-start',
-    paddingTop: 50
+    flexWrap:"wrap",
+    width:'100%',
+    justifyContent:"space-between",
   },
   button: {
     alignItems: 'center',
@@ -88,9 +117,11 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   ingredientsCard: {
+    flex:1,
     marginTop: Dimensions.get('screen').width*0.09,
-    marginLeft: Dimensions.get('screen').width*0.09,
-    width: Dimensions.get('screen').width*0.36,
+    marginLeft: Dimensions.get('screen').width*0.06,
+    marginRight: Dimensions.get('screen').width*0.06,
+    width: Dimensions.get('screen').width*0.38,
     borderColor: "#191919",
     backgroundColor: 'white',
     borderRadius: 20,
@@ -100,11 +131,33 @@ const styles = StyleSheet.create({
       height: -3
     },
     shadowOpacity: 0.3,
+    shadowRadius: 6,
+    alignItems:'center',
+    justifyContent:'center'
+  },
+  ingredientsCard2: {
+    flex:1,
+    marginTop: Dimensions.get('screen').width*0.09,
+    marginLeft: Dimensions.get('screen').width*0.06,
+    marginRight: Dimensions.get('screen').width*0.06,
+    width: Dimensions.get('screen').width*0.38,
+    borderColor: "#191919",
+    backgroundColor: 'white',
+    opacity: 0.6,
+    borderRadius: 20,
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: -3
+    },
+    alignItems:'center',
+    justifyContent:'center',
+    shadowOpacity: 0.3,
     shadowRadius: 6
   },
   ingredientsImage: {
-    width: "100%",
-    height: 130,
+    width: Dimensions.get('screen').width*0.30,
+    height: 150,
   },
   ingredientsContents: {
     flexDirection: 'row',

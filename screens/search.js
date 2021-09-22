@@ -7,10 +7,12 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/Feather';
 import { API_URL } from '../config/constants.js';
 import axios from 'axios';
-import {reload} from './reducer/action';
+import {countup} from './reducer/action'
 import {useSelector, useDispatch} from 'react-redux';
 
 export default function search(props) {
+  const dispatch = useDispatch();
+  const [count, setCount]=useState(0);
   const [ingredients, setIngredients] = React.useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
   let today = new Date();
@@ -72,8 +74,15 @@ const shortdate=(date)=>{ //날짜만 출력
 
   const gotocart = (modalName) => {
     let cartdata={user_id: id,ing_expir: todate, ing_frozen: frozen, ing_name: modalName }
+    if(cart[0]==null){
+      setCart([cartdata]);
+      console.log("비어있음");
+      console.log(cartdata);
+      console.log(cart);
+    }else{
     setCart([...cart,cartdata]);
-    }
+    console.log("안비어있음");
+    }}
 
 const putincart=()=>{
   axios.post(`${API_URL}/search`,
