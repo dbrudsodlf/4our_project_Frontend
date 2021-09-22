@@ -63,10 +63,10 @@ export default function cart(props) {
     const newItems = [...insertData];
     newItems[index]['checked'] = food.checked == 1 ? 0 : 1;
     setInsertData(newItems);
-    let maindata = { user_id: id, ing_expir: food.ing_expir, ing_frozen: food.frozen, ing_name: food.name,ing_img:food.img } //체크 된 배열 
+    let maindata = { _id:food.idd,user_id: id, ing_expir: food.ing_expir, ing_frozen: food.frozen, ing_name: food.name,ing_img:food.img } //체크 된 배열 
     if (food.checked == 1) { //체크 한 배열
       setMain([...main, maindata]);
-      // console.log("들어감",main);
+       console.log("들어감",main);
     }
     else if (food.checked == 0) {//체크 취소한 배열 빼기
       main.splice(index, 1);
@@ -89,9 +89,10 @@ export default function cart(props) {
 
   const deleteHandler = (idd) => { //x표 삭제
     console.log(idd);
-    axios.delete(`${API_URL}/search/list?user_id=${id}`, { _id: idd })
+    axios.delete(`${API_URL}/search/list`, {data:{ _id: idd }})
       .then((res) => {
-        window.location.reload(false);
+       // window.location.reload(false);
+       console.log("지움w222222222222", res);
         alert("d");
         console.log("지움", idd);
       }).catch(error => {

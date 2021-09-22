@@ -66,7 +66,6 @@ export default function MainScreen(props) {
           <View style={styles.titleArea}>
             <View>
             <View style={styles.titleArea2}>
-            {/* <Icon name='fridge-outline' size={40} color={'#F59A23'}/> */}
               <Text style={styles.text}>{title}</Text>  
               </View>
               <Text style={{color: '#797979', paddingTop: 6}}>재료를 선택하면 다양한 요리를 추천해드려요</Text>

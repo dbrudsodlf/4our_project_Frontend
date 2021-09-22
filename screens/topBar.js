@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, Dimensions, View, Image, Button, TouchableOpacity, SafeAreaView } from 'react-native';
 
-const title = '나의 재료'
+const title = '나의 냉장고'
 export default function TopBar(props) {
   return (
       <View style={styles.container}>

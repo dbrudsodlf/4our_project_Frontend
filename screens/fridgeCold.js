@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -12,7 +12,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import axios from 'axios';
 import {API_URL} from "../config/constants";
 import { useSelector } from 'react-redux';
-import avo from "../assets/egg.jpeg"
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function FridgeCold ({ isSelectBtn }) {
   const id = useSelector((state) => state.id);
@@ -21,8 +21,10 @@ export default function FridgeCold ({ isSelectBtn }) {
   const [select, setSelect] = React.useState([]);
   const [flagstate, setFlagstate] = React.useState([]);
   const [insertData, setInsertData] = React.useState([]);
+  const [cook, setCook] = useState([]);
+
   let get = [{
-    ing_name: '', ing_expir: '',  ing_img: ''
+    _id:'',ing_name: '', ing_expir: '',  ing_img: ''
   }]
 
   React.useEffect(()=>{
@@ -38,16 +40,27 @@ export default function FridgeCold ({ isSelectBtn }) {
 
   React.useEffect(() => {
     ingredients.map((ing) => {
-      let tempData = {  name: ing.ing_name, img: ing.ing_img, checked: 0 };
+      let tempData = {  id:ing._id,name: ing.ing_name, img: ing.ing_img, checked: 0 };
       setInsertData(prev => [...prev, tempData]);
       console.log("들어왔니",insertData);
     });
   }, [ingredients]);
 
-  React.useEffect(()=>{
-    isSelectBtn(flagstate, select);
-  }, [selectedIngredients]);
 
+  const checkHandle = (index, food) => {//일부 선택
+    const newItems = [...insertData];
+    newItems[index]['checked'] = food.checked == 1 ? 0 : 1;
+    setInsertData(newItems);
+    let cookdata = { _id:food.idd,user_id: id, ing_name: food.name} //체크 된 배열 
+    if (food.checked == 1) { //체크 한 배열
+      setCook([...cook, cookdata]);
+       console.log("들어감",cook);
+    }
+    else if (food.checked == 0) {//체크 취소한 배열 빼기
+      cook.splice(index, 1);
+       console.log("나감",cook);
+    }
+  }
 
     return (
       <View>
@@ -56,8 +69,8 @@ export default function FridgeCold ({ isSelectBtn }) {
           insertData && insertData.map((food, i) => {
             let photo = { uri: food.img };
             return (
-      <TouchableOpacity key={i}>         
-          <View style={styles.ingredientsCard} >
+      <TouchableOpacity key={i} onPress={() => checkHandle(i, food)} >        
+          <View style={food.checked==0 ? styles.ingredientsCard:styles.ingredientsCard2} >
               <Image 
                 style={styles.ingredientsImage} 
                 source={photo}
@@ -102,6 +115,23 @@ const styles = StyleSheet.create({
       width: 0,
       height: -3
     },
+    shadowOpacity: 0.3,
+    shadowRadius: 6
+  },
+  ingredientsCard2: {
+    marginTop: Dimensions.get('screen').width*0.09,
+    marginLeft: Dimensions.get('screen').width*0.09,
+    width: Dimensions.get('screen').width*0.36,
+    borderColor: "#191919",
+    backgroundColor: 'white',
+    opacity: 0.6,
+    borderRadius: 20,
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: -3
+    },
+    
     shadowOpacity: 0.3,
     shadowRadius: 6
   },
