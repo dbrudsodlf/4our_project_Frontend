@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, Dimensions, View, Image, Button, TouchableOpacity, SafeAreaView } from 'react-native';
 import TopBar from './topBar.js';
 import Fridge from './fridge.js';
@@ -9,15 +9,10 @@ import {API_URL} from '../config/constants.js';
 
 const title = '나의 냉장고'
 export default function MainScreen(props) {
-  const [selectedIngredients, setSelectedIngredients] = React.useState([]);
-  // React.useEffect(()=>{
-  //   axios.get(`${API_URL}/fridgecold`).then((result)=>{
-  //     setSelectedIngredients(result.data.selectedIngredients);
-  //     console.log(selectedIngredients);
-  //   }).catch((error)=>{
-  //     console.error(error);
-  //   })
-  // }, []);
+  const [ingredients, setIngredients] = React.useState([]);
+  const [count, setCount] = React.useState(0);
+  const [insertData, setInsertData] = React.useState([]);
+  const [click, setClick] = React.useState(0);
 
   React.useEffect(()=>{
     setCount(0);
@@ -27,37 +22,53 @@ export default function MainScreen(props) {
   const [selectedBtn, setSelectedBtn] = React.useState([
     { flag: false }
   ]);
-
   const [selectIds, setSelectIds] = React.useState([]);
   const [sId, setSId] = React.useState([]);
 
-  const [count, setCount] = React.useState(0);
- 
-  const isSelectBtn = function (isSelect, Array) {
-    setSelectedBtn(isSelect);
 
-    setCount(count + isSelect.add)
-    addFlag(count + isSelect.add);
-    setSelectIds({
-      ...selectIds,
-      isSelect
-    });
-    console.log('array:',Array);
-    setSId(Array);
-    console.log("arr:", sId);
+  const isSelectBtn = function (isSelect, Array) {
+    setIngredients(Array);
+    setSelectedBtn(isSelect);
+   console.log('들어온거맞니:',Array);
+   setCount(count + isSelect.add)
+   addFlag(count + isSelect.add);
+   setSelectIds({
+     ...selectIds,
+     isSelect
+   });
+   console.log('array:',Array);
+    }
+
+  const gotocook=()=>{
+   // console.log("넘어간다잉");
+    // axios.post(`${API_URL}/main`,insertData)
+    // .then((res) => {
+    //   console.log("보냄", res.config.data);
+    // }).catch(error => {
+    //   console.log(error);
+    // })
   }
-    
+
+  React.useEffect(()=>{
+    console.log('들어온거맞니wwwww:',ingredients);
+    axios.post(`${API_URL}/main`,
+   {params:{ingredients}} )
+    .then((res) => {
+      //console.log("보냄", res.config.data);
+      console.log("보냄", res);
+    }).catch(error => {
+      console.log(error);
+    })
+    },[click]);
+
   const addFlag = function (summ) {
-    console.log("selectId: ");
-    console.log(selectIds);
     if( summ <= 0 ) {
-     // setSelectedBtn({flag:false});
       console.log('flg!!!:', selectedBtn.flag);
     } else {
-      //setSelectedBtn({flag:true});
       console.log('Tflg!!!:', selectedBtn.flag);
     }
   }
+
 
   
   return (
@@ -73,7 +84,9 @@ export default function MainScreen(props) {
             <TouchableOpacity style={[styles.cookBtn, selectedBtn.flag ? styles.selectedCookBtn : styles.cookBtn]} 
             onPress={()=> {
               if(selectedBtn.flag){
-                props.navigation.navigate('cook', sId);
+                props.navigation.navigate('cook',ingredients);
+                setClick(!click);
+                gotocook();
               }
             }}
             disabled={selectedBtn.flag ? false : true }>

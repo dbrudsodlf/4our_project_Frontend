@@ -15,22 +15,44 @@ import {API_URL} from '../config/constants.js';
 
 export default function CookScreen (props) {
   const Array =props.route.params;
+  console.log("배열 드르옴",Array)
+  const [ingredients, setIngredients] = React.useState([]);
   const [ingredient, setIngredient] = React.useState([]);
   const aLoop = [];
   const [checked, setChecked] = useState(false);
+  const [insertData, setInsertData] = React.useState([]);
+  const [like, setLike] = useState([]);
 
-  const pushHeart =()=>{
-    setChecked(!checked);
+  const pushHeart =(index, food)=>{
+      const newItems = [...insertData];
+      newItems[index]['checked'] = food.checked == 1 ? 0 : 1;
+      setInsertData(newItems);
+      let likedata = { _id:food.idd, ing_name: food.name} //체크 된 배열 
+      if (food.checked == 1) { //체크 한 배열
+        setLike( [...like,likedata]);
+         console.log("들어감",like);
+      }
+      else if (food.checked == 0) {//체크 취소한 배열 빼기     
+        like.splice(index, 1);
+      }
   };
 
   React.useEffect(()=>{
-    axios.get(`${API_URL}/fridgecold`).then((result)=>{
-      setIngredient(result.data.ingredients);
+    axios.get(`${API_URL}/search`
+    ).then((result)=>{
+      setIngredients(result.data);
+      console.log("냉장고 재료",result.data);
     }).catch((error)=>{
       console.error(error);
     })
   }, []);
 
+  React.useEffect(() => {
+    ingredients.map((ing) => {
+      let tempData = { name: ing.ing_name,idd: ing._id,checked:0};
+      setInsertData(prev => [...prev, tempData]);
+    });
+  }, [ingredients]);
 
   
   ingredient.map((ingg, idx)=>{
@@ -61,18 +83,21 @@ export default function CookScreen (props) {
       </View>
       <View style={styles.card}>
         <ScrollView>
-          <View style={styles.menu}>
+        {
+          insertData && insertData.map((food, i) => {
+            return (
+          <View style={styles.menu}  key={i}>
             <View 
               width={Dimensions.get('screen').width *0.58}>
-              <Text style={styles.food_text}>토마토 달걀 볶음</Text>
+              <Text style={styles.food_text}>{food.name}</Text>
                 <View style={styles.ing_container}>
-                {
+                {/* {
                 aLoop.map((ingredientt, index)=>{
                   return (
                     <Text key={index} style={styles.food_ing}>{ingredientt.name}</Text>
                     );
                   })
-                }
+                } */}
               </View>
             </View>
             <View style={styles.container3}
@@ -83,11 +108,14 @@ export default function CookScreen (props) {
                 <Icon name="silverware-fork-knife" size={30} color="#fff" />
               </TouchableOpacity>
               <View style={styles.icon2}>
-              <TouchableOpacity  onPress={()=>{pushHeart()}} >
-            <Icon name={checked? 'heart-outline' : 'heart'} size={30} color="#fff" />  
+              <TouchableOpacity  onPressIn={()=>{pushHeart(i,food)}} >
+            <Icon name={food.checked? 'heart-outline' : 'heart'} size={30} color="#fff" />  
               </TouchableOpacity></View>
             </View>
           </View>
+            );
+          })
+        }
         </ScrollView>
       </View>
   </SafeAreaView>

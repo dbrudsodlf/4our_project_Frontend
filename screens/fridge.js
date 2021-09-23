@@ -79,7 +79,8 @@ export default function Fridge({isSelectBtn}) {
         }}  />
       <Tab.Screen
         name="FridgeFrozen"
-        component={FridgeFrozen}
+        children={()=><FridgeFrozen isSelectBtn={isSelectBtn}/>}
+        //component={FridgeFrozen}
         options={{
           tabBarLabel: '냉동',
           tabBarIcon: ({tintColor}) => (

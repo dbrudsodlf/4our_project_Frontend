@@ -16,7 +16,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {cookbtn} from './reducer/action'
 
 export default function FridgeCold ({ isSelectBtn }) {
-  const dispatch = useDispatch();
   const id = useSelector((state) => state.id);
   const [selects,setSelects]=useState(0);
   const [ingredients, setIngredients] = React.useState([]);
@@ -25,6 +24,7 @@ export default function FridgeCold ({ isSelectBtn }) {
   const [flagstate, setFlagstate] = React.useState([]);
   const [insertData, setInsertData] = React.useState([]);
   const [cook, setCook] = useState([]);
+  const [cook2, setCook2] = useState([]);
   let get = [{
     _id:'',ing_name: '', ing_expir: '',  ing_img: ''
   }]
@@ -48,7 +48,7 @@ export default function FridgeCold ({ isSelectBtn }) {
   }, [ingredients]);
 
   React.useEffect(()=>{
-    isSelectBtn(flagstate);
+    isSelectBtn(flagstate,cook2);
   }, [flagstate]);
 
   const checkHandle = (index, food) => {//일부 선택
@@ -56,8 +56,10 @@ export default function FridgeCold ({ isSelectBtn }) {
     newItems[index]['checked'] = food.checked == 1 ? 0 : 1;
     setInsertData(newItems);
     let cookdata = { _id:food.idd,user_id: id, ing_name: food.name} //체크 된 배열 
+    let cookdata2={ing_name:food.name}
     if (food.checked == 1) { //체크 한 배열
       setCook([...cook, cookdata]);
+      setCook2([...cook2, cookdata2]);
        console.log("들어감",cook);
        console.log("배열길이 추가",cook.length);
        if(cook.length>=0){
@@ -67,6 +69,7 @@ export default function FridgeCold ({ isSelectBtn }) {
     }
     else if (food.checked == 0) {//체크 취소한 배열 빼기
       cook.splice(index, 1);
+      cook2.splice(index, 1);
       console.log("배열길이 취소",cook.length);
       if(cook.length<1){
         setFlagstate({flag: false});

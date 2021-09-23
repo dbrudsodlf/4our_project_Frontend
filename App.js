@@ -170,7 +170,7 @@ export default function App() {
     <Provider store={store}>
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="login" screenOptions={{headerShown:false}}>
+        <Stack.Navigator initialRouteName="cook" screenOptions={{headerShown:false}}>
           <Stack.Screen
             name="login"
             component={LoginScreen}
