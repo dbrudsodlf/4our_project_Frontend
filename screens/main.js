@@ -21,11 +21,11 @@ export default function MainScreen(props) {
 
   React.useEffect(()=>{
     setCount(0);
-    setSelectedBtn({ flag: false, add : 0, id: -1 });
+    setSelectedBtn({ flag: false });
   },[]);
 
   const [selectedBtn, setSelectedBtn] = React.useState([
-    { flag: false, add : 0, id: -1 }
+    { flag: false }
   ]);
 
   const [selectIds, setSelectIds] = React.useState([]);
@@ -51,10 +51,10 @@ export default function MainScreen(props) {
     console.log("selectId: ");
     console.log(selectIds);
     if( summ <= 0 ) {
-      setSelectedBtn({flag:false});
+     // setSelectedBtn({flag:false});
       console.log('flg!!!:', selectedBtn.flag);
     } else {
-      setSelectedBtn({flag:true});
+      //setSelectedBtn({flag:true});
       console.log('Tflg!!!:', selectedBtn.flag);
     }
   }

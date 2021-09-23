@@ -15,6 +15,7 @@ export default function cart(props) {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [frozen, setFrozen] = useState(0);
+
   const [fridge, setFridge] = useState(0);
   const [fridgeice, setFridgeice] = useState(0);
   const [ingredients, setIngredients] = React.useState([]);
@@ -67,13 +68,13 @@ export default function cart(props) {
     setInsertData(newItems);
     let maindata = { _id:food.idd,user_id: id, ing_expir: food.ing_expir, ing_frozen: food.frozen, ing_name: food.name,ing_img:food.img } //체크 된 배열 
     if (food.checked == 1) { //체크 한 배열
-      setMain( maindata);
+      setMain( [...main,maindata]);
        console.log("들어감",main);
     }
-    else if (food.checked == 0) {//체크 취소한 배열 빼기
+    else if (food.checked == 0) {//체크 취소한 배열 빼기     
       main.splice(index, 1);
-      // console.log("나감",main);
     }
+
   }
 
 
@@ -93,9 +94,9 @@ export default function cart(props) {
     axios.delete(`${API_URL}/search/list`, {data:{ _id: idd }})
       .then((res) => {
         alert("삭제완료");
-        const updatedCart = [...insertData];
-        updatedCart.splice(index, 1);
-        setInsertData(updatedCart);
+         const updatedCart = [...insertData];
+         updatedCart.splice(index, 1);
+         setInsertData(updatedCart);
       }).catch(error => {
         console.log(error);
       })
@@ -144,7 +145,8 @@ export default function cart(props) {
     axios.post(`${API_URL}/search/list`,
       main)
       .then((res) => {
-        console.log("보냄", res.config.data);
+        //console.log("보냄", res.config.data);
+        console.log("보냄", res);
       }).catch(error => {
         console.log(error);
       })

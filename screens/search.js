@@ -25,11 +25,22 @@ export default function search(props) {
   const [fridgeice, setFridgeice] = useState(0);
   const [frozen, setFrozen] = useState(0);
 
-  const [name, setName] = useState('');
+  const [name, setName] = useState(null);
   const [result, setResult] = React.useState([]);
   const id = useSelector((state) => state.id);
   const[ cart, setCart]=useState([]);
 
+  React.useEffect(() => {
+    axios.get(`${API_URL}/search`)
+      .then((result) => {
+        setIngredients(result.data);
+       
+        console.log("이것은 카트", result.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+  }, []);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -149,6 +160,21 @@ const putincart=()=>{
         underlineColorAndroid='transparent'
         placeholder="원하는 재료를 검색해보세요"
       />
+      {name==null?
+      <FlatList
+      data={ingredients}
+      keyExtractor={(_id, index) => {
+        return index.toString();
+      }}
+      renderItem={({ item }) => {
+        return (
+          <TouchableHighlight underlayColor='#F59A23' onPressIn={() => toggleModal(item.ing_name)}>
+            <Text style={styles.flatList}>{item.ing_name}</Text>
+          </TouchableHighlight>
+        );
+      }
+     }
+    />:
       <FlatList
         data={result}
         keyExtractor={(_id, index) => {
@@ -162,7 +188,7 @@ const putincart=()=>{
           );
         }
        }
-      />
+      />}
 
       <Modal
         transparent={true}
