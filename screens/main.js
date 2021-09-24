@@ -78,7 +78,7 @@ export default function MainScreen(props) {
             onPress={()=> {
               if(selectedBtn.flag){             
                 setClick(!click);
-                //setTimeout(gotocook,1000);             
+                           
               }
             }}
             disabled={selectedBtn.flag ? false : true }>
@@ -142,12 +142,14 @@ flexDirection:'row',
     fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
+  
 
   },
   selectedCookBtnText: {
     color: '#191919',
     fontSize: 18,
     fontWeight: 'bold',
-    color: 'black'
+    color: 'black',
+    
   }
 });

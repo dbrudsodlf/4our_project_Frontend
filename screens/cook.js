@@ -11,7 +11,8 @@ import {
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {API_URL} from '../config/constants.js';
+import { Linking } from 'react-native';
+import { API_URL } from '../config/constants.js';
 
 export default function CookScreen (props) {
   const {ing} =props.route.params;
@@ -22,7 +23,7 @@ export default function CookScreen (props) {
   const [ingredients, setIngredients] = React.useState([]);
   const [ingredient, setIngredient] = React.useState([]);
   const aLoop = [];
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(0);
   const [insertData, setInsertData] = React.useState([]);
   const [like, setLike] = useState([]);
 
@@ -40,29 +41,14 @@ export default function CookScreen (props) {
       }
   };
 
- 
-
   React.useEffect(() => {
-    ingredients.map((ing) => {
-      let tempData = { name: ing.ing_name,idd: ing._id,checked:0};
+    recipe.map((ing) => {
+      let tempData = { name: ing.recipe_name,idd: ing._id,checked:0};
       setInsertData(prev => [...prev, tempData]);
     });
-  }, [ingredients]);
+  }, []);
 
-  
-  ingredient.map((ingg, idx)=>{
-    Array.map((unit, index)=>{
-      if(unit==ingg.id) {
-        aLoop.push(ingg);
-      }
-    });
-  })
-  
-  if(!ingredient) {
-    return <ActivityIndicator />
-  }
 
- 
 
   return (
     <SafeAreaView style={styles.container}>
@@ -79,26 +65,26 @@ export default function CookScreen (props) {
       <View style={styles.card}>
         <ScrollView>
         {
-          recipe && recipe.map((food, i) => {
+          insertData && insertData.map((food, i) => {
             return (
           <View style={styles.menu}  key={i}>
             <View 
               width={Dimensions.get('screen').width *0.58}>
-              <Text style={styles.food_text}>{food.recipe_name}</Text>
-                <View style={styles.ing_container}>
-                {/* {
+              <Text style={styles.food_text}>{food.name}</Text>
+                {/* <View style={styles.ing_container}>
+                {
                 ing.map((ing, index)=>{
                   return (
                     <Text key={index} style={styles.food_ing}>{ing}</Text>
                     );
                   })
-                } */}
-              </View>
+                }
+              </View> */}
             </View>
             <View style={styles.container3}
                 width={Dimensions.get('screen').width *0.2}>
               <TouchableOpacity style={styles.icon} onPress={() => {
-                      props.navigation.navigate("youtubeList")
+                   Linking.openURL(`https://www.youtube.com/results?search_query=${food.name}`)
                     }} >
                 <Icon name="silverware-fork-knife" size={30} color="#fff" />
               </TouchableOpacity>
@@ -140,7 +126,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10, 
-    marginLeft: 20,
+    marginLeft: 10,
     marginRight: 20,
   },
   container3: {
@@ -153,7 +139,7 @@ alignItems:'center'
     flex: 5,
     fontWeight: 'bold',
     fontSize: 22,
-    marginLeft:25,
+    marginLeft:20,
     marginTop:20
   },
   food_ing: {
@@ -185,7 +171,9 @@ alignItems:'center'
   borderBottomWidth: 2,
   flexDirection:'row',
   alignItems:'center',
-  height:70
+  justifyContent:'center',
+  height:80,
+  paddingTop:5
  },
  mypicks:{
   backgroundColor:"#FFD098",
