@@ -13,7 +13,8 @@ export default function MainScreen(props) {
   const [count, setCount] = React.useState(0);
   const [insertData, setInsertData] = React.useState([]);
   const [click, setClick] = React.useState(0);
-
+  const [cooklist,setCooklist] =React.useState([]);
+  const[ recipe,setRecipe]=React.useState([]);
   React.useEffect(()=>{
     setCount(0);
     setSelectedBtn({ flag: false });
@@ -29,37 +30,28 @@ export default function MainScreen(props) {
   const isSelectBtn = function (isSelect, Array) {
     setIngredients(Array);
     setSelectedBtn(isSelect);
-   console.log('들어온거맞니:',Array);
+  
+
    setCount(count + isSelect.add)
    addFlag(count + isSelect.add);
    setSelectIds({
      ...selectIds,
      isSelect
    });
-   console.log('array:',Array);
     }
 
-  const gotocook=()=>{
-   // console.log("넘어간다잉");
-    // axios.post(`${API_URL}/main`,insertData)
-    // .then((res) => {
-    //   console.log("보냄", res.config.data);
-    // }).catch(error => {
-    //   console.log(error);
-    // })
-  }
-
   React.useEffect(()=>{
-    console.log('들어온거맞니wwwww:',ingredients);
-    axios.post(`${API_URL}/main`,
-   {params:{ingredients}} )
+     axios.post(`${API_URL}/main`,
+   {ings_name:ingredients})
     .then((res) => {
-      //console.log("보냄", res.config.data);
-      console.log("보냄", res);
+      console.log("보냄", res.config.data);
+      props.navigation.navigate('cook',{ing:ingredients,recipe:res.data});
     }).catch(error => {
       console.log(error);
     })
     },[click]);
+
+
 
   const addFlag = function (summ) {
     if( summ <= 0 ) {
@@ -68,6 +60,7 @@ export default function MainScreen(props) {
       console.log('Tflg!!!:', selectedBtn.flag);
     }
   }
+
 
 
   
@@ -83,10 +76,9 @@ export default function MainScreen(props) {
             </View>
             <TouchableOpacity style={[styles.cookBtn, selectedBtn.flag ? styles.selectedCookBtn : styles.cookBtn]} 
             onPress={()=> {
-              if(selectedBtn.flag){
-                props.navigation.navigate('cook',ingredients);
+              if(selectedBtn.flag){             
                 setClick(!click);
-                gotocook();
+                //setTimeout(gotocook,1000);             
               }
             }}
             disabled={selectedBtn.flag ? false : true }>

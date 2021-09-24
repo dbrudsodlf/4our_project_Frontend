@@ -14,8 +14,11 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {API_URL} from '../config/constants.js';
 
 export default function CookScreen (props) {
-  const Array =props.route.params;
-  console.log("배열 드르옴",Array)
+  const {ing} =props.route.params;
+  const {recipe} =props.route.params;
+  console.log("배열 드르옴",ing);
+  console.log("레시피 드르옴",recipe);
+
   const [ingredients, setIngredients] = React.useState([]);
   const [ingredient, setIngredient] = React.useState([]);
   const aLoop = [];
@@ -37,15 +40,7 @@ export default function CookScreen (props) {
       }
   };
 
-  React.useEffect(()=>{
-    axios.get(`${API_URL}/search`
-    ).then((result)=>{
-      setIngredients(result.data);
-      console.log("냉장고 재료",result.data);
-    }).catch((error)=>{
-      console.error(error);
-    })
-  }, []);
+ 
 
   React.useEffect(() => {
     ingredients.map((ing) => {
@@ -74,9 +69,9 @@ export default function CookScreen (props) {
       <Text style={styles.appTitle}>내가 선택한 재료</Text>
         <View style={styles.mypicks} >
         {
-        aLoop.map((ingredientt, index)=>{
+        ing.map((ing, index)=>{
           return (
-          <Text key={index} style={styles.mypick}>{ingredientt.name}</Text>
+          <Text key={index} style={styles.mypick}>{ing}</Text>
           );
         })
       }
@@ -84,17 +79,17 @@ export default function CookScreen (props) {
       <View style={styles.card}>
         <ScrollView>
         {
-          insertData && insertData.map((food, i) => {
+          recipe && recipe.map((food, i) => {
             return (
           <View style={styles.menu}  key={i}>
             <View 
               width={Dimensions.get('screen').width *0.58}>
-              <Text style={styles.food_text}>{food.name}</Text>
+              <Text style={styles.food_text}>{food.recipe_name}</Text>
                 <View style={styles.ing_container}>
                 {/* {
-                aLoop.map((ingredientt, index)=>{
+                ing.map((ing, index)=>{
                   return (
-                    <Text key={index} style={styles.food_ing}>{ingredientt.name}</Text>
+                    <Text key={index} style={styles.food_ing}>{ing}</Text>
                     );
                   })
                 } */}

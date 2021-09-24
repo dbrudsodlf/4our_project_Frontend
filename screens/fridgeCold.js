@@ -56,12 +56,12 @@ export default function FridgeCold ({ isSelectBtn }) {
     newItems[index]['checked'] = food.checked == 1 ? 0 : 1;
     setInsertData(newItems);
     let cookdata = { _id:food.idd,user_id: id, ing_name: food.name} //체크 된 배열 
-    let cookdata2={ing_name:food.name}
     if (food.checked == 1) { //체크 한 배열
       setCook([...cook, cookdata]);
-      setCook2([...cook2, cookdata2]);
-       console.log("들어감",cook);
-       console.log("배열길이 추가",cook.length);
+      cook2.push(food.name);
+       //console.log("들어감",cook);
+       //console.log("배열길이 추가",cook.length);
+       console.log("이게 저기로 갑니다",cook2)
        if(cook.length>=0){
         setFlagstate({flag: true});
       }
