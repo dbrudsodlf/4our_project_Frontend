@@ -49,7 +49,7 @@ export default function manageExp () {
       console.log("tempData",tempData);
       console.log('insssss', insertData);
     });
-}, [ingredients]);
+  }, [ingredients]);
 
   //const data = [{id: 1, name: '계란'}, {id: 2, name: '토마토'}, {id: 3, name: '오이'}];
 	const selectHandler = (index, value) => {

@@ -60,10 +60,11 @@ export default function manageFridge () {
 
   React.useEffect(() => {
     ingredients.map((ing)=> {
-      let tempData = {id: ing._id, name: ing.ing.ing_name, checked: 0};
-      setInsertData(prev => [...prev, tempData]);
-      console.log("tempData",tempData);
-      console.log('insssss', insertData);
+      if(ing.ing.ing_name === null) {
+        ing.ing.ing_name = '';
+      }
+        let tempData = {id: ing._id, name: ing.ing.ing_name, checked: 0};
+        setInsertData(prev => [...prev, tempData]);
     });
 }, [ingredients]);
 
@@ -87,17 +88,26 @@ export default function manageFridge () {
     setSelectAll(value == true ? false : true);
 	}
 	
-	const deleteHandler = (index) => {
+	const deleteHandler = (idd,index) => {
 		Alert.alert(
 			'관리 페이지에서 정말 삭제하시겠습니까?',
 			'',
 			[
 				{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
 				{text: 'Delete', onPress: () => {
-          const updatedCart = [...insertData]; /* Clone it first */
-          // console.log('delete'+updatedCart);
-					updatedCart.splice(index, 1); /* Remove item from the cloned cart state */
-					setInsertData(updatedCart); /* Update the state */
+          // const updatedCart = [...insertData]; /* Clone it first */
+          // // console.log('delete'+updatedCart);
+					// updatedCart.splice(index, 1); /* Remove item from the cloned cart state */
+          // setInsertData(updatedCart); /* Update the state */
+          axios.delete(`${API_URL}/manage`, {data:{ _id: idd }})
+          .then((res) => {
+            alert("삭제완료");
+            const updatedCart = [...insertData];
+            updatedCart.splice(index, 1);
+            setInsertData(updatedCart);
+          }).catch(error => {
+            console.log(error);
+          })
 				}},
 			],
 			{ cancelable: false }
@@ -113,10 +123,9 @@ export default function manageFridge () {
 				{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
 				{text: 'Delete', onPress: () => {
           deleteSelected.map((item, index) => {
-            if(deleteSelected[index]['checked'] === false)
-              unchecked = [...deleteSelected[index]]
+            if(item['checked'] === false)
+              deleteHandler(item.id, index);
           });
-          setInsertData(unchecked); /* Update the state */
 				}},
       ],
 			{ cancelable: false }
@@ -207,7 +216,7 @@ export default function manageFridge () {
                 </View>
               </View>
               <View style={[styles.centerElement, {width: 60}]}>
-                <TouchableOpacity style={[styles.centerElement, {width: 32, height: 32}]} onPress={() => deleteHandler(i)}>
+                <TouchableOpacity style={[styles.centerElement, {width: 32, height: 32}]} onPress={() => deleteHandler(item.id, i)}>
                   <Ionicons name="md-trash" size={25} color="#ee4d2d" />
                 </TouchableOpacity>
               </View>

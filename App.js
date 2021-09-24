@@ -21,6 +21,7 @@ import YoutubeList from './screens/youtubeList';
 import CameraCheck from './screens/cameraCheck';
 import CameraError from './screens/cameraError';
 import ModalPage from './screens/modal';
+import CameraCart from './screens/cameraCart.js'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -94,6 +95,7 @@ function MainTabScreen(props) {
         name="ManageScreen"
         component={ManageScreen}
         options={{
+          unmountOnBlur: Platform.OS === 'ios' ? false : true,
           tabBarLabel: '냉장고 관리',
           tabBarIcon: ({ focused }) => (
             <View>
@@ -170,14 +172,14 @@ export default function App() {
     <Provider store={store}>
     <SafeAreaView style={styles.SafeAreaView}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="cook" screenOptions={{headerShown:false}}>
+        <Stack.Navigator initialRouteName="login" screenOptions={{headerShown:false}}>
           <Stack.Screen
             name="login"
             component={LoginScreen}
             options={{
               title: "로그인 화면"
             }} />
-               <Stack.Screen
+          <Stack.Screen
             name="loginprofile"
             component={Profile}
             options={{
@@ -193,12 +195,14 @@ export default function App() {
             name="search"
             component={SearchScreen}
             options={{
+              unmountOnBlur: true,
               title: "재료 검색 화면"
             }} />
           <Stack.Screen
             name="cart"
             component={CartScreen}
             options={{
+              unmountOnBlur: true,
               title: "담은 재료"
             }} />
           <Stack.Screen
@@ -279,6 +283,12 @@ export default function App() {
             options={{
               title: "재료 인식 결과 확인"
             }} />   
+          <Stack.Screen
+            name="cameraCart"
+            component={CameraCart}
+            options={{
+              title: "재료 인식 결과 확인"
+            }} />  
           <Stack.Screen
             name="cameraError"
             component={CameraError}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Image, Text, TouchableHighlight, Dimensions, ScrollView, Alert,Button } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableHighlight, Dimensions, ScrollView, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { API_URL } from '../config/constants.js';
@@ -15,7 +15,6 @@ export default function cart(props) {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [frozen, setFrozen] = useState(0);
-
   const [fridge, setFridge] = useState(0);
   const [fridgeice, setFridgeice] = useState(0);
   const [ingredients, setIngredients] = React.useState([]);
@@ -28,16 +27,15 @@ export default function cart(props) {
   }]
 
   React.useEffect(() => {
-    axios.get(`${API_URL}/search/list`, {params: {user_id: id},get})
+    axios.get(`${API_URL}/camera/list`, {params: {user_id: id},get})
       .then((result) => {
         setIngredients(result.data);
-        console.log("이것은 카트", result.data);
+        console.log("카메라 카트", result.data);
       })
       .catch((error) => {
         console.error(error);
       })
   }, []);
-  
 
   React.useEffect(() => {
     ingredients.map((ing) => {
@@ -47,6 +45,12 @@ export default function cart(props) {
       setInsertData(prev => [...prev, tempData]);
     });
   }, [ingredients]);
+
+//   React.useEffect(() => {
+//     ingredients.map((ing)=> {
+//       ing.ing_expir = changeDateFormat(ing.ing_expir);
+//     });
+// }, [ingredients]);
 
   const changeDateFormat = (oldDate) => {
     if(oldDate === null) {
@@ -60,15 +64,15 @@ export default function cart(props) {
     const newItems = [...insertData];
     newItems[index]['checked'] = food.checked == 1 ? 0 : 1;
     setInsertData(newItems);
-    let maindata = { _id:food.idd,user_id: id, ing_expir: food.ing_expir, ing_frozen: food.frozen, ing_name: food.name,ing_img:food.img } //체크 된 배열 
+    let maindata = { user_id: id, ing_expir: food.ing_expir, ing_frozen: food.frozen, ing_name: food.name,ing_img:food.img } //체크 된 배열 
     if (food.checked == 1) { //체크 한 배열
-      setMain( [...main,maindata]);
-       console.log("들어감",main);
+      setMain([...main, maindata]);
+      // console.log("들어감",main);
     }
-    else if (food.checked == 0) {//체크 취소한 배열 빼기     
+    else if (food.checked == 0) {//체크 취소한 배열 빼기
       main.splice(index, 1);
+      // console.log("나감",main);
     }
-
   }
 
 
@@ -85,7 +89,7 @@ export default function cart(props) {
   };
 
   const deleteHandler = (idd,index) => { //x표 삭제
-    axios.delete(`${API_URL}/search/list`, {data:{ _id: idd }})
+    axios.delete(`${API_URL}/camera/list`, {data:{ _id: idd }})
       .then((res) => {
         alert("삭제완료");
          const updatedCart = [...insertData];
@@ -94,7 +98,6 @@ export default function cart(props) {
       }).catch(error => {
         console.log(error);
       })
-
   }
 
   const onChange = (event, selectedDate) => {//날짜 바꾸기
@@ -136,11 +139,10 @@ export default function cart(props) {
   }
 
   const gotoFridge = () => {
-    axios.post(`${API_URL}/search/list`,
+    axios.post(`${API_URL}/camera/list`,
       main)
       .then((res) => {
-        //console.log("보냄", res.config.data);
-        console.log("보냄", res);
+        console.log("보냄", res.config.data);
       }).catch(error => {
         console.log(error);
       })
@@ -181,7 +183,7 @@ export default function cart(props) {
                   <TouchableOpacity onPress={() => checkHandle(i, food)} >
                     <Ionicons name={food.checked == 1 ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"} size={35} color={food.checked == 1 ? "#F59A23" : "#aaaaaa"} />
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => deleteHandler(food.idd,i)}>
+                  <TouchableOpacity onPress={() => deleteHandler(food.idd, i)}>
                     <Icon name="close" size={30} color="#000" />
                   </TouchableOpacity></View>
                 <View style={styles.box2} width={Dimensions.get('screen').width * 0.89}>

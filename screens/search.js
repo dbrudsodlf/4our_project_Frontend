@@ -34,7 +34,6 @@ export default function search(props) {
     axios.get(`${API_URL}/search`)
       .then((result) => {
         setIngredients(result.data);
-       
         console.log("이것은 카트", result.data);
       })
       .catch((error) => {
@@ -83,17 +82,10 @@ const shortdate=(date)=>{ //날짜만 출력
     setModalName(item);
   };
 
-  const gotocart = (modalName) => {
+  const gotocart = () => {
     let cartdata={user_id: id,ing_expir: todate, ing_frozen: frozen, ing_name: modalName }
-    if(cart[0]==null){
-      setCart([cartdata]);
-      console.log("비어있음");
-      console.log(cartdata);
-      console.log(cart);
-    }else{
     setCart([...cart,cartdata]);
-    console.log("안비어있음");
-    }}
+    }
 
 const putincart=()=>{
   axios.post(`${API_URL}/search`,
@@ -143,8 +135,9 @@ const putincart=()=>{
         <View style={styles.titleArea}>
           <Text style={styles.text}>재료 검색</Text>
           <TouchableOpacity onPressIn={() => {//장바구니로 이동
-            props.navigation.navigate("cart");
+            gotocart();
             putincart();
+            props.navigation.navigate("cart");
           }}>
             <Icon2 name="shopping-cart" size={30} color="#000" />
           </TouchableOpacity>
@@ -252,6 +245,7 @@ const putincart=()=>{
                 setFridge(1);
                 setFridgeice(0);
                 console.log("----",cart);
+                putincart();
               }}>
               <Text style={styles.txt}>담기</Text>
             </TouchableOpacity></View>
