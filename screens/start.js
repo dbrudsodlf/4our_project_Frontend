@@ -3,13 +3,17 @@ import {Text,TouchableOpacity,View,StyleSheet,Image,Dimensions} from "react-nati
 import camera from '../assets/camera.png';
 import hand from '../assets/hand.png';
 import * as ImagePicker from 'expo-image-picker';
-
+import FormData from 'form-data';
 import { useSelector } from 'react-redux';
-
+import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import { API_URL, flask_url } from '../config/constants.js';
 
 export default function StartScreen(props) {
- const name = useSelector((state) => state.name);
- console.log("이름",name)
+  const name = useSelector((state) => state.name);
+  console.log("이름",name)
+  const navigation = useNavigation();
+
   const [pickedImagePath, setPickedImagePath] = useState('');
   const openCamera = async () => {
     // Ask the user for the permission to access the camera
@@ -23,13 +27,33 @@ export default function StartScreen(props) {
     const result = await ImagePicker.launchCameraAsync();
 
     // Explore the result
-    console.log(result);
+    console.log("성공",result);
 
     if (!result.cancelled) {
-        setPickedImagePath(result.uri);
-        console.log(result.uri);
+        // navigation.navigate("cameraCheck", { photo:result.uri });
+        //let img_url =result.uri;
+        // console.log(createFormData(result));
+
+        const data = new FormData();
+    
+        data.append('image', {
+        name: 'image',
+        type: 'image/jpeg',
+        uri: Platform.OS === 'ios' ? result.uri.replace('file://', '') : result.uri,
+        });
+
+        axios.post(`${flask_url}/camera/predict`,
+        data
+        )
+        .then((res)=>{
+            console.log("보냄", res);
+            console.log(res.data.label);
+            navigation.navigate('cameraCheck', {photo:result.uri, ingLabel: res.data.label});
+        }).catch(error=>{
+            console.log(error);})
+      }
+
     }
-}
 
     return (
      <View style={styles.container}>
@@ -47,7 +71,7 @@ export default function StartScreen(props) {
         </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.flex2} onPressIn={() => {
-             props.navigation.navigate("MainScreen");
+             props.navigation.replace("MainScreen");
           }}>
         <View style={styles.btn2}>
           <Text style={{fontSize: 15,padding:10,marginRight:40}}> {name}님의 냉장고 바로가기 </Text>

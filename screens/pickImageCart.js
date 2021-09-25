@@ -9,7 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import { ScreenStackHeaderLeftView } from 'react-native-screens';
 
-export default function cameraCart(props) {
+export default function pickImageCart(props) {
   let today = new Date();
   const [date, setDate] = useState(today);
   const [mode, setMode] = useState('date');
@@ -30,7 +30,7 @@ export default function cameraCart(props) {
     axios.get(`${API_URL}/camera/list`, {params: {user_id: id},get})
       .then((result) => {
         setIngredients(result.data);
-        console.log("카메라 카트", result.data);
+        console.log("앨범 선택 카트", result.data);
       })
       .catch((error) => {
         console.error(error);
@@ -60,54 +60,43 @@ export default function cameraCart(props) {
     return newDate
   }
 
-  const allCheckHandle = (value) => { //전체선택
-    const newItems = [...insertData];
-    newItems.map((index) => {
-      index.checked = value == 1 ? 0 : 1;
-      console.log(index);
-      let tempData = { _id:index.idd, user_id: id, ing_expir: index.date, ing_frozen: index.frozen, ing_name: index.name, ing_img:index.img };
-      setMain(prev => [...prev, tempData]);
-      console.log('main', main);
-    });
-    setInsertData(newItems);
-    setSelectAll(value == 1 ? 0 : 1);
-    console.log("check", selectAll);
-  };
-
   const checkHandle = (index, food) => {//일부 선택
     const newItems = [...insertData];
     newItems[index]['checked'] = food.checked == 1 ? 0 : 1;
     setInsertData(newItems);
-    newItems.map((ind) => {
-      ind.checked == 1 ? 0 : 1;
-      if (ind.checked == 1) { //체크 한 배열
-        let maindata = { user_id: id, ing_expir: food.ing_expir, ing_frozen: food.frozen, ing_name: food.name,ing_img:food.img } //체크 된 배열 
-        setMain(prev => [...prev, maindata]);
-        console.log('main', main);
-      } else if (ind.checked == 0) {
-        main.splice(index, 1);
-      }
-      setInsertData(newItems);
-      console.log(index);
-    });
+    let maindata = { user_id: id, ing_expir: food.ing_expir, ing_frozen: food.frozen, ing_name: food.name,ing_img:food.img } //체크 된 배열 
+    if (food.checked == 1) { //체크 한 배열
+      setMain([...main, maindata]);
+      // console.log("들어감",main);
+    }
+    else if (food.checked == 0) {//체크 취소한 배열 빼기
+      main.splice(index, 1);
+      // console.log("나감",main);
+    }
   }
 
   const gotoFridge = () => {
-    axios.post(`${API_URL}/camera/list`,
+    axios.post(`${API_URL}/search/list`,
       main)
       .then((res) => {
         //console.log("보냄", res.config.data);
-        console.log("보냄", main);
+        console.log("보냄", res);
       }).catch(error => {
         console.log(error);
       })
-      props.navigation.replace("MainScreen");
-      setMain([]);
   }
 
-  React.useEffect(() => {
-    console.log(main);
-  }, [main]);
+  const allCheckHandle = (value) => { //전체선택
+    const newItems = [...insertData];
+    newItems.map((item, index) => {
+      newItems[index]['checked'] = value == 1 ? 0 : 1;
+      console.log(value);
+    });
+    setInsertData(newItems);
+    setSelectAll(value == 1 ? 0 : 1);
+    console.log("check", selectAll);
+
+  };
 
   const deleteHandler = (idd,index) => { //x표 삭제
     axios.delete(`${API_URL}/camera/list`, {data:{ _id: idd }})
@@ -175,6 +164,7 @@ export default function cameraCart(props) {
 
         <TouchableHighlight underlayColor='#fff' style={styles.add}
           onPressIn={() => {
+            props.navigation.navigate("MainScreen")
             gotoFridge()
           }}>
           <Text style={styles.add2}>선택 추가하기</Text>

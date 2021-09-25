@@ -22,6 +22,8 @@ import CameraCheck from './screens/cameraCheck';
 import CameraError from './screens/cameraError';
 import ModalPage from './screens/modal';
 import CameraCart from './screens/cameraCart.js'
+import pickImageCheck from './screens/pickImageCheck.js';
+import pickImageCart from './screens/pickImageCart.js';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -80,8 +82,8 @@ function MainTabScreen(props) {
         name="MainScreen"
         component={MainScreen}
         options={{
-          unmountOnBlur: Platform.OS === 'ios' ? false : true,
           tabBarLabel: '메인',
+          unmountOnBlur: true,
           tabBarIcon: ({focused }) => (
             <View>
             <Icon name='fridge-outline' size={30}
@@ -113,7 +115,6 @@ function MainTabScreen(props) {
         component={ModalPage}
         options={{
           tabBarLabel: '모달',
-          unmountOnBlur: Platform.OS === 'ios' ? false : true,
           tabBarIcon: ({focused}) => (
             <TouchableOpacity activeOpacity={0.8} onPressOut={pressButton}>
             <View>
@@ -139,7 +140,6 @@ function MainTabScreen(props) {
         component={BasketScreen}
         options={{
           tabBarLabel: '장바구니',
-          unmountOnBlur: Platform.OS === 'ios' ? false : true,
           tabBarIcon: ({ focused }) => (
             <View>
             <Icon name='basket-outline' size={30}
@@ -214,7 +214,7 @@ export default function App() {
             options={{
               title: "메인 화면"
             }} />
-               <Stack.Screen
+          <Stack.Screen
             name="main"
             component={MainScreen}
             options={{
@@ -285,7 +285,19 @@ export default function App() {
             component={CameraCheck}
             options={{
               title: "재료 인식 결과 확인"
-            }} />   
+            }} />  
+          <Stack.Screen
+            name="pickImageCheck"
+            component={pickImageCheck}
+            options={{
+              title: "앨범 선택 재료 인식 결과 확인"
+            }} />  
+          <Stack.Screen
+            name="pickImageCart"
+            component={pickImageCart}
+            options={{
+              title: "앨범 선택 재료 인식 결과 확인"
+            }} />  
           <Stack.Screen
             name="cameraCart"
             component={CameraCart}

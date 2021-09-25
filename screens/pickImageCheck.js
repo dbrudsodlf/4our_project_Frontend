@@ -32,7 +32,7 @@ const createFormData = (photo) => {
   return data;
 };
 
-export default function cameraCheck ({ route, navigation }) {
+export default function pickImageCheck ({ route, navigation }) {
 
   const [ingredients, setIngredients] = React.useState([]);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -102,19 +102,19 @@ export default function cameraCheck ({ route, navigation }) {
 
   const putincart=()=>{
     axios.post(`${API_URL}/camera/add`,
-    {
-      user_id: id,
-      ing_name: modalName,
-      ing_expir: todate,
-      ing_frozen: frozen,
-    }
-      )
-      .then((res) => {
-        console.log("고른거 보내기", res.config.data);
-      }).catch(error => {
-        console.log(error);
-      })
-    }
+  {
+    user_id: id,
+    ing_name: modalName,
+    ing_expir: todate,
+    ing_frozen: frozen,
+  }
+    )
+    .then((res) => {
+      console.log("고른거 보내기", res.config.data);
+    }).catch(error => {
+      console.log(error);
+    })
+  }
   const frozenpick = (fridge, fridgeice) => {
     if (fridgeice == 0) {
       setFridge(1);
@@ -168,40 +168,49 @@ export default function cameraCheck ({ route, navigation }) {
             console.log(error);})
       };
 
-  const goToCameraList = async () => {
-    navigation.navigate('cameraCart');
+  const goToPickImageList = async () => {
+    navigation.navigate('pickImageCart');
   }
 
-  const openCamera = async () => {
-    // Ask the user for the permission to access the camera
-    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+  const pickImage = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
-        alert("You've refused to allow this appp to access your camera!");
+        alert("You've refused to allow this appp to access your photos!");
         return;
     }
 
-    const result = await ImagePicker.launchCameraAsync();
+    const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        quality: 1,
+    });
 
     // Explore the result
-    console.log("성공",result);
+    console.log('이미지피커', result);
 
     if (!result.cancelled) {
+        const data = new FormData();
+    
+        data.append('image', {
+        name: 'image',
+        type: 'image/jpeg',
+        uri: Platform.OS === 'ios' ? result.uri.replace('file://', '') : result.uri,
+        });
         
-        console.log(result);
-        console.log(createFormData(result));
-
-        //setIngLabel(route.params);
+        console.log(data);
+         
         axios.post(`${flask_url}/camera/predict`,
-        createFormData(result))
+        data
+        )
         .then((res)=>{
             console.log("보냄", res);
             console.log(res.data.label);
-            navigation.navigate("cameraCheck", { photo:result.uri, ingLabel: res.data.label });
+            navigation.navigate('pickImageCheck', {photo:result.uri, ingLabel: res.data.label});
         }).catch(error=>{
             console.log(error);})
       }
-    }
+    };
 
 
   return (
@@ -214,8 +223,8 @@ export default function cameraCheck ({ route, navigation }) {
           <ImageBackground style={styles.img} source={image} />
         </View>
         <Text style={styles.name}>{ingLabel}</Text>
-        <TouchableOpacity style={styles.tbtn1} onPress={openCamera}>
-            <Text style={styles.btn1}>다른 재료 촬영하러 가기</Text>
+        <TouchableOpacity style={styles.tbtn1} onPress={pickImage}>
+            <Text style={styles.btn1}>다른 재료 사진 가져오기</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.tbtn2} onPressIn={() => toggleModal(ingLabel)}>
             <Text style={styles.btn2}>저장하기</Text>
@@ -224,7 +233,7 @@ export default function cameraCheck ({ route, navigation }) {
 
       <View style={styles.footer}>
         <TouchableOpacity style={styles.cartBtn} onPressIn={() => {//장바구니로 이동
-            goToCameraList()
+            goToPickImageList()
           }}>
           {/* <Ionicons name="basket-outline" size={30} color="white" /> */}
           <Text style={{ color: 'white', fontSize: 18 }}>재료 촬영 끝내기</Text>

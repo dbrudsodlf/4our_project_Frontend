@@ -30,8 +30,8 @@ export default function FridgeCold ({ isSelectBtn }) {
   }]
 
   React.useEffect(()=>{
-    axios.get(`${API_URL}/main`,{params:{user_id:id,ing_frozen:0},get}
-    ).then((result)=>{
+    axios.get(`${API_URL}/main`,{params:{user_id:id,ing_frozen:0},get})
+    .then((result)=>{
       setIngredients(result.data);
       console.log("냉장고 재료",result.data);
     }).catch((error)=>{
@@ -39,11 +39,21 @@ export default function FridgeCold ({ isSelectBtn }) {
     })
   }, []);
 
+  // React.useEffect(() => {
+  //   ingredients.map((ing) => {
+  //     let tempData = {  id:ing._id,name: ing.ing_name, img: ing.ing_img, checked: 0 };
+  //     setInsertData(prev => [...prev, tempData]);
+  //     console.log("들어왔니", insertData);
+  //   });
+  // }, [ingredients]);
+
   React.useEffect(() => {
-    ingredients.map((ing) => {
-      let tempData = {  id:ing._id,name: ing.ing_name, img: ing.ing_img, checked: 0 };
-      setInsertData(prev => [...prev, tempData]);
-      console.log("들어왔니",insertData);
+    ingredients.map((ing)=> {
+      if(ing.ing_name === null) {
+        ing.ing_name = '';
+      }
+        let tempData = {id: ing._id, name: ing.ing_name, img: ing.ing_img, checked: 0};
+        setInsertData(prev => [...prev, tempData]);
     });
   }, [ingredients]);
 
@@ -65,8 +75,8 @@ export default function FridgeCold ({ isSelectBtn }) {
        if(cook.length>=0){
         setFlagstate({flag: true});
       }
-      
     }
+
     else if (food.checked == 0) {//체크 취소한 배열 빼기
       cook.splice(index, 1);
       cook2.splice(index, 1);
@@ -74,9 +84,7 @@ export default function FridgeCold ({ isSelectBtn }) {
       if(cook.length<1){
         setFlagstate({flag: false});
       }
-  
     }
-
   }
 
     return (
