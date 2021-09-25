@@ -84,6 +84,8 @@ const ModalPage = (props) => {
         closeBottomSheet.start(() => {
             setModalVisible(false);
         })
+        Modal.current?.snapTo(1);
+        Modal.current?.snapTo(1);
     }
 
     const openCamera = async () => {
@@ -229,6 +231,7 @@ const ModalPage = (props) => {
                         <TouchableOpacity style={styles.contents}
                             onPressIn={()=> {
                                 navigation.navigate('search');
+                                closeModal();
                             }}>
                             <Icon name='magnify' color='#191919' size={32}
                                 style={{

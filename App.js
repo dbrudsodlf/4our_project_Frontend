@@ -80,6 +80,7 @@ function MainTabScreen(props) {
         name="MainScreen"
         component={MainScreen}
         options={{
+          unmountOnBlur: Platform.OS === 'ios' ? false : true,
           tabBarLabel: '메인',
           tabBarIcon: ({focused }) => (
             <View>
@@ -112,6 +113,7 @@ function MainTabScreen(props) {
         component={ModalPage}
         options={{
           tabBarLabel: '모달',
+          unmountOnBlur: Platform.OS === 'ios' ? false : true,
           tabBarIcon: ({focused}) => (
             <TouchableOpacity activeOpacity={0.8} onPressOut={pressButton}>
             <View>
@@ -137,6 +139,7 @@ function MainTabScreen(props) {
         component={BasketScreen}
         options={{
           tabBarLabel: '장바구니',
+          unmountOnBlur: Platform.OS === 'ios' ? false : true,
           tabBarIcon: ({ focused }) => (
             <View>
             <Icon name='basket-outline' size={30}
