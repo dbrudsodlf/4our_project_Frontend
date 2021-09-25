@@ -21,6 +21,7 @@ export default function cart(props) {
   const [ingredients, setIngredients] = React.useState([]);
   const [selectAll, setSelectAll] = React.useState(0); //false
   const [insertData, setInsertData] = React.useState([]);
+  const [ii, setII] = React.useState([]);
   const [main, setMain] = useState([]);
   const id = useSelector((state) => state.id);
   let get = [{
@@ -63,12 +64,14 @@ export default function cart(props) {
     let maindata = { _id:food.idd,user_id: id, ing_expir: food.ing_expir, ing_frozen: food.frozen, ing_name: food.name,ing_img:food.img } //체크 된 배열 
     if (food.checked == 1) { //체크 한 배열
       setMain( [...main,maindata]);
+      setII(prev=>[...prev,index]);
        console.log("들어감",main);
     }
     else if (food.checked == 0) {//체크 취소한 배열 빼기     
       main.splice(index, 1);
+      ii.splice(index,1);
     }
-
+    console.log("배열",ii);
   }
 
 
@@ -81,7 +84,6 @@ export default function cart(props) {
     setInsertData(newItems);
     setSelectAll(value == 1 ? 0 : 1);
     console.log("check", selectAll);
-
   };
 
   const deleteHandler = (idd,index) => { //x표 삭제

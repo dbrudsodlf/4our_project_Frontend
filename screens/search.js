@@ -9,8 +9,9 @@ import { API_URL } from '../config/constants.js';
 import axios from 'axios';
 import {countup} from './reducer/action'
 import {useSelector, useDispatch} from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
-export default function search(props) {
+export default function search({navigation}) {
   const dispatch = useDispatch();
   const [count, setCount]=useState(0);
   const [ingredients, setIngredients] = React.useState([]);
@@ -34,7 +35,7 @@ export default function search(props) {
     axios.get(`${API_URL}/search`)
       .then((result) => {
         setIngredients(result.data);
-        console.log("이것은 카트", result.data);
+
       })
       .catch((error) => {
         console.error(error);
@@ -89,7 +90,10 @@ const shortdate=(date)=>{ //날짜만 출력
 
 const putincart=()=>{
   axios.post(`${API_URL}/search`,
-  cart)
+  { user_id: id,
+    ing_name: modalName,
+    ing_expir: todate,
+    ing_frozen: frozen,})
    .then((res) => {
      console.log("보냄", res.config.data);
    }).catch(error => {
@@ -127,6 +131,9 @@ const putincart=()=>{
       })
   }
 
+  const goToCartList = async () => {
+    navigation.navigate('cart');
+  }
 
 
   return (
@@ -135,9 +142,7 @@ const putincart=()=>{
         <View style={styles.titleArea}>
           <Text style={styles.text}>재료 검색</Text>
           <TouchableOpacity onPressIn={() => {//장바구니로 이동
-            gotocart();
-            putincart();
-            props.navigation.navigate("cart");
+            goToCartList();
           }}>
             <Icon2 name="shopping-cart" size={30} color="#000" />
           </TouchableOpacity>
@@ -239,7 +244,7 @@ const putincart=()=>{
               style={styles.button2}
               activeOpacity={1}
               onPress={() => {
-                gotocart(modalName)
+                gotocart();
                 setModalVisible(!isModalVisible);
                 setDate(today);
                 setFridge(1);
