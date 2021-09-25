@@ -77,9 +77,12 @@ export default function cart(props) {
 
   const allCheckHandle = (value) => { //전체선택
     const newItems = [...insertData];
-    newItems.map((item, index) => {
-      newItems[index]['checked'] = value == 1 ? 0 : 1;
-      console.log(value);
+    newItems.map((index) => {
+      index.checked = value == 1 ? 0 : 1;
+      console.log(index);
+      let tempData = { _id:index.idd, user_id: id, ing_expir: index.date, ing_frozen: index.frozen, ing_name: index.name, ing_img:index.img };
+      setMain(prev => [...prev, tempData]);
+      console.log('main', main);
     });
     setInsertData(newItems);
     setSelectAll(value == 1 ? 0 : 1);
@@ -146,6 +149,8 @@ export default function cart(props) {
       }).catch(error => {
         console.log(error);
       })
+      props.navigation.replace("MainScreen");
+      setMain([]);
   }
 
 

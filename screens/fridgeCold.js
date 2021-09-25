@@ -144,9 +144,10 @@ const styles = StyleSheet.create({
   },
   ingredientsCard: {
     flex:1,
-    marginTop: Dimensions.get('screen').width*0.09,
+    marginTop: Dimensions.get('screen').width*0.07,
     marginLeft: Dimensions.get('screen').width*0.06,
     marginRight: Dimensions.get('screen').width*0.06,
+    marginBottom: 10,
     width: Dimensions.get('screen').width*0.38,
     borderColor: "#191919",
     backgroundColor: 'white',
@@ -163,13 +164,14 @@ const styles = StyleSheet.create({
   },
   ingredientsCard2: {
     flex:1,
-    marginTop: Dimensions.get('screen').width*0.09,
+    marginBottom: 10,
+    marginTop: Dimensions.get('screen').width*0.07,
     marginLeft: Dimensions.get('screen').width*0.06,
     marginRight: Dimensions.get('screen').width*0.06,
     width: Dimensions.get('screen').width*0.38,
     borderColor: "#191919",
     backgroundColor: 'white',
-    opacity: 0.6,
+    opacity: 0.3,
     borderRadius: 20,
     shadowColor: 'black',
     shadowOffset: {

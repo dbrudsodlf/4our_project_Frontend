@@ -24,30 +24,41 @@ export default function FridgeFrozen ({ isSelectBtn }) {
   const [flagstate, setFlagstate] = React.useState([]);
   const [insertData, setInsertData] = React.useState([]);
   const [cook, setCook] = useState([]);
+  const [cook2, setCook2] = useState([]);
   let get = [{
     _id:'',ing_name: '', ing_expir: '',  ing_img: ''
   }]
 
   React.useEffect(()=>{
-    axios.get(`${API_URL}/main`,{params:{user_id:id,ing_frozen:1},get}
-    ).then((result)=>{
+    axios.get(`${API_URL}/main`,{params:{user_id:id,ing_frozen:1},get})
+    .then((result)=>{
       setIngredients(result.data);
-      console.log("냉장고 재료",result.data);
+      console.log("냉동고 재료",result.data);
     }).catch((error)=>{
       console.error(error);
     })
   }, []);
 
+  // React.useEffect(() => {
+  //   ingredients.map((ing) => {
+  //     let tempData = {  id:ing._id,name: ing.ing_name, img: ing.ing_img, checked: 0 };
+  //     setInsertData(prev => [...prev, tempData]);
+  //     console.log("들어왔니", insertData);
+  //   });
+  // }, [ingredients]);
+
   React.useEffect(() => {
-    ingredients.map((ing) => {
-      let tempData = {  id:ing._id,name: ing.ing_name, img: ing.ing_img, checked: 0 };
-      setInsertData(prev => [...prev, tempData]);
-      console.log("들어왔니",insertData);
+    ingredients.map((ing)=> {
+      if(ing.ing_name === null) {
+        ing.ing_name = '';
+      }
+        let tempData = {id: ing._id, name: ing.ing_name, img: ing.ing_img, checked: 0};
+        setInsertData(prev => [...prev, tempData]);
     });
   }, [ingredients]);
 
   React.useEffect(()=>{
-    isSelectBtn(flagstate);
+    isSelectBtn(flagstate,cook2);
   }, [flagstate]);
 
   const checkHandle = (index, food) => {//일부 선택
@@ -57,22 +68,23 @@ export default function FridgeFrozen ({ isSelectBtn }) {
     let cookdata = { _id:food.idd,user_id: id, ing_name: food.name} //체크 된 배열 
     if (food.checked == 1) { //체크 한 배열
       setCook([...cook, cookdata]);
-       console.log("들어감",cook);
-       console.log("배열길이 추가",cook.length);
+      cook2.push(food.name);
+       //console.log("들어감",cook);
+       //console.log("배열길이 추가",cook.length);
+       console.log("이게 저기로 갑니다",cook2)
        if(cook.length>=0){
         setFlagstate({flag: true});
       }
-      
     }
+
     else if (food.checked == 0) {//체크 취소한 배열 빼기
       cook.splice(index, 1);
+      cook2.splice(index, 1);
       console.log("배열길이 취소",cook.length);
       if(cook.length<1){
         setFlagstate({flag: false});
       }
-  
     }
-
   }
 
     return (
@@ -132,9 +144,10 @@ const styles = StyleSheet.create({
   },
   ingredientsCard: {
     flex:1,
-    marginTop: Dimensions.get('screen').width*0.09,
+    marginTop: Dimensions.get('screen').width*0.07,
     marginLeft: Dimensions.get('screen').width*0.06,
     marginRight: Dimensions.get('screen').width*0.06,
+    marginBottom: 10,
     width: Dimensions.get('screen').width*0.38,
     borderColor: "#191919",
     backgroundColor: 'white',
@@ -151,13 +164,14 @@ const styles = StyleSheet.create({
   },
   ingredientsCard2: {
     flex:1,
-    marginTop: Dimensions.get('screen').width*0.09,
+    marginBottom: 10,
+    marginTop: Dimensions.get('screen').width*0.07,
     marginLeft: Dimensions.get('screen').width*0.06,
     marginRight: Dimensions.get('screen').width*0.06,
     width: Dimensions.get('screen').width*0.38,
     borderColor: "#191919",
     backgroundColor: 'white',
-    opacity: 0.6,
+    opacity: 0.3,
     borderRadius: 20,
     shadowColor: 'black',
     shadowOffset: {
