@@ -16,6 +16,17 @@ export default function HeartList() {
     setChecked(!checked);
   };
   
+  React.useEffect(() => {
+    axios.get(`${API_URL}/mypage/myheart`, {params: {user_id: id},recipe_name:''})
+      .then((result) => {
+        setIngredients(result.data);
+        console.log("이것은 짬목록", result.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scroll}>

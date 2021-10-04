@@ -1,18 +1,30 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { SafeAreaView, StyleSheet, View, Text } from 'react-native';
 import BasketInsert from './basketInsert.js';
 import BasketList from './basketList.js';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import { useSelector } from 'react-redux';
+import { API_URL } from '../config/constants.js';
 
 export default function BasketScreen() {
   const [baskets, setBaskets] = useState([]);
+  const id = useSelector((state) => state.id);
 
   const addBasket = text => { //장바구니 추가
     setBaskets([
       ...baskets,
       { id: Math.random().toString(), textValue: text, checked: false },
     ]);
+    axios.post(`${API_URL}/managebasket`,
+    {user_id:id,
+      ing_name:Math.random().toString()})
+     .then((res) => {
+       console.log("장볼거 보내기", res.config.data);
+       props.navigation.navigate('cook',{ing:ingredients,recipe:res.data});
+     }).catch(error => {
+       console.log(error);
+     })
   };
 
   const onRemove = id => e => { //장바구니 삭제

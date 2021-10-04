@@ -1,9 +1,9 @@
 import React,{useState} from "react";
-import { StyleSheet, View, Text,Image,Dimensions } from "react-native";
+import { StyleSheet, View, Text,Image,Dimensions, ImageBackground } from "react-native";
 import * as Google from "expo-google-app-auth";
 import Icon from 'react-native-vector-icons/AntDesign';
 import { Button } from 'react-native-elements';
-import logo from '../assets/logoex.png'
+import logo from '../assets/login.jpg'
 import axios from 'axios';
 import { API_URL } from '../config/constants.js';
 import {useSelector, useDispatch} from 'react-redux'
@@ -51,13 +51,13 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image
+      <ImageBackground
         source={logo}
         style={{
-          height:300,
-          width:300
+          height:'100%',
+          width:'100%',
         }}
-       />
+       >
 
       <View style={styles.login}>
         <Button 
@@ -67,7 +67,7 @@ const LoginScreen = ({ navigation }) => {
               size={40}
               color="#fff"
               style={{
-                marginRight:24,
+                marginRight:30,
                 padding:3
               }}
             />
@@ -75,6 +75,7 @@ const LoginScreen = ({ navigation }) => {
         title="Login with Google" 
         onPress={signInAsync}  />
         </View>
+        </ImageBackground>
     </View>
   );
 };
@@ -84,14 +85,16 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container:{
     flex:1,
-    paddingTop:40,
+    flexDirection:'column',
     backgroundColor:'#fff',
     alignItems:'center',
     justifyContent:'center'
   },
   login:{
-    marginTop:50,
+    marginTop:Dimensions.get('screen').height*0.8,
     width:Dimensions.get('screen').width*0.8,
+    justifyContent:'center',
+    marginLeft:Dimensions.get('screen').width*0.1
   },
 
 });

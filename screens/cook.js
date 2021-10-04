@@ -13,6 +13,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Linking } from 'react-native';
 import { API_URL } from '../config/constants.js';
+import { useSelector } from 'react-redux';
 
 export default function CookScreen (props) {
   const {ing} =props.route.params;
@@ -26,6 +27,7 @@ export default function CookScreen (props) {
   const [checked, setChecked] = useState(0);
   const [insertData, setInsertData] = React.useState([]);
   const [like, setLike] = useState([]);
+  const id = useSelector((state) => state.id);
 
   const pushHeart =(index, food)=>{
       const newItems = [...insertData];
@@ -34,7 +36,15 @@ export default function CookScreen (props) {
       let likedata = { _id:food.idd, ing_name: food.name} //체크 된 배열 
       if (food.checked == 1) { //체크 한 배열
         setLike( [...like,likedata]);
-         console.log("들어감",like);
+        axios.post(`${API_URL}/cook/myheart`,
+       { user_id:id,
+        recipe_name:food.name})
+        .then((res) => {
+          //console.log("보냄", res.config.data);
+          console.log("찜하기 전송", res);
+        }).catch(error => {
+          console.log(error);
+        })
       }
       else if (food.checked == 0) {//체크 취소한 배열 빼기     
         like.splice(index, 1);
