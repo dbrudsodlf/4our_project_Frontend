@@ -102,12 +102,12 @@ export default function pickImageCheck ({ route, navigation }) {
 
   const putincart=()=>{
     axios.post(`${API_URL}/camera/add`,
-  {
-    user_id: id,
-    ing_name: modalName,
-    ing_expir: todate,
-    ing_frozen: frozen,
-  }
+      {
+        user_id: id,
+        ing_name: modalName,
+        ing_expir: todate,
+        ing_frozen: frozen,
+      }
     )
     .then((res) => {
       console.log("고른거 보내기", res.config.data);

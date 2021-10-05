@@ -240,7 +240,6 @@ export default function cameraCheck ({ route, navigation }) {
           <View style={styles.modal2}>
             <Text style={styles.food} key={ingredients}>{modalName}</Text>
             <Text style={styles.date} >유통 기한</Text>
-
             <TouchableHighlight underlayColor='#fff' onPressIn={showDatepicker}>
               <View style={styles.showdate} >
                 <Icon name="calendar" size={30} color="#8C9190" />

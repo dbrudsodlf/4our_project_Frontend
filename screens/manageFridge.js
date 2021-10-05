@@ -31,15 +31,23 @@ export default function manageFridge () {
   const [unchecked, setUnchecked] = React.useState([]);
 
   const [isModalVisible, setModalVisible] = useState(false);
-  const today = new Date();
-  const [date, setDate] = useState(new Date(today));
+  let today = new Date();
+  const [date, setDate] = useState(today);
+  const [modalDate, setModalDate] = useState('');
+  const [todate, setTodate] = useState('');
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [tabIndex, setTabIndex] = React.useState(0);
   const [modalName, setModalName] = useState('');
-  const [modalDate, setModalDate] = useState([]);
-  const [modalFrozen, setModalFrozen] = useState(1);
+  const [fridge, setFridge] = useState(1);//디폴트 냉장선택
+  const [fridgeice, setFridgeice] = useState(0);
+  const [frozen, setFrozen] = useState(0);
+  const [ingId, setIngId] = useState();
+  const [ingExpir, setIngExpir] = useState(new Date(today));
+  
+  const [tabIndex, setTabIndex] = React.useState(0);
+  
   const id = useSelector((state) => state.id);
+  const[ cart, setCart]=useState([]);
 
   React.useEffect(()=>{
     axios.get(`${API_URL}/manage?user_id=${id}`).then((result)=>{
@@ -59,14 +67,21 @@ export default function manageFridge () {
   }, []);
 
   React.useEffect(() => {
-    ingredients.map((ing)=> {
-      if(ing.ing.ing_name === null) {
-        ing.ing.ing_name = '';
-      }
-        let tempData = {id: ing._id, name: ing.ing.ing_name, checked: 0};
-        setInsertData(prev => [...prev, tempData]);
+    ingredients.map((ing) => {
+      // ing.ing_expir = changeDateFormat(ing.ing_expir);
+      ing.ing_expir = changeDateFormat(ing.ing_expir);
+      let tempData = {id: ing._id, expir: ing.ing_expir, name: ing.ing.ing_name, checked: 0};
+      setInsertData(prev => [...prev, tempData]);
     });
-}, [ingredients]);
+  }, [ingredients]);
+
+  const changeDateFormat = (oldDate) => {
+    if(oldDate === null) {
+      return '2021-01-01'
+    }
+    let newDate = oldDate.substr(0, 10);
+    return newDate
+  }
 
   // const copyArray = ((fa) => {
   //   setInsertData(prev => [...prev, fa])
@@ -113,6 +128,8 @@ export default function manageFridge () {
 			{ cancelable: false }
 		);
   }
+
+
   
   const deleteSelectedHandler = () => {
     const deleteSelected = [...insertData];
@@ -132,7 +149,6 @@ export default function manageFridge () {
 		);
   }
   
-
   const handleTabsChange = index => {
     setTabIndex(index);
     console.log(index);
@@ -141,9 +157,32 @@ export default function manageFridge () {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
+    console.log("고른날짜",currentDate)
+    shortdate(currentDate);
     setDate(currentDate);
-    console.log(date);
+    //setModalDate(currentDate);
   };
+
+  const shortdate=(date)=>{ //날짜만 출력
+    if(date==null){
+      setDate(today);
+    }
+
+    let year = date.getFullYear();
+    let month = date.getMonth()+1;
+    let dt = date.getDate();
+
+    if (dt < 10) {
+      dt = '0' + dt;
+    }
+
+    if (month < 10) {
+      month = '0' + month;
+    }
+    let tt=year+'-' + month + '-'+dt;
+    setTodate(tt);
+    console.log("1",todate);
+  }
 
   const showMode = (currentMode) => {
     setShow(true);
@@ -154,13 +193,64 @@ export default function manageFridge () {
     showMode('date');
   };
 
-
   const toggleModal = (item) => {//모달띄우기
     setModalVisible(!isModalVisible);
+    console.log(item);
     setModalName(item.name);
-    setModalFrozen(item.frozen);
-    //setModalDate(item.date);
+    setIngId(item.id);
+    setDate(item.expir);
   };
+
+  React.useEffect(()=>{
+    console.log(date);
+  },[date]);
+
+  const gotocart = () => {
+    let cartdata={user_id: id,ing_expir: todate, ing_frozen: frozen, ing_name: modalName }
+    setCart([...cart,cartdata]);
+    }
+
+  const editDate=()=>{
+    axios.post(`${API_URL}/manage`,{ 
+      user_id: id,
+      _id: ingId, 
+      ing_expir: todate,
+      ing_frozen: frozen }
+      )
+      .then((res) => {
+        console.log("고른거 보내기", res);
+      }).catch(error => {
+        console.log(error);
+      });
+
+      axios.get(`${API_URL}/manage?user_id=${id}`).then((result)=>{
+        console.log(result.data);
+      }).catch((error)=>{
+        console.error(error);
+      })
+    }
+
+  const frozenpick = (fridge, fridgeice) => {
+    if (fridgeice == 0) {
+      setFridge(1);
+      setFridgeice(0);
+    } else if (fridgeice == 1) {
+      setFridge(1);
+      setFridgeice(0);
+    }
+    setFrozen(0);
+  }
+
+  const frozenpick2 = (fridge, fridgeice) => {
+    if (fridge == 0) {
+      setFridge(0);
+      setFridgeice(1);
+    } else if (fridge == 1) {
+      setFridge(0);
+      setFridgeice(1);
+    }
+    setFrozen(1);
+  }
 
 
 
@@ -235,57 +325,67 @@ export default function manageFridge () {
             <Text style={styles.food} key={ingredients._id}>{modalName}</Text>
             <Text style={styles.date} >유통 기한</Text>
 
-            <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
+            <TouchableHighlight underlayColor='#fff' onPressIn={showDatepicker}>
               <View style={styles.showdate} >
                 <Icon name="calendar" size={30} color="#8C9190" />
-                <Text style={styles.date2}>{date.toLocaleDateString('ko-KR')}
-                </Text></View>
+                <Text style={styles.date2}>{date}</Text>
+              </View>
             </TouchableHighlight>
-
             {show && (
               <DateTimePicker
                 testID="dateTimePicker"
                 value={date}
-                mode={mode}
+                mode="datetime"
                 is24Hour={true}
+                display="default"
+                onChange={(event, date) => {
+                  setDate({...date, ['date']: date});
+                  const currentDate = selectedDate || date;
+                  setShow(Platform.OS === 'ios');
+                  console.log("고른날짜",currentDate)
+                  shortdate(currentDate);
+                }}
                 display="spinner"
-                onChange={onChange}
-                format="YYYY-MM-DD"
+                format="YYYY/MM/DD"
               />
             )}
-
             <Text style={styles.fridge}>보관 방법</Text>
-
-            <SegmentedControl
-              tabs={['냉장', '냉동']}//냉장:0 , 냉동:1
-              currentIndex={tabIndex}
-              onChange={handleTabsChange}
-              segmentedControlBackgroundColor='#fff'
-              activeSegmentBackgroundColor='#ffe0ad'
-              paddingVertical={15}
-              width={Dimensions.get('screen').width / 2}
-              textStyle={{
-                fontWeight: '300',
-              }}
-            />
+            <View style={styles.frozenpick}>
+              <TouchableOpacity delayPressIn={0} style={fridge == 0 ? styles.cold : styles.cold2} onPressIn={() => { frozenpick(fridge, fridgeice) }}  >
+                <Text style={styles.coldd} >냉장</Text>
+              </TouchableOpacity>
+              <TouchableOpacity delayPressIn={0} style={fridgeice == 0 ? styles.ice : styles.ice2} onPressIn={() => { frozenpick2(fridge, fridgeice) }} >
+                <Text style={styles.icee}>냉동</Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
           <View style={styles.touch} >
             <TouchableOpacity
+              activeOpacity={1}
               style={styles.button1}
               onPress={() => {
                 setModalVisible(!isModalVisible);
+                setDate(today);
+                setFridge(1);
+                setFridgeice(0);
               }}>
               <Text style={styles.txt}>취소</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.button2}
+              activeOpacity={1}
               onPress={() => {
-                pickfood(modalName)
+                editDate();
                 setModalVisible(!isModalVisible);
+                setDate(today);
+                setFridge(1);
+                setFridgeice(0);
+                setIngId();
+                console.log("----",cart);
               }}>
-              <Text style={styles.txt}>담기</Text>
+              <Text style={styles.txt}>변경</Text>
             </TouchableOpacity></View>
         </View>
       </Modal>
@@ -317,7 +417,7 @@ const styles = StyleSheet.create({
   modal: {
     margin: 0,
     width: 300,
-    height: 400,
+    height: 385,
     backgroundColor: '#fff',
     borderRadius: 20
   },
@@ -327,28 +427,30 @@ const styles = StyleSheet.create({
   food: {
     fontSize: 30,
     fontWeight: "bold",
-    marginBottom: 30
+    marginBottom: 20
   },
   date: {
     fontSize: 23,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 13,
 
   },
   showdate: {
     flexDirection: 'row',
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: '#8C9190',
     height: 50,
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 15,
-    marginBottom: 30
+    marginBottom: 20,
+    borderRadius: 20
   },
   fridge: {
     fontSize: 23,
     fontWeight: "bold",
     marginBottom: 10,
+
   },
   date2: {
     fontSize: 20,
@@ -381,5 +483,54 @@ const styles = StyleSheet.create({
   txt: {
     fontSize: 20,
     color: '#fff'
-  }
+  },
+  cold: {
+    marginRight: 20,
+    width: 110,
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cold2: {
+    marginRight: 20,
+    width: 110,
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#9ACD32'
+  },
+  coldd: {
+    fontSize: 20,
+  },
+  ice: {
+    marginRight: 20,
+    width: 110,
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  ice2: {
+    marginRight: 20,
+    width: 110,
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#add8e6'
+  },
+  icee: {
+    fontSize: 20,
+  },
+  frozenpick: {
+    flex: 1,
+    flexDirection: 'row',
+    marginBottom: 50
+  },
 });

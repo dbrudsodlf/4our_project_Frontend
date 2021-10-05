@@ -162,7 +162,7 @@ const ModalPage = (props) => {
             .then((res)=>{
                 console.log("보냄", res);
                 console.log(res.data.label);
-                navigation.navigate('cameraCheck', {photo:result.uri, ingLabel: res.data.label});
+                navigation.navigate('pickImageCheck', {photo:result.uri, ingLabel: res.data.label});
             }).catch(error=>{
                 console.log(error);})
         }
