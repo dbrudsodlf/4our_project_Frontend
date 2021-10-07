@@ -18,8 +18,8 @@ import { useSelector } from 'react-redux';
 export default function CookScreen (props) {
   const {ing} =props.route.params;
   const {recipe} =props.route.params;
-  console.log("배열 드르옴",ing);
-  console.log("레시피 드르옴",recipe);
+  // console.log("배열 드르옴",ing);
+  // console.log("레시피 드르옴",recipe);
 
   const [ingredients, setIngredients] = React.useState([]);
   const [ingredient, setIngredient] = React.useState([]);
@@ -28,6 +28,24 @@ export default function CookScreen (props) {
   const [insertData, setInsertData] = React.useState([]);
   const [like, setLike] = useState([]);
   const id = useSelector((state) => state.id);
+
+  
+  React.useEffect(() => {
+    recipe.map((ing) => {
+      let tempData = { name: ing.recipe_name,idd: ing._id,checked:0};
+      setInsertData(prev => [...prev, tempData]);    
+    });
+    axios.post(`${API_URL}/cook`,
+    { user_id:id,
+     recipe_name:ing.recipe_name})
+     .then((res) => {
+       //console.log("보냄", res.config.data);
+       console.log("유저레시피 전송", res.data);
+     }).catch(error => {
+       console.log(error);
+       console.log('에러남22');
+     })
+  }, []);
 
   const pushHeart =(index, food)=>{
       const newItems = [...insertData];
@@ -41,9 +59,10 @@ export default function CookScreen (props) {
         recipe_name:food.name})
         .then((res) => {
           //console.log("보냄", res.config.data);
-          console.log("찜하기 전송", res);
+          console.log("찜하기 전송", res.data);
         }).catch(error => {
           console.log(error);
+          console.log('에러남');
         })
       }
       else if (food.checked == 0) {//체크 취소한 배열 빼기     
@@ -51,12 +70,6 @@ export default function CookScreen (props) {
       }
   };
 
-  React.useEffect(() => {
-    recipe.map((ing) => {
-      let tempData = { name: ing.recipe_name,idd: ing._id,checked:0};
-      setInsertData(prev => [...prev, tempData]);
-    });
-  }, []);
 
 
 
@@ -137,11 +150,13 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10, 
     marginLeft: 10,
-    marginRight: 20,
+    marginRight: 10,
   },
   container3: {
     flex:1,
     flexDirection:'row',
+    justifyContent:'flex-end',
+    marginRight:20,
 alignItems:'center'
   },
   
@@ -189,7 +204,7 @@ alignItems:'center'
   backgroundColor:"#FFD098",
   flexDirection:'row',
   marginBottom:30,
-  marginLeft:30
+  marginLeft:25
  },
  mypick:{
    borderColor:"#fff",

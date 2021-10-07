@@ -53,6 +53,7 @@ const LoginScreen = ({ navigation }) => {
     <View style={styles.container}>
       <ImageBackground
         source={logo}
+        resizeMode="contain"
         style={{
           height:'100%',
           width:'100%',
@@ -68,7 +69,8 @@ const LoginScreen = ({ navigation }) => {
               color="#fff"
               style={{
                 marginRight:30,
-                padding:3
+                padding:3,
+                
               }}
             />
           }
@@ -86,7 +88,7 @@ const styles = StyleSheet.create({
   container:{
     flex:1,
     flexDirection:'column',
-    backgroundColor:'#fff',
+    backgroundColor:'#f59b23',
     alignItems:'center',
     justifyContent:'center'
   },

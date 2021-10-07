@@ -6,7 +6,7 @@ const BasketList = ({baskets,onRemove, onToggle}) => {
   return (
     <ScrollView contentContainerStyle={styles.listContainer}>
         {baskets.map(basket => (
-        <BasketListItem key={basket.id} {...basket} onRemove={onRemove}  onToggle={onToggle}/>
+        <BasketListItem key={basket.id} {...basket} onRemove={onRemove}  onToggle={onToggle} _id={basket._id}/>
       ))}
     </ScrollView>
   );
