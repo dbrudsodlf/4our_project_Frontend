@@ -83,6 +83,7 @@ function MainTabScreen(props) {
         component={MainScreen}
         options={{
           tabBarLabel: '메인',
+          unmountOnBlur: Platform.OS === 'ios' ? false : true,
           unmountOnBlur: true,
           tabBarIcon: ({focused }) => (
             <View>
@@ -115,6 +116,7 @@ function MainTabScreen(props) {
         component={ModalPage}
         options={{
           tabBarLabel: '모달',
+          unmountOnBlur: Platform.OS === 'ios' ? false : true,
           tabBarIcon: ({focused}) => (
             <TouchableOpacity activeOpacity={0.8} onPressOut={pressButton}>
             <View>
@@ -140,6 +142,7 @@ function MainTabScreen(props) {
         component={BasketScreen}
         options={{
           tabBarLabel: '장바구니',
+          unmountOnBlur: Platform.OS === 'ios' ? false : true,
           tabBarIcon: ({ focused }) => (
             <View>
             <Icon name='basket-outline' size={30}
@@ -155,6 +158,7 @@ function MainTabScreen(props) {
         component={MypageScreen}
         options={{
           tabBarLabel: '마이페이지',
+          unmountOnBlur: Platform.OS === 'ios' ? false : true,
           tabBarIcon: ({ focused }) => (
             <View>
             <Icon name='account-outline' size={30}
@@ -180,7 +184,8 @@ export default function App() {
             name="login"
             component={LoginScreen}
             options={{
-              title: "로그인 화면"
+              title: "로그인 화면",
+              unmountOnBlur: Platform.OS === 'ios' ? false : true,
             }} />
           <Stack.Screen
             name="loginprofile"
@@ -206,25 +211,29 @@ export default function App() {
             component={CartScreen}
             options={{
               unmountOnBlur: true,
-              title: "담은 재료"
+              title: "담은 재료",
+              unmountOnBlur: Platform.OS === 'ios' ? false : true,
             }} />
           <Stack.Screen
             name="MainScreen"
             component={MainTabScreen}
             options={{
-              title: "메인 화면"
+              title: "메인 화면",
+              unmountOnBlur: Platform.OS === 'ios' ? false : true,
             }} />
           <Stack.Screen
             name="main"
             component={MainScreen}
             options={{
-              title: "메인 화면"
+              title: "메인 화면",
+              unmountOnBlur: Platform.OS === 'ios' ? false : true,
             }} />
             <Stack.Screen
             name="cook"
             component={CookScreen}
             options={{
-              title: "요리 하기"
+              title: "요리 하기",
+              unmountOnBlur: Platform.OS === 'ios' ? false : true,
             }} />
           <Stack.Screen
             name="youtubeList"
@@ -236,25 +245,29 @@ export default function App() {
             name="basket"
             component={BasketScreen}
             options={{
-              title: "장바구니"
+              title: "장바구니",
+              unmountOnBlur: Platform.OS === 'ios' ? false : true,
             }} />     
           <Stack.Screen
             name="mypage"
             component={MypageScreen}
             options={{
-              title: "마이페이지"
+              title: "마이페이지",
+              unmountOnBlur: Platform.OS === 'ios' ? false : true,
             }} />  
           <Stack.Screen
             name="cooklist"
             component={CookList}
             options={{
-              title: "요리내역"
+              title: "요리내역",
+              unmountOnBlur: Platform.OS === 'ios' ? false : true,
             }} /> 
           <Stack.Screen
             name="heartlist"
             component={HeartList}
             options={{
-              title: "찜한 목록"
+              title: "찜한 목록",
+             
             }} /> 
           <Stack.Screen
             name="notice"
@@ -272,7 +285,8 @@ export default function App() {
             name="userinfo"
             component={UserInfo}
             options={{
-              title: "회원 정보"
+              title: "회원 정보",
+              unmountOnBlur: Platform.OS === 'ios' ? false : true,
             }} />  
           <Stack.Screen
             name="logout"

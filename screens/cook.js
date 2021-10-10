@@ -35,16 +35,7 @@ export default function CookScreen (props) {
       let tempData = { name: ing.recipe_name,idd: ing._id,checked:0};
       setInsertData(prev => [...prev, tempData]);    
     });
-    axios.post(`${API_URL}/cook`,
-    { user_id:id,
-     recipe_name:ing.recipe_name})
-     .then((res) => {
-       //console.log("보냄", res.config.data);
-       console.log("유저레시피 전송", res.data);
-     }).catch(error => {
-       console.log(error);
-       console.log('에러남22');
-     })
+   
   }, []);
 
   const pushHeart =(index, food)=>{
@@ -54,6 +45,7 @@ export default function CookScreen (props) {
       let likedata = { _id:food.idd, ing_name: food.name} //체크 된 배열 
       if (food.checked == 1) { //체크 한 배열
         setLike( [...like,likedata]);
+        console.log(food.name);
         axios.post(`${API_URL}/cook/myheart`,
        { user_id:id,
         recipe_name:food.name})
@@ -62,14 +54,36 @@ export default function CookScreen (props) {
           console.log("찜하기 전송", res.data);
         }).catch(error => {
           console.log(error);
-          console.log('에러남');
+          console.log('전송 에러남');
         })
       }
       else if (food.checked == 0) {//체크 취소한 배열 빼기     
         like.splice(index, 1);
+        axios.post(`${API_URL}/mypage/myheart/cancel`,
+        { user_id:id,
+         recipe_name:food.name})
+         .then((res) => {
+           //console.log("보냄", res.config.data);
+           console.log("찜하기 취소", res.data);
+         }).catch(error => {
+           console.log(error);
+           console.log('취소 에러남');
+         })
       }
   };
 
+  const pushMemory =(index, food)=>{
+    axios.post(`${API_URL}/cook/list`,
+    {user_id:id,recipe_name:food.name})
+     .then((res) => {
+       //console.log("보냄", res.config.data);
+       console.log("시청 기록", res.data);
+     }).catch(error => {
+       console.log(error);
+       console.log('기록 에러남');
+     })
+     Linking.openURL(`https://www.youtube.com/results?search_query=${food.name}`)
+  }
 
 
 
@@ -107,8 +121,8 @@ export default function CookScreen (props) {
             <View style={styles.container3}
                 width={Dimensions.get('screen').width *0.2}>
               <TouchableOpacity style={styles.icon} onPress={() => {
-                   Linking.openURL(`https://www.youtube.com/results?search_query=${food.name}`)
-                    }} >
+                 pushMemory(i,food)
+                                    }} >
                 <Icon name="silverware-fork-knife" size={30} color="#fff" />
               </TouchableOpacity>
               <View style={styles.icon2}>
