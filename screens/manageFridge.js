@@ -23,7 +23,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import SegmentedControl from 'rn-segmented-control';
 import { useSelector } from 'react-redux';
 
-export default function manageFridge () {
+export default function manageFridge ({ navigation }) {
   const [ingredients, setIngredients] = React.useState([]);
   const [insertData, setInsertData] = React.useState([]);
   const [selectAll, setSelectAll] = React.useState(false);
@@ -32,7 +32,7 @@ export default function manageFridge () {
 
   const [isModalVisible, setModalVisible] = useState(false);
   let today = new Date();
-  const [date, setDate] = useState(today);
+  const [date, setDate] = useState(new Date(today));
   const [modalDate, setModalDate] = useState('');
   const [todate, setTodate] = useState('');
   const [mode, setMode] = useState('date');
@@ -41,7 +41,7 @@ export default function manageFridge () {
   const [fridge, setFridge] = useState(1);//디폴트 냉장선택
   const [fridgeice, setFridgeice] = useState(0);
   const [frozen, setFrozen] = useState(0);
-  const [ingId, setIngId] = useState();
+  const [ingId, setIngId] = useState('');
   const [ingExpir, setIngExpir] = useState(new Date(today));
   
   const [tabIndex, setTabIndex] = React.useState(0);
@@ -67,12 +67,12 @@ export default function manageFridge () {
   }, []);
 
   React.useEffect(() => {
-    ingredients.map((ing) => {
-      // ing.ing_expir = changeDateFormat(ing.ing_expir);
-      ing.ing_expir = changeDateFormat(ing.ing_expir);
-      let tempData = {id: ing._id, expir: ing.ing_expir, name: ing.ing.ing_name, checked: 0};
-      setInsertData(prev => [...prev, tempData]);
-    });
+      ingredients.map((ing) => {
+        // ing.ing_expir = changeDateFormat(ing.ing_expir);
+        ing.ing_expir = changeDateFormat(ing.ing_expir);
+        let tempData = {id: ing._id, expir: ing.ing_expir, name: ing.ing.ing_name, checked: 0};
+        setInsertData(prev => [...prev, tempData]);
+      });
   }, [ingredients]);
 
   const changeDateFormat = (oldDate) => {
@@ -129,10 +129,10 @@ export default function manageFridge () {
 		);
   }
 
-
-  
   const deleteSelectedHandler = () => {
+
     const deleteSelected = [...insertData];
+    console.log(deleteSelected);
 		Alert.alert(
 			'선택 항목을 관리 페이지에서 정말 삭제하시겠습니까?',
 			'',
@@ -140,8 +140,18 @@ export default function manageFridge () {
 				{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
 				{text: 'Delete', onPress: () => {
           deleteSelected.map((item, index) => {
-            if(item['checked'] === false)
-              deleteHandler(item.id, index);
+            if(item['checked'] === 1){
+              console.log(item.id);
+              axios.delete(`${API_URL}/manage`, {data:{ _id: item.id }})
+              .then((res) => {
+                alert("삭제완료");
+                const updatedCart = [...insertData];
+                updatedCart.splice(index, 1);
+                setInsertData(updatedCart);
+              }).catch(error => {
+                console.log(error);
+              })
+            }
           });
 				}},
       ],
@@ -159,9 +169,17 @@ export default function manageFridge () {
     setShow(Platform.OS === 'ios');
     console.log("고른날짜",currentDate)
     shortdate(currentDate);
-    setDate(currentDate);
-    //setModalDate(currentDate);
   };
+
+  // React.useEffect(() => {
+  //   console.log('useEffect Date: ', date);
+  // }, [date]);
+
+  React.useEffect(() => {
+    console.log('useEffect ToDate: ', todate);
+    setDate(todate);
+    console.log('useEffect Date: ', date);
+  }, [todate]);
 
   const shortdate=(date)=>{ //날짜만 출력
     if(date==null){
@@ -181,7 +199,9 @@ export default function manageFridge () {
     }
     let tt=year+'-' + month + '-'+dt;
     setTodate(tt);
-    console.log("1",todate);
+
+    console.log("sort-date:",todate);
+    setDate(todate);
   }
 
   const showMode = (currentMode) => {
@@ -208,7 +228,16 @@ export default function manageFridge () {
   const gotocart = () => {
     let cartdata={user_id: id,ing_expir: todate, ing_frozen: frozen, ing_name: modalName }
     setCart([...cart,cartdata]);
-    }
+  }
+
+  const reloadPage = async () => {
+    axios.get(`${API_URL}/manage?user_id=${id}`).then((result)=>{
+      setIngredients(result.data);
+      console.log(ingredients);
+    }).catch((error)=>{
+      console.error(error);
+    })
+  }
 
   const editDate=()=>{
     axios.post(`${API_URL}/manage`,{ 
@@ -223,11 +252,6 @@ export default function manageFridge () {
         console.log(error);
       });
 
-      axios.get(`${API_URL}/manage?user_id=${id}`).then((result)=>{
-        console.log(result.data);
-      }).catch((error)=>{
-        console.error(error);
-      })
     }
 
   const frozenpick = (fridge, fridgeice) => {
@@ -328,25 +352,17 @@ export default function manageFridge () {
             <TouchableHighlight underlayColor='#fff' onPressIn={showDatepicker}>
               <View style={styles.showdate} >
                 <Icon name="calendar" size={30} color="#8C9190" />
-                <Text style={styles.date2}>{date}</Text>
+                <Text style={styles.date2}>{new Date(date).toLocaleDateString()}</Text>
               </View>
             </TouchableHighlight>
             {show && (
               <DateTimePicker
                 testID="dateTimePicker"
-                value={date}
-                mode="datetime"
-                is24Hour={true}
-                display="default"
-                onChange={(event, date) => {
-                  setDate({...date, ['date']: date});
-                  const currentDate = selectedDate || date;
-                  setShow(Platform.OS === 'ios');
-                  console.log("고른날짜",currentDate)
-                  shortdate(currentDate);
-                }}
+                value={new Date(date)}
+                mode={'date'}
+                onChange={onChange}
                 display="spinner"
-                format="YYYY/MM/DD"
+                format="YYYY-MM-DD"
               />
             )}
             <Text style={styles.fridge}>보관 방법</Text>
@@ -369,6 +385,7 @@ export default function manageFridge () {
                 setDate(today);
                 setFridge(1);
                 setFridgeice(0);
+                setIngId();
               }}>
               <Text style={styles.txt}>취소</Text>
             </TouchableOpacity>
@@ -383,13 +400,12 @@ export default function manageFridge () {
                 setFridge(1);
                 setFridgeice(0);
                 setIngId();
-                console.log("----",cart);
+                reloadPage();
               }}>
               <Text style={styles.txt}>변경</Text>
             </TouchableOpacity></View>
         </View>
       </Modal>
-
     </View>
   );
 }

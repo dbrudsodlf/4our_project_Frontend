@@ -328,8 +328,9 @@ export default function App() {
             name="manage"
             component={ManageScreen}
             options={{
-              title: "냉장고 관리"
-            }} />   
+              title: "냉장고 관리",
+              unmountOnBlur: true,
+            }} />    
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
