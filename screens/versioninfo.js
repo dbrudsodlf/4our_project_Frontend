@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
   text:{
   padding:30,
-  fontSize:15,
+  fontSize:20,
   fontStyle:'italic',
   color:'#696969'
 }

@@ -213,6 +213,7 @@ const putincart=()=>{
                 display="spinner"
                 onChange={onChange}
                 format="YYYY/MM/DD"
+                color="#8C9190"
               />
             )}
 

@@ -29,7 +29,7 @@ export default function MypageScreen(props) {
         <Icon name="right" size={30} color="#a9a9a9" />
       </TouchableOpacity>
       <TouchableOpacity style={styles.notice} onPress={() => { props.navigation.navigate("notice") }}>
-        <Text style={styles.text}> 공지사항 </Text>
+        <Text style={styles.text}> 인사말 </Text>
         <Icon name="right" size={30} color="#a9a9a9" />
       </TouchableOpacity>
       <TouchableOpacity style={styles.versioninfo} onPress={() => { props.navigation.navigate("versioninfo") }}>
@@ -40,10 +40,10 @@ export default function MypageScreen(props) {
         <Text style={styles.text}> 회원 정보 </Text>
         <Icon name="right" size={30} color="#a9a9a9" />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.logout} onPress={() => { props.navigation.navigate("logout") }}>
+      {/* <TouchableOpacity style={styles.logout} onPress={() => { props.navigation.navigate("logout") }}>
         <Text style={styles.text}> 로그아웃 </Text>
         <Icon name="right" size={30} color="#a9a9a9" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       </ScrollView>
     </SafeAreaView>
   );
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     marginBottom:1,
     backgroundColor: '#fff',
     marginTop: 20,
-    height: 50,
+    height: 70,
     paddingRight: 10,
     paddingLeft: 20
   },
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#fff',
-    height: 50,
+    height: 70,
     paddingRight: 10,
     paddingLeft: 20
   },
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     marginBottom:1,
     backgroundColor: '#fff',
     marginTop: 20,
-    height: 50,
+    height: 70,
     paddingRight: 10,
     paddingLeft: 20
   },
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom:1,
     backgroundColor: '#fff',
-    height: 50,
+    height: 70,
     paddingRight: 10,
     paddingLeft: 20
   },
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom:1,
     backgroundColor: '#fff',
-    height: 50,
+    height: 70,
     paddingRight: 10,
     paddingLeft: 20
   },
@@ -133,6 +133,6 @@ const styles = StyleSheet.create({
     paddingLeft: 20
   },
   text: {
-    fontSize: 18
+    fontSize: 20
   }
 });

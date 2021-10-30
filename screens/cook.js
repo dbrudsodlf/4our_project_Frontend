@@ -127,7 +127,7 @@ export default function CookScreen (props) {
               </TouchableOpacity>
               <View style={styles.icon2}>
               <TouchableOpacity  onPressIn={()=>{pushHeart(i,food)}} >
-            <Icon name={food.checked? 'heart-outline' : 'heart'} size={30} color="#fff" />  
+            <Icon name={food.checked? 'heart' : 'heart-outline'} size={30} color="#fff" />  
               </TouchableOpacity></View>
             </View>
           </View>

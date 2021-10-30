@@ -61,7 +61,7 @@ export default function cart(props) {
     const newItems = [...insertData];
     newItems[index]['checked'] = food.checked == 1 ? 0 : 1;
     setInsertData(newItems);
-    let maindata = { _id:food.idd,user_id: id, ing_expir: food.ing_expir, ing_frozen: food.frozen, ing_name: food.name,ing_img:food.img } //체크 된 배열 
+    let maindata = { _id:food.idd,user_id: id, ing_expir: food.date, ing_frozen: food.frozen, ing_name: food.name,ing_img:food.img } //체크 된 배열 
     if (food.checked == 1) { //체크 한 배열
       setMain( [...main,maindata]);
       setII(prev=>[...prev,index]);
