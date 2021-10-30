@@ -22,14 +22,13 @@ export default function manageExp () {
   const [selectAll, setSelectAll] = React.useState(false);
   const [cartItemIsLoading, setCartItemIsLoading] = React.useState(false);
   const [unchecked, setUnchecked] = React.useState([]);
-  const [date, setDate] = useState(new Date());
   const [counting, setCounting] = React.useState(0);
 
   const id = useSelector((state) => state.id);
   React.useEffect(()=>{
-    axios.get(`${API_URL}/manage?user_id=${id}`).then((result)=>{
-      setIngredients(result.data);
-      console.log(result.data);
+    axios.get(`${API_URL}/manage/manageover?user_id=${id}`).then((result)=>{
+      setInsertData(result.data);
+      console.log('기한초과페이지', result.data);
     }).catch((error)=>{
       console.error(error);
     })
@@ -46,24 +45,28 @@ export default function manageExp () {
   //   console.log('ins', insertData);
   // }, [ingredients]);
 
-  React.useEffect(() => {
-    ingredients.map((ing) => {
-      // ing.ing_expir = changeDateFormat(ing.ing_expir);
-      if(ing.ing_expir < date) {
-        ing.ing_expir = changeDateFormat(ing.ing_expir);
-        let tempData = {id: ing._id, expir: ing.ing_expir, name: ing.ing.ing_name, checked: 0};
-        setInsertData(prev => [...prev, tempData]);
-      }
-    });
-  }, [ingredients]);
+  // React.useEffect(() => {
+  //   ingredients.map((ing) => {
+  //     // ing.ing_expir = changeDateFormat(ing.ing_expir);
+  //     console.log('날짜', ing.ing_expir);
+  //     console.log('오늘 날짜', date);
+  //     if( ing.ing_expir < date ) {
+  //       console.log('재료 변환', ing.ing.ing_name);
+  //       ing.ing_expir = changeDateFormat(ing.ing_expir);
+  //       let tempData = {id: ing._id, expir: ing.ing_expir, name: ing.ing.ing_name, checked: 0};
+  //       setInsertData(prev => [...prev, tempData]);
+  //     }
+  //   });
+  // }, [ingredients]);
 
-  const changeDateFormat = (oldDate) => {
-    if(oldDate === null) {
-      return '2021-01-01'
-    }
-    let newDate = oldDate.substr(0, 10);
-    return newDate
-  }
+
+  // const changeDateFormat = (oldDate) => {
+  //   if(oldDate === null) {
+  //     return '2021-01-01'
+  //   }
+  //   let newDate = oldDate.substr(0, 10);
+  //   return newDate
+  // }
 
   //const data = [{id: 1, name: '계란'}, {id: 2, name: '토마토'}, {id: 3, name: '오이'}];
 	const selectHandler = (index, value) => {
@@ -142,7 +145,46 @@ export default function manageExp () {
 				}},
       ],
 			{ cancelable: false }
-		);
+    );
+  }
+  
+  const addBasketHandler = () => {
+    const addBasketSelected = [...insertData];
+    console.log(addBasketSelected);
+		Alert.alert(
+			'선택 항목을 장바구니에 넣으시겠습니까?',
+			'',
+			[
+				{text: '취소', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+				{text: '장바구니 담기', onPress: () => {
+          addBasketSelected.map((item, index) => {
+            if(item['checked'] === 1){
+              console.log(item.id);
+              axios.post(`${API_URL}/manage/managebasket`,{ 
+                user_id: id,
+                ing_name: item.name }
+                )
+                .then((res) => {
+                  console.log("장바구니보내기", res);
+                }).catch(error => {
+                  console.log(error);
+                });
+
+              axios.delete(`${API_URL}/manage`, {data:{ _id: item.id }})
+              .then((res) => {
+                alert("나의 냉장고에서 삭제");
+                const updatedCart = [...insertData];
+                updatedCart.splice(index, 1);
+                setInsertData(updatedCart);
+              }).catch(error => {
+                console.log(error);
+              })
+            }
+          });
+				}},
+      ],
+			{ cancelable: false }
+    );
 	}
 
   return (
@@ -192,7 +234,7 @@ export default function manageExp () {
             </View>
             <View style={{flexDirection: 'row', flexGrow: 1, flexShrink: 1, alignSelf: 'center'}}>
               <View style={{flexGrow: 1, flexShrink: 1, alignSelf: 'center'}}>
-                <Text numberOfLines={1} style={{fontSize: 15}}>{item.name}</Text>
+                <Text numberOfLines={1} style={{fontSize: 15}}>{item.ing_name}</Text>
               </View>
             </View>
             <View style={[styles.centerElement, {width: 60}]}>
@@ -203,7 +245,7 @@ export default function manageExp () {
           </View>
         ))}
       </ScrollView>
-      <TouchableOpacity style={[styles.cartBtn , {backgroundColor : counting > 0 ? '#f9b664' : '#fcd9ae'}]} onPress={() => deleteSelectedHandler()}>
+      <TouchableOpacity style={[styles.cartBtn , {backgroundColor : counting > 0 ? '#f9b664' : '#fcd9ae'}]} onPress={() => addBasketHandler()}>
           <Ionicons name="basket-outline" size={30} color='white' />
           <Text style={{ color: 'white', fontSize: 18 }}> 장바구니에 담기</Text>
         </TouchableOpacity>

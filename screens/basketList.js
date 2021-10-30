@@ -2,10 +2,10 @@ import React from 'react';
 import {StyleSheet, ScrollView, Text} from 'react-native';
 import BasketListItem from './basketListItem.js';
 
-const BasketList = ({baskets,onRemove, onToggle}) => {
+const BasketList = ({baskets, onRemove, onToggle}) => {
   return (
     <ScrollView contentContainerStyle={styles.listContainer}>
-        {baskets.map(basket => (
+        {baskets.map((basket) => (
         <BasketListItem key={basket.id} {...basket} onRemove={onRemove}  onToggle={onToggle} _id={basket._id}/>
       ))}
     </ScrollView>

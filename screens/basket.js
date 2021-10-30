@@ -8,46 +8,58 @@ import { useSelector } from 'react-redux';
 import { API_URL } from '../config/constants.js';
 
 export default function BasketScreen() {
-  const [baskets, setBaskets] = useState([]);
+  const [baskets, setBaskets] = React.useState([]);
   const id = useSelector((state) => state.id);
-  const [inn,setInn]=useState([]);
-  const [basket, setBasket] = useState([]);
+  const [inn,setInn]= React.useState([]);
+  const [basket, setBasket] = React.useState([]);
 
-  React.useEffect(() => {
-    axios.get(`${API_URL}/manage/managebasket?user_id=${id}`,{ing_name:''})
-     .then((res) => {
-      setBasket(res.data);
-       console.log("장볼거 받기", res.data);
-     }).catch(error => {
-       console.log(error);
-     })
+  // React.useEffect(() => {
+  //   console.log('장바구니');
+  //   axios.get(`${API_URL}/manage/managebasket`,{params:{user_id:id}})
+  //    .then((res) => {
+  //     setBasket(res.data);
+  //     console.log(res);
+  //     console.log("장볼거 받기", res.data);
+  //    }).catch(error => {
+  //      console.log(error);
+  //    });
+  // }, []);
+
+  React.useEffect(()=>{
+    axios.get(`${API_URL}/manage/managebasket?user_id=${id}`).then((result)=>{
+      setBasket(result.data);
+      console.log(result.data);
+    }).catch((error)=>{
+      console.error(error);
+    })
   }, []);
+
 
   React.useEffect(() => {
     basket.map((ing) => {
-      let tempData = {_id:ing._id,id: Math.random().toString(), textValue:ing.ing_name ,checked: false};
+      let tempData = {_id: ing._id, id: Math.random().toString(), textValue:ing.ing_name ,checked: false};
       setBaskets(prev => [...prev, tempData]);
-      console.log(ing.ing_name);
+      console.log(ing);
     });
-    console.log("e우아아아",baskets)
   }, [basket]);
 
   const addBasket = text => { //장바구니 추가
-    setBaskets([
-      ...baskets,
-      { id: Math.random().toString(), textValue: text, checked: false },
-    ]);
-    setInn([{user_id:id,ing_name:text}])
+    setBaskets(prev=>[...prev, { id: Math.random().toString(), textValue: text, checked: false }]);
+    setInn(prev=>[...prev, {user_id:id, ing_name:text}])
   };
 
   React.useEffect(() => {
-    axios.post(`${API_URL}/manage/managebasket`,inn
-    )
-     .then((res) => {
-       console.log("장볼거 보내기", res.config.data);
-     }).catch(error => {
-       console.log(error);
-     })
+    inn.map((item)=>{
+      axios.post(`${API_URL}/manage/managebasket`,{ 
+        user_id: id,
+        ing_name: item.ing_name }
+        )
+        .then((res) => {
+          console.log("장바구니보내기", res);
+        }).catch(error => {
+          console.log(error);
+        });
+    })
   }, [inn]);
 
   const onRemove = ({id,_id}) => e => { //장바구니 삭제
