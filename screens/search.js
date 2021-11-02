@@ -46,28 +46,10 @@ export default function search({navigation}) {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     console.log("고른날짜",currentDate)
-    shortdate(currentDate);
+  
     setDate(currentDate);
   };
 
-const shortdate=(date)=>{ //날짜만 출력
-  if(date==null){
-    setDate(today);
-  }
- let year = date.getFullYear();
- let month = date.getMonth()+1;
- let dt = date.getDate();
-
-  if (dt < 10) {
-    dt = '0' + dt;
-  }
-  if (month < 10) {
-    month = '0' + month;
-  }
-  let tt=year+'-' + month + '-'+dt;
-  setTodate(tt);
-  console.log("1",todate);
-  }
 
   const showMode = (currentMode) => {
     setShow(true);
@@ -84,7 +66,7 @@ const shortdate=(date)=>{ //날짜만 출력
   };
 
   const gotocart = () => {
-    let cartdata={user_id: id,ing_expir: todate, ing_frozen: frozen, ing_name: modalName }
+    let cartdata={user_id: id,ing_expir: date, ing_frozen: frozen, ing_name: modalName }
     setCart([...cart,cartdata]);
     }
 
@@ -92,7 +74,7 @@ const putincart=()=>{
   axios.post(`${API_URL}/search`,
   { user_id: id,
     ing_name: modalName,
-    ing_expir: todate,
+    ing_expir: date,
     ing_frozen: frozen,})
    .then((res) => {
      console.log("보냄", res.config.data);

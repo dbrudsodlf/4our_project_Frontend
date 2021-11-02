@@ -7,15 +7,16 @@ import axios from 'axios';
 import { TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
-import { ScreenStackHeaderLeftView } from 'react-native-screens';
+import { ScreenStackHeaderBackButtonImage, ScreenStackHeaderLeftView } from 'react-native-screens';
 
 export default function cart(props) {
+const [showDates, setShowDates] = useState({});
   let today = new Date();
-  const [date, setDate] = useState(today);
+  const [date, setDate] = useState(new Date(today));
   const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState({});
   const [frozen, setFrozen] = useState(0);
-
+  const [todate, setTodate] = useState('');
   const [fridge, setFridge] = useState(0);
   const [fridgeice, setFridgeice] = useState(0);
   const [ingredients, setIngredients] = React.useState([]);
@@ -40,28 +41,27 @@ export default function cart(props) {
   }, []);
   
 
+
   React.useEffect(() => {
-    ingredients.map((ing) => {
-      // ing.ing_expir = changeDateFormat(ing.ing_expir);
-      ing.ing_expir = changeDateFormat(ing.ing_expir);
-      let tempData = { date: ing.ing_expir, name: ing.ing.ing_name, img: ing.ing.ing_img, frozen: ing.ing_frozen, idd: ing._id, checked: 0 };
+    let dates={};
+    ingredients.map((ing,index) => {
+      let tempData = { date: ing.ing_expir, name: ing.ing.ing_name, img: ing.ing.ing_img, frozen: ing.ing_frozen, idd: ing._id, checked: 0,Id:index };
       setInsertData(prev => [...prev, tempData]);
+      dates[ing.Id]=false;
+      if(index==0){
+        dates[ing.Id]=true;
+      }
+      setShow(dates);
     });
   }, [ingredients]);
 
-  const changeDateFormat = (oldDate) => {
-    if(oldDate === null) {
-      return '2021-01-01'
-    }
-    let newDate = oldDate.substr(0, 10);
-    return newDate
-  }
+
 
   const checkHandle = (index, food) => {//일부 선택
     const newItems = [...insertData];
     newItems[index]['checked'] = food.checked == 1 ? 0 : 1;
     setInsertData(newItems);
-    let maindata = { _id:food.idd,user_id: id, ing_expir: food.date, ing_frozen: food.frozen, ing_name: food.name,ing_img:food.img } //체크 된 배열 
+    let maindata = { _id:food.idd,user_id: id, ing_expir: food.date, ing_frozen: food.frozen, ing_name: food.name,ing_img:food.img} //체크 된 배열 
     if (food.checked == 1) { //체크 한 배열
       setMain( [...main,maindata]);
       setII(prev=>[...prev,index]);
@@ -106,37 +106,62 @@ export default function cart(props) {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
-    console.log(currentDate);
+    console.log("변한 날짜",currentDate);
   };
 
-  const showMode = (currentMode) => {
+  React.useEffect(() => {
+    console.log("한 날짜",date);
+  }, [date]); 
+
+  const changeit = (index) => {
+    const newItems = [...insertData];
+    newItems[i]['date'] = food.date = dd;
+    setInsertData(newItems);
+      console.log("언제바뀔거니",food.date);
+      }
+
+
+  
+
+  const showMode = (item,i) => {
     setShow(true);
-    setMode(currentMode);
+   // setMode(currentMode);
   };
 
-  const showDatepicker = () => {
-    showMode('date');
-  };
-
-  const frozenpick = (fridge, fridgeice) => {
-    if (fridgeice == 0) {
-      setFridge(1);
-      setFridgeice(0);
-    } else if (fridgeice == 1) {
-      setFridge(1);
-      setFridgeice(0);
+  const showDatepicker = (item,index) => {
+    let dates={};
+    insertData.map((data)=>{
+      dates[data.Id]=false;
+    })
+    dates[item.Id]=true;
+    setShow(dates);
+    // showMode(item,i);
+    // setDate(item.date);
+    if( dates[item.Id]==false){
+      changeit(index);
     }
+    console.log("원래날짜",date);
+
+ };
+  
+
+
+  
+
+
+  const frozenpick = (i, food) => {
+    const newItems = [...insertData];
+    newItems[i]['frozen'] = food.frozen == 1 ? 0 : 0;
+    setInsertData(newItems);
+      console.log(food.frozen);
     setFrozen(0);
   }
 
-  const frozenpick2 = (fridge, fridgeice) => {
-    if (fridge == 0) {
-      setFridge(0);
-      setFridgeice(1);
-    } else if (fridge == 1) {
-      setFridge(0);
-      setFridgeice(1);
-    }
+  const frozenpick2 = (i, food) => {
+    const newItems = [...insertData];
+    newItems[i]['frozen'] = food.frozen == 0 ? 1 : 1;
+    setInsertData(newItems);
+    console.log(food.frozen);
     setFrozen(1);
   }
 
@@ -198,32 +223,33 @@ export default function cart(props) {
                   <View style={styles.box3}
                     width={Dimensions.get('screen').width * 0.5}>
                     <Text style={styles.food} key={i}>{food.name}</Text>
-                    <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
+                    <TouchableHighlight underlayColor='#fff'
+                     onPress={()=>showDatepicker(food,i)}>
                       <View style={styles.showdate} >
                         <Icon name="calendar" size={30} color="#8C9190" />
                         <View style={styles.date1} >
-                          {/* <Text style={styles.date2}>{food.date.substring(0,10)}</Text> */}
-                          <Text style={styles.date2}>{food.date}</Text>
+                          <Text style={styles.date2}>{new Date(food.date).toLocaleDateString()}</Text>
                         </View></View>
                     </TouchableHighlight>
-                    {show && (
+                    {show[food.Id] && (
                       <DateTimePicker
                         testID="dateTimePicker"
-                        minimumDate={new Date(today)}
-                        value={date}
+                        value={new Date(food.date)}
+                        minimumDate={new Date(today)}                       
                         mode={mode}
                         is24Hour={true}
                         display="spinner"
                         onChange={onChange}
-
+                       // confirmBtnText="Confirm"
+                       // cancelBtnText="Cancel"
                       />
                     )}
 
                     <View style={styles.frozenpick}>
-                      <TouchableOpacity delayPressIn={0} style={food.frozen == 0 ? styles.cold2 : styles.cold} onPressIn={() => { frozenpick(fridge, fridgeice) }}  >
+                      <TouchableOpacity delayPressIn={0} style={food.frozen == 0 ? styles.cold2 : styles.cold} onPressIn={() => { frozenpick(i,food) }}  >
                         <Text style={styles.coldd} >냉장</Text>
                       </TouchableOpacity>
-                      <TouchableOpacity delayPressIn={0} style={food.frozen == 0 ? styles.ice : styles.ice2} onPressIn={() => { frozenpick2(fridge, fridgeice) }} >
+                      <TouchableOpacity delayPressIn={0} style={food.frozen == 0 ? styles.ice : styles.ice2} onPressIn={() => { frozenpick2(i,food) }} >
                         <Text style={styles.icee}>냉동</Text>
                       </TouchableOpacity>
                     </View>
