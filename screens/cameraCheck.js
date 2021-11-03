@@ -207,22 +207,23 @@ export default function cameraCheck ({ route, navigation }) {
   return (
     <View  style={styles.container}>
       <View style={styles.container2}> 
-        <Text style={styles.text}>
-          촬영한 재료가 맞나요?
-        </Text>
         <View>
           <ImageBackground style={styles.img} source={image} />
         </View>
         <Text style={styles.name}>{ingLabel}</Text>
-        <TouchableOpacity style={styles.tbtn1} onPress={openCamera}>
-            <Text style={styles.btn1}>다른 재료 촬영하러 가기</Text>
-        </TouchableOpacity>
+        <Text style={styles.text}>
+          촬영한 재료가 맞나요?
+        </Text>
+        
         <TouchableOpacity style={styles.tbtn2} onPressIn={() => toggleModal(ingLabel)}>
             <Text style={styles.btn2}>저장하기</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.footer}>
+        <TouchableOpacity style={styles.tbtn1} onPress={openCamera}>
+            <Text style={styles.btn1}>다른 재료 촬영하러 가기</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.cartBtn} onPressIn={() => {//장바구니로 이동
             goToCameraList()
           }}>
@@ -242,7 +243,7 @@ export default function cameraCheck ({ route, navigation }) {
             <Text style={styles.date} >유통 기한</Text>
             <TouchableHighlight underlayColor='#fff' onPressIn={showDatepicker}>
               <View style={styles.showdate} >
-                <Icon name="calendar" size={30} color="#8C9190" />
+                <Icon name="calendar" size={26} color="#8C9190" />
                 <Text style={styles.date2}>{date.toLocaleDateString('ko-KR')}</Text>
               </View>
             </TouchableHighlight>
@@ -259,10 +260,10 @@ export default function cameraCheck ({ route, navigation }) {
             <Text style={styles.fridge}>보관 방법</Text>
             <View style={styles.frozenpick}>
               <TouchableOpacity delayPressIn={0} style={fridge == 0 ? styles.cold : styles.cold2} onPressIn={() => { frozenpick(fridge, fridgeice) }}  >
-                <Text style={styles.coldd} >냉장</Text>
+                <Text style={fridgeice == 0 ? styles.coldd : styles.coldd2}>냉장</Text>
               </TouchableOpacity>
               <TouchableOpacity delayPressIn={0} style={fridgeice == 0 ? styles.ice : styles.ice2} onPressIn={() => { frozenpick2(fridge, fridgeice) }} >
-                <Text style={styles.icee}>냉동</Text>
+                <Text style={fridgeice == 0 ? styles.icee : styles.icee2}>냉동</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -277,7 +278,7 @@ export default function cameraCheck ({ route, navigation }) {
                 setFridge(1);
                 setFridgeice(0);
               }}>
-              <Text style={styles.txt}>취소</Text>
+              <Text style={styles.txtCancle}>취소</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -303,76 +304,95 @@ export default function cameraCheck ({ route, navigation }) {
 
 
 const styles = StyleSheet.create({
-  footer: {
-    justifyContent: 'flex-end',
-    flex: 1,
-  },
-  cartBtn: {
-    justifyContent: 'center', 
-    alignItems: 'center',
-    flexDirection: 'row',
-    width: Dimensions.get('screen').width,
-    height: Dimensions.get('screen').width*0.15,
-    backgroundColor: '#fcd9ae',
-  },
   container:{
     backgroundColor:'#fff',
     height:'100%',
     paddingTop:40,
     flexDirection:'column',
     height:'100%',
+    justifyContent: 'center',
+    alignItems:'center',
   },
   container2:{
-    flexDirection:'column',
-    alignItems:'center'
+    justifyContent: 'center',
+    alignItems:'center',
+    borderRadius: 10,
+    elevation: 10,
+    width:Dimensions.get('screen').width*0.93,
   },
   text:{
-    marginTop:50,
-    marginBottom:30,
-    fontSize:20,
+    marginLeft: Dimensions.get('screen').width*0.1,
+    alignSelf: 'flex-start',
+    marginBottom: Dimensions.get('screen').width*0.12,
+    fontSize:16,
     color:'#696969',
-    alignItems:'center'
-  },
-  imgborder:{
-      borderWidth:1,
-      borderColor:'#000'
+    textAlign: 'left',
   },
   img:{
-      width:250,
-      height:200,   
+    padding: 0,
+    margin: 0,
+    width:Dimensions.get('screen').width*0.88,
+    height:Dimensions.get('screen').width*0.6,   
+    borderRadius: 10,
   },
   name:{
-      fontSize:30,
-      fontWeight:'bold',
-      marginTop:20,
-      marginBottom:40
+    marginLeft: Dimensions.get('screen').width*0.1,
+    marginTop: Dimensions.get('screen').width*0.1,
+    alignSelf: 'flex-start',
+    fontSize:28,
+    fontWeight:'bold',
   },
   btn1:{
     fontSize:18,
     padding:12,
-    borderWidth:1,
     borderRadius:10,
-    width: Dimensions.get('screen').width*0.7,
+    width: Dimensions.get('screen').width*0.9,
+    height: Dimensions.get('screen').width*0.13,
     alignSelf: 'center', 
     textAlign: 'center',
+    marginBottom: 10,
+    color: '#191919',
+    elevation: 20,
+    backgroundColor: '#ffffff',
+    fontWeight:'bold',
+    marginBottom: 20,
   },
   btn2:{
     fontSize:18,
     padding:12,
     borderWidth:1,
-    borderColor:'#F59A23',
+    borderColor:'#f59b23',
     borderRadius:10,
     marginTop:30,
-    backgroundColor:'#F59A23',
+    backgroundColor:'#f59b23',
     color:'#fff',
-    width: Dimensions.get('screen').width*0.7,
+    width: Dimensions.get('screen').width*0.8,
+    height: Dimensions.get('screen').width*0.13,
     textAlign: 'center',
+    marginBottom: 30,
+    fontWeight:'bold',
+  },
+  footer: {
+    justifyContent: 'flex-end',
+    flex: 1,
+    alignItems: 'center',
+  },
+  cartBtn: {
+    justifyContent: 'center', 
+    alignItems: 'center',
+    flexDirection: 'row',
+    width: Dimensions.get('screen').width*0.9,
+    height: Dimensions.get('screen').width*0.13,
+    backgroundColor: '#f59b23',
+    borderRadius: 10,
+    marginBottom: 10,
+    fontWeight:'bold',
   },
 
   modal: {
     margin: 0,
-    width: 300,
-    height: 385,
+    width: Dimensions.get('screen').width*0.9,
+    height: Dimensions.get('screen').width*1.06,
     backgroundColor: '#fff',
     borderRadius: 20
   },
@@ -380,20 +400,19 @@ const styles = StyleSheet.create({
     padding: 30,
   },
   food: {
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: "bold",
     marginBottom: 20
   },
   date: {
-    fontSize: 23,
+    fontSize: 16,
     fontWeight: "bold",
     marginBottom: 13,
-
+    marginTop: 13,
   },
   showdate: {
     flexDirection: 'row',
-    borderWidth: 1.5,
-    borderColor: '#8C9190',
+    backgroundColor: '#DFDFDF',
     height: 50,
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -402,10 +421,10 @@ const styles = StyleSheet.create({
     borderRadius: 20
   },
   fridge: {
-    fontSize: 23,
+    fontSize: 16,
     fontWeight: "bold",
     marginBottom: 10,
-
+    width: Dimensions.get('screen').width*0.9,
   },
   date2: {
     fontSize: 20,
@@ -413,79 +432,103 @@ const styles = StyleSheet.create({
   },
   touch: {
     flexDirection: 'row',
-    width: 300,
-    borderBottomEndRadius: 20
+    width: Dimensions.get('screen').width*0.9,
+    marginTop: 15,
   },
   button1: {
-    width: 150,
+    width: Dimensions.get('screen').width*0.4,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F59A23',
-    height: 60,
-    borderColor: '#fff',
-    borderBottomLeftRadius: 20
+    backgroundColor: '#ffffff',
+    height: Dimensions.get('screen').width*0.14,
+    borderRadius: 10,
+    margin: 10,
+    elevation: 10,
+    marginBottom: 10,
   },
   button2: {
-    width: 150,
+    width: Dimensions.get('screen').width*0.4,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F59A23',
-    height: 60,
-    borderColor: '#fff',
-    borderBottomRightRadius: 20,
-    borderStartWidth: 1
+    backgroundColor: '#F59B23',
+    height: Dimensions.get('screen').width*0.14,
+    borderRadius: 10,
+    margin: 10,
+    elevation: 10,
+    marginBottom: 10,
   },
   txt: {
     fontSize: 20,
-    color: '#fff'
+    color: '#fff',
+    fontWeight:'bold',
+  },
+  txtCancle: {
+    fontSize: 20,
+    color: '#191919',
+    fontWeight:'bold',
   },
   cold: {
     marginRight: 20,
-    width: 110,
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 10,
+    width: Dimensions.get('screen').width*0.33,
+    height: Dimensions.get('screen').width*0.15,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
+    elevation: 10,
+    backgroundColor: '#ffffff'
   },
   cold2: {
     marginRight: 20,
-    width: 110,
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 10,
+    width: Dimensions.get('screen').width*0.33,
+    height: Dimensions.get('screen').width*0.15,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#9ACD32'
+    backgroundColor: '#9ACD32',
   },
   coldd: {
     fontSize: 20,
+    color: '#ffffff',
+    fontWeight:'bold',
+  },
+  coldd2: {
+    fontSize: 20,
+    color: '#191919',
+    fontWeight:'bold',
   },
   ice: {
     marginRight: 20,
-    width: 110,
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 10,
+    width: Dimensions.get('screen').width*0.33,
+    height: Dimensions.get('screen').width*0.15,
+    elevation: 10,
+    borderRadius: 20,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: '#ffffff'
   },
   ice2: {
     marginRight: 20,
-    width: 110,
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 10,
+    width: Dimensions.get('screen').width*0.33,
+    height: Dimensions.get('screen').width*0.15,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#add8e6'
   },
   icee: {
     fontSize: 20,
+    color: '#191919',
+    fontWeight:'bold',
+  },
+  icee2: {
+    fontSize: 20,
+    color: '#ffffff',
+    fontWeight:'bold',
   },
   frozenpick: {
     flex: 1,
     flexDirection: 'row',
-    marginBottom: 50
+    marginBottom: 60,
+    justifyContent: 'space-between',
   },
 });

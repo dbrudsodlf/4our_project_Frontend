@@ -1,13 +1,14 @@
 import React,{useState} from "react";
 import {Text,TouchableOpacity,View,StyleSheet,Image,Dimensions} from "react-native";
-import camera from '../assets/camera.png';
-import hand from '../assets/hand.png';
+//import camera from '../assets/camera.png';
+import icon from '../assets/4ouricon.jpeg';
 import * as ImagePicker from 'expo-image-picker';
 import FormData from 'form-data';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { API_URL, flask_url } from '../config/constants.js';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function StartScreen(props) {
   const name = useSelector((state) => state.name);
@@ -57,92 +58,77 @@ export default function StartScreen(props) {
 
     return (
      <View style={styles.container}>
-        {/* <Image style={styles.avocado} source={avocado} /> */}
-        <View style={styles.hand}>
-          <Image style={styles.hand} source={hand} />
-             </View>
-             <View>
-        <TouchableOpacity style={styles.flex1}  onPress={openCamera} >
-        <View style={styles.cameraicon}>
-          <Image style={styles.camera} source={camera} /></View>
-        <View style={styles.btn1}>
-          <Text style={{fontSize: 18,padding:10,marginRight:40}}>재료 인식 시작하기</Text>
-          <Text  style={{fontSize: 12,marginRight:10}}>간단한 촬영으로 나의 냉장고 완성하기</Text>
+        <View style={styles.miniBox}>
+          <TouchableOpacity style={styles.flex1}  onPress={openCamera} >
+            <Ionicons name='remove-outline' style={{}}size={66} color='#191919' />
+            <View style={styles.iconStyle}>
+              <Image style={styles.icon} source={icon} />
+            </View>
+            <Ionicons style={styles.cameraicon} name='camera' size={35} color='white' />
+              <Text style={{fontSize: 18, margin: 20, fontWeight: 'bold'}}>재료 인식 시작하기</Text>
+          </TouchableOpacity>
         </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.flex2} onPressIn={() => {
+        <Text  style={{fontSize: 14, marginTop: 6, fontWeight: 'bold'}}>간단한 촬영으로 나의 냉장고 완성하기</Text>
+        <TouchableOpacity  onPressIn={() => {
              props.navigation.replace("MainScreen");
           }}>
-        <View style={styles.btn2}>
-          <Text style={{fontSize: 15,padding:10,marginRight:40}}> {name}님의 냉장고 바로가기 </Text>
-        </View>
+          <View style={styles.btn2}>
+            <Text style={{fontSize: 15, fontWeight: 'bold'}}> {name}님의 냉장고 바로가기 </Text>
+          </View>
         </TouchableOpacity>
-      </View></View>
+      </View>
       );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex:1, 
-        flexDirection:'column',      
-        backgroundColor: '#FFD098',
+    container: {  
+        backgroundColor: '#f59b23',
         alignItems:'center',
         justifyContent: 'center',
-        height:'100%'
+        height:'100%',
       },
-      hand:{
-        position:'absolute',
-        top:Dimensions.get('screen').height/100,
-        right:25,
-        width:Dimensions.get('screen').width ,
-        height: Dimensions.get('screen').height/1.5 ,
-      },
-      avocado:{
-        position:'absolute',
-        width: Dimensions.get('screen').width/2.5,
-        height: 400, 
-       top:105,
-       left: 103
-      },
-     flex1:{
-        flexDirection:"row",
-        justifyContent: 'flex-start',
-        alignItems:"center",
-        width: Dimensions.get('screen').width*0.9,
-        height: 110,
-        backgroundColor: '#fff' ,
-        borderRadius: 10,
-        marginTop:Dimensions.get('screen').height/1.8,
-        paddingLeft: Dimensions.get('screen').width/20
-      },
-      flex2:{
-        flexDirection:"row",
-        justifyContent: 'center',
-        alignItems:"center",
-        marginTop:30,
-        borderWidth:1,
-        borderColor:"#000",
-        width: Dimensions.get('screen').width*0.9,
-        paddingLeft:40,
-        borderRadius:10
-      },
-    btn1: {
-      padding: 10,
-      alignItems: 'flex-end',
+    miniBox: {
+      alignItems:'center',
+      justifyContent: 'center',
+      backgroundColor: '#ffffff' ,
+      borderRadius: 10,
+      elevation: 10,
+    },
+    icon:{
+      alignItems: 'center',
+      backgroundColor: '#f59b23',
+      width:Dimensions.get('screen').width*0.8 ,
+      height: Dimensions.get('screen').height*0.4 ,
+      borderRadius: 10,
+      overflow: "visible",
+    },
+    iconStyle: {
+      borderRadius: 10,
+      backgroundColor: '#f59b23',
+      elevation: 10,
+    },
+    flex1:{
+      alignItems:"center",
+      width: Dimensions.get('screen').width*0.9,
       justifyContent: 'flex-end',
     },
-    camera:{
-        width: 40,
-        height: 40,  
-    },
     cameraicon:{
-        width: 70,
-        height: 70,
-        backgroundColor: '#FFD098',
-        borderRadius: 10,
-        alignItems:"center",
-        justifyContent: "center",
+      marginTop: 20,
+      padding: 15,
+      backgroundColor: '#f59b23',
+      borderRadius: 50,
+      alignItems:"center",
+      justifyContent: "center",
+      elevation: 10,
     },
-  
+    btn2: {
+      backgroundColor: 'white',
+      marginTop: 30,
+      padding: 16,
+      width: Dimensions.get('screen').width*0.9,
+      borderRadius: 10,
+      alignItems: 'center',
+      elevation: 10,
+    }
   });
   
