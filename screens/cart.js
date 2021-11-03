@@ -12,7 +12,7 @@ import { ScreenStackHeaderBackButtonImage, ScreenStackHeaderLeftView } from 'rea
 export default function cart(props) {
 const [showDates, setShowDates] = useState({});
   let today = new Date();
-  const [date, setDate] = useState(new Date(today));
+  const [date, setDate] = useState([]);
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState({});
   const [frozen, setFrozen] = useState(0);
@@ -24,6 +24,7 @@ const [showDates, setShowDates] = useState({});
   const [insertData, setInsertData] = React.useState([]);
   const [ii, setII] = React.useState([]);
   const [main, setMain] = useState([]);
+  const [foodNum, setFoodNum] = useState(0);
   const id = useSelector((state) => state.id);
   let get = [{
     _id: '', ing_name: '', ing_expir: '', ing_frozen: '', ing_img: ''
@@ -47,6 +48,7 @@ const [showDates, setShowDates] = useState({});
     ingredients.map((ing,index) => {
       let tempData = { date: ing.ing_expir, name: ing.ing.ing_name, img: ing.ing.ing_img, frozen: ing.ing_frozen, idd: ing._id, checked: 0,Id:index };
       setInsertData(prev => [...prev, tempData]);
+      setDate(prev => [...prev, ing.ing_expir]);
       dates[ing.Id]=false;
       if(index==0){
         dates[ing.Id]=true;
@@ -56,12 +58,11 @@ const [showDates, setShowDates] = useState({});
   }, [ingredients]);
 
 
-
   const checkHandle = (index, food) => {//일부 선택
     const newItems = [...insertData];
     newItems[index]['checked'] = food.checked == 1 ? 0 : 1;
     setInsertData(newItems);
-    let maindata = { _id:food.idd,user_id: id, ing_expir: food.date, ing_frozen: food.frozen, ing_name: food.name,ing_img:food.img} //체크 된 배열 
+    let maindata = { _id:food.idd,user_id: id, ing_expir: date, ing_frozen: food.frozen, ing_name: food.name,ing_img:food.img} //체크 된 배열 
     if (food.checked == 1) { //체크 한 배열
       setMain( [...main,maindata]);
       setII(prev=>[...prev,index]);
@@ -103,22 +104,25 @@ const [showDates, setShowDates] = useState({});
   }
 
   const onChange = (event, selectedDate) => {//날짜 바꾸기
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
-    setDate(currentDate);
-    console.log("변한 날짜",currentDate);
+    let i = foodNum;
+    const currentDate = selectedDate || date[i];
+    //setShow(Platform.OS === 'ios');
+    const newArray = [...date.slice(0,i), currentDate,...date.slice(i+1,date.length-1)];
+    setDate(newArray);
+    console.log(newArray);
+    console.log(date);
   };
 
-  React.useEffect(() => {
-    console.log("한 날짜",date);
-  }, [date]); 
+  // React.useEffect(() => {
+  //   console.log("한 날짜",date);
+  // }, [date]); 
 
-  const changeit = (index) => {
-    const newItems = [...insertData];
-    newItems[i]['date'] = food.date = dd;
-    setInsertData(newItems);
-      console.log("언제바뀔거니",food.date);
-      }
+  // const changeit = (index) => {
+  //   const newItems = [...insertData];
+  //   newItems[i]['date'] = food.date = dd;
+  //   setInsertData(newItems);
+  //     console.log("언제바뀔거니",food.date);
+  //     }
 
 
   
@@ -140,12 +144,18 @@ const [showDates, setShowDates] = useState({});
     if( dates[item.Id]==false){
       changeit(index);
     }
-    console.log("원래날짜",date);
+    console.log("원래날짜",date[index]);
+
+    setFoodNum(index);
+    console.log(foodNum);
 
  };
   
 
-
+const datechange=(i,food)=>{
+  setDate(food.date);
+  console.log("뜨고이시니니",i,food);
+}
   
 
 
@@ -178,6 +188,10 @@ const [showDates, setShowDates] = useState({});
       setMain([]);
   }
 
+  const settingNum = (i) => {
+    setFoodNum(i);
+  }
+
 
   return (
     <View style={styles.container}>
@@ -205,10 +219,9 @@ const [showDates, setShowDates] = useState({});
       <ScrollView>
         {
           insertData && insertData.map((food, i) => {
-            let photo = { uri: food.img };
-
+            let photo = { uri: food.img };       
             return (
-              <View style={styles.box} key={i}>
+              <View style={styles.box} key={i}  >
                 <View style={styles.boxtop2}>
                   <TouchableOpacity onPress={() => checkHandle(i, food)} >
                     <Ionicons name={food.checked == 1 ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"} size={35} color={food.checked == 1 ? "#F59A23" : "#aaaaaa"} />
@@ -228,20 +241,18 @@ const [showDates, setShowDates] = useState({});
                       <View style={styles.showdate} >
                         <Icon name="calendar" size={30} color="#8C9190" />
                         <View style={styles.date1} >
-                          <Text style={styles.date2}>{new Date(food.date).toLocaleDateString()}</Text>
+                          <Text style={styles.date2}>{new Date(date[i]).toLocaleDateString()}</Text>
                         </View></View>
                     </TouchableHighlight>
                     {show[food.Id] && (
                       <DateTimePicker
                         testID="dateTimePicker"
-                        value={new Date(food.date)}
+                        value={new Date(date[i])}
                         minimumDate={new Date(today)}                       
                         mode={mode}
                         is24Hour={true}
                         display="spinner"
                         onChange={onChange}
-                       // confirmBtnText="Confirm"
-                       // cancelBtnText="Cancel"
                       />
                     )}
 
