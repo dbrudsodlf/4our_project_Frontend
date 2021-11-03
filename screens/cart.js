@@ -106,26 +106,16 @@ const [showDates, setShowDates] = useState({});
   const onChange = (event, selectedDate) => {//날짜 바꾸기
     let i = foodNum;
     const currentDate = selectedDate || date[i];
-    //setShow(Platform.OS === 'ios');
-    const newArray = [...date.slice(0,i), currentDate,...date.slice(i+1,date.length-1)];
-    setDate(newArray);
-    console.log(newArray);
+    setShow(Platform.OS === 'ios');
+    date.splice(i,1,currentDate);
     console.log(date);
+    setFoodNum(0);
   };
 
-  // React.useEffect(() => {
-  //   console.log("한 날짜",date);
-  // }, [date]); 
-
-  // const changeit = (index) => {
-  //   const newItems = [...insertData];
-  //   newItems[i]['date'] = food.date = dd;
-  //   setInsertData(newItems);
-  //     console.log("언제바뀔거니",food.date);
-  //     }
-
-
-  
+  React.useEffect(() => {
+    console.log("한 날짜",date);
+    setDate(date);
+  }, [foodNum]); 
 
   const showMode = (item,i) => {
     setShow(true);
