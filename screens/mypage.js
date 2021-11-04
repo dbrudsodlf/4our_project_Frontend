@@ -40,10 +40,10 @@ export default function MypageScreen(props) {
         <Text style={styles.text}> 회원 정보 </Text>
         <Icon name="right" size={30} color="#a9a9a9" />
       </TouchableOpacity>
-      {/* <TouchableOpacity style={styles.logout} onPress={() => { props.navigation.navigate("logout") }}>
+      <TouchableOpacity style={styles.logout} onPress={() => { props.navigation.navigate("login") }}>
         <Text style={styles.text}> 로그아웃 </Text>
         <Icon name="right" size={30} color="#a9a9a9" />
-      </TouchableOpacity> */}
+      </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -128,9 +128,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: '#fff',
-    height: 50,
+    height: 70,
     paddingRight: 10,
-    paddingLeft: 20
+    paddingLeft: 20,
+    marginBottom:50
   },
   text: {
     fontSize: 20

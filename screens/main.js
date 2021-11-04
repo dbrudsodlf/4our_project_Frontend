@@ -6,9 +6,12 @@ import Fridge from './fridge.js';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 import {API_URL} from '../config/constants.js';
-
+import {useSelector, useDispatch} from 'react-redux'
 const title = '나의 냉장고'
+
+
 export default function MainScreen(props) {
+  const id = useSelector((state) => state.id);
   const [ingredients, setIngredients] = React.useState([]);
   const [count, setCount] = React.useState(0);
   const [insertData, setInsertData] = React.useState([]);
@@ -60,9 +63,6 @@ export default function MainScreen(props) {
       console.log('Tflg!!!:', selectedBtn.flag);
     }
   }
-
-
-
   
   return (
       <SafeAreaView style={styles.SafeAreaView}> 
@@ -77,8 +77,7 @@ export default function MainScreen(props) {
             <TouchableOpacity style={[styles.cookBtn, selectedBtn.flag ? styles.selectedCookBtn : styles.cookBtn]} 
             onPress={()=> {
               if(selectedBtn.flag){             
-                setClick(!click);
-                           
+                setClick(!click);      
               }
             }}
             disabled={selectedBtn.flag ? false : true }>

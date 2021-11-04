@@ -25,6 +25,7 @@ const [showDates, setShowDates] = useState({});
   const [ii, setII] = React.useState([]);
   const [main, setMain] = useState([]);
   const [foodNum, setFoodNum] = useState(0);
+  const[dd,setDd]=useState(0);
   const id = useSelector((state) => state.id);
   let get = [{
     _id: '', ing_name: '', ing_expir: '', ing_frozen: '', ing_img: ''
@@ -62,7 +63,7 @@ const [showDates, setShowDates] = useState({});
     const newItems = [...insertData];
     newItems[index]['checked'] = food.checked == 1 ? 0 : 1;
     setInsertData(newItems);
-    let maindata = { _id:food.idd,user_id: id, ing_expir: date, ing_frozen: food.frozen, ing_name: food.name,ing_img:food.img} //체크 된 배열 
+    let maindata = { _id:food.idd,user_id: id, ing_expir: date[index], ing_frozen: food.frozen, ing_name: food.name,ing_img:food.img} //체크 된 배열 
     if (food.checked == 1) { //체크 한 배열
       setMain( [...main,maindata]);
       setII(prev=>[...prev,index]);
@@ -108,14 +109,15 @@ const [showDates, setShowDates] = useState({});
     const currentDate = selectedDate || date[i];
     setShow(Platform.OS === 'ios');
     date.splice(i,1,currentDate);
-    console.log(date);
+    console.log("삡",date);
     setFoodNum(0);
+    setDd(!dd);
   };
 
   React.useEffect(() => {
     console.log("한 날짜",date);
     setDate(date);
-  }, [foodNum]); 
+  }, [dd]); 
 
   const showMode = (item,i) => {
     setShow(true);
