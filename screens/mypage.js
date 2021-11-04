@@ -5,6 +5,7 @@ import {
   View,
   Text,
   SafeAreaView,
+  Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import MyPageUser from './mypageUser';
@@ -12,6 +13,23 @@ import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export default function MypageScreen(props) {
+  const logoutalert = () => {
+    Alert.alert(
+      //title
+      '',
+   '로그아웃 되었습니다',
+      [
+        {
+          text: '확인',
+          onPress: () => props.navigation.navigate("login") 
+        }
+     
+      ],
+      {cancelable: false},
+      //clicking out side of alert will not cancel
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
     <View style={styles.top}>
@@ -40,7 +58,9 @@ export default function MypageScreen(props) {
         <Text style={styles.text}> 회원 정보 </Text>
         <Icon name="right" size={30} color="#a9a9a9" />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.logout} onPress={() => { props.navigation.navigate("login") }}>
+      <TouchableOpacity style={styles.logout} onPress={() => 
+      {  logoutalert();}}>
+        
         <Text style={styles.text}> 로그아웃 </Text>
         <Icon name="right" size={30} color="#a9a9a9" />
       </TouchableOpacity>
