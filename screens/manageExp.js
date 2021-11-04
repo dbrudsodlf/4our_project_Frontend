@@ -216,7 +216,7 @@ export default function manageExp () {
             <Ionicons name={selectAll == true ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"} size={25} color={selectAll == true ? "black" : "#aaaaaa"} />
           </TouchableOpacity>
           <View style={{ justifyContent: 'space-between', alignItems: 'center'}}>
-            <Text>전체 선택</Text>
+            <Text style={{fontSize: 14, fontWeight: 'bold'}}>전체 선택</Text>
           </View>
         </View>
         <TouchableOpacity style={styles.centerElement} onPress={() => deleteSelectedHandler()}>
@@ -234,7 +234,7 @@ export default function manageExp () {
             </View>
             <View style={{flexDirection: 'row', flexGrow: 1, flexShrink: 1, alignSelf: 'center'}}>
               <View style={{flexGrow: 1, flexShrink: 1, alignSelf: 'center'}}>
-                <Text numberOfLines={1} style={{fontSize: 15}}>{item.ing_name}</Text>
+                <Text numberOfLines={1} style={{fontSize: 16, fontWeight: 'bold'}}>{item.ing_name}</Text>
               </View>
             </View>
             <View style={[styles.centerElement, {width: 60}]}>
@@ -269,9 +269,9 @@ const styles = StyleSheet.create({
     margin: Dimensions.get('screen').width*0.05,
   },
   textBox: {
-    borderWidth: 1,
-    borderRadius: 5,
     padding: 5,
+    fontWeight: 'bold',
+    fontSize: 14
   },
   cartBtn: {
     justifyContent: 'center', 
@@ -279,6 +279,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: Dimensions.get('screen').width,
     height: Dimensions.get('screen').width*0.12,
-    //backgroundColor: '#fcd9ae',
   }
 });

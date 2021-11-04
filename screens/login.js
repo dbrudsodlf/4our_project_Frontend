@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     marginTop:Dimensions.get('screen').height*0.8,
     width:Dimensions.get('screen').width*0.8,
     justifyContent:'center',
-    marginLeft:Dimensions.get('screen').width*0.1
+    marginLeft:Dimensions.get('screen').width*0.1,
   },
 
 });

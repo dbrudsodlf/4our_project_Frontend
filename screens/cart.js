@@ -140,8 +140,7 @@ const [showDates, setShowDates] = useState({});
 
     setFoodNum(index);
     console.log(foodNum);
-
- };
+  };
   
 
 const datechange=(i,food)=>{
@@ -155,7 +154,7 @@ const datechange=(i,food)=>{
     const newItems = [...insertData];
     newItems[i]['frozen'] = food.frozen == 1 ? 0 : 0;
     setInsertData(newItems);
-      console.log(food.frozen);
+    console.log(food.frozen);
     setFrozen(0);
   }
 
@@ -237,11 +236,7 @@ const datechange=(i,food)=>{
                     <Icon name="close" size={30} color="#000" />
                   </TouchableOpacity>
                       </View>
-                      
-                    
-
-                    <TouchableHighlight underlayColor='#fff'
-                     onPress={()=>showDatepicker(food,i)}>
+                    <TouchableHighlight underlayColor='#fff' onPress={()=>showDatepicker(food,i)}>
                       <View style={styles.showdate} >
                         <Icon name="calendar" size={30} color="#8C9190" />
                         <View style={styles.date1} >

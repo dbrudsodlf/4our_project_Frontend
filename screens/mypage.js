@@ -47,7 +47,7 @@ export default function MypageScreen(props) {
         <Icon name="right" size={30} color="#a9a9a9" />
       </TouchableOpacity>
       <TouchableOpacity style={styles.notice} onPress={() => { props.navigation.navigate("notice") }}>
-        <Text style={styles.text}> 인사말 </Text>
+        <Text style={styles.text}> 공지사항 </Text>
         <Icon name="right" size={30} color="#a9a9a9" />
       </TouchableOpacity>
       <TouchableOpacity style={styles.versioninfo} onPress={() => { props.navigation.navigate("versioninfo") }}>

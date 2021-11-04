@@ -328,11 +328,12 @@ const styles = StyleSheet.create({
   boxtop2: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    //justifyContent: 'space-evenly',
+    textAlign: 'center',
+    marginRight: 10,
+    marginBottom: 10,
   },
   checkNname: {
     flexDirection: 'row',
-    justifyContent: 'space-around'
   },
   add: {
     borderRadius: 10,
@@ -366,14 +367,16 @@ const styles = StyleSheet.create({
   },
   box3: {
     paddingLeft: 20,
+    alignItems: 'center'
   },
   food: {
-    fontSize: 25,
+    fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 10
+    marginBottom: 10,
+    alignSelf: 'center'
   },
   date: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "bold",
     marginBottom: 13,
   },
@@ -383,8 +386,7 @@ const styles = StyleSheet.create({
   },
   showdate: {
     flexDirection: 'row',
-    borderWidth: 1.5,
-    borderColor: '#8C9190',
+    backgroundColor: '#DFDFDF',
     height: 50,
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -422,53 +424,66 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   cold: {
-    marginRight: 20,
-    width: Dimensions.get('screen').width * 0.2,
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 10,
+    marginRight: 10,
+    width: Dimensions.get('screen').width*0.23,
+    height: Dimensions.get('screen').width*0.15,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
+    elevation: 10,
+    backgroundColor: '#ffffff'
   },
   cold2: {
-    marginRight: 20,
-    width: Dimensions.get('screen').width * 0.2,
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 10,
+    marginRight: 10,
+    width: Dimensions.get('screen').width*0.23,
+    height: Dimensions.get('screen').width*0.15,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#9ACD32'
+    backgroundColor: '#9ACD32',
   },
   coldd: {
     fontSize: 20,
+    color: '#ffffff',
+    fontWeight:'bold',
+  },
+  coldd2: {
+    fontSize: 20,
+    color: '#191919',
+    fontWeight:'bold',
   },
   ice: {
-    marginRight: 20,
-    width: Dimensions.get('screen').width * 0.2,
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 10,
+    marginRight: 10,
+    width: Dimensions.get('screen').width*0.23,
+    height: Dimensions.get('screen').width*0.15,
+    elevation: 10,
+    borderRadius: 20,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: '#ffffff'
   },
   ice2: {
-    marginRight: 20,
-    width: Dimensions.get('screen').width * 0.2,
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 10,
+    marginRight: 10,
+    width: Dimensions.get('screen').width*0.23,
+    height: Dimensions.get('screen').width*0.15,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#add8e6'
   },
   icee: {
     fontSize: 20,
+    color: '#191919',
+    fontWeight:'bold',
+  },
+  icee2: {
+    fontSize: 20,
+    color: '#ffffff',
+    fontWeight:'bold',
   },
   frozenpick: {
     flex: 1,
     flexDirection: 'row',
     marginBottom: 10,
-    marginLeft: 10
   },
 });

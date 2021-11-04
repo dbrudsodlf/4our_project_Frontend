@@ -1,6 +1,6 @@
 import { SearchBar } from 'react-native-elements';
 import React, { useState } from 'react';
-import { StyleSheet, View, FlatList,  Text, TouchableHighlight, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, FlatList,  Text, TouchableHighlight, TouchableOpacity, Dimensions } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -202,10 +202,10 @@ const putincart=()=>{
             <Text style={styles.fridge}>보관 방법</Text>
             <View style={styles.frozenpick}>
               <TouchableOpacity delayPressIn={0} style={fridge == 0 ? styles.cold : styles.cold2} onPressIn={() => { frozenpick(fridge, fridgeice) }}  >
-                <Text style={styles.coldd} >냉장</Text>
+                <Text style={fridge == 0 ? styles.coldd : styles.coldd2} >냉장</Text>
               </TouchableOpacity>
               <TouchableOpacity delayPressIn={0} style={fridgeice == 0 ? styles.ice : styles.ice2} onPressIn={() => { frozenpick2(fridge, fridgeice) }} >
-                <Text style={styles.icee}>냉동</Text>
+                <Text style={fridgeice == 0 ? styles.icee : styles.icee2}>냉동</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -220,7 +220,7 @@ const putincart=()=>{
                 setFridge(1);
                 setFridgeice(0);
               }}>
-              <Text style={styles.txt}>취소</Text>
+              <Text style={styles.txtCancle}>취소</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -331,8 +331,8 @@ const styles = StyleSheet.create({
   },
   modal: {
     margin: 0,
-    width: 300,
-    height: 385,
+    width: Dimensions.get('screen').width*0.9,
+    height: Dimensions.get('screen').width*1.06,
     backgroundColor: '#fff',
     borderRadius: 20
   },
@@ -340,20 +340,19 @@ const styles = StyleSheet.create({
     padding: 30,
   },
   food: {
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: "bold",
     marginBottom: 20
   },
   date: {
-    fontSize: 23,
+    fontSize: 16,
     fontWeight: "bold",
     marginBottom: 13,
-
+    marginTop: 13,
   },
   showdate: {
     flexDirection: 'row',
-    borderWidth: 1.5,
-    borderColor: '#8C9190',
+    backgroundColor: '#DFDFDF',
     height: 50,
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -362,10 +361,10 @@ const styles = StyleSheet.create({
     borderRadius: 20
   },
   fridge: {
-    fontSize: 23,
+    fontSize: 16,
     fontWeight: "bold",
     marginBottom: 10,
-
+    width: Dimensions.get('screen').width*0.9,
   },
   date2: {
     fontSize: 20,
@@ -373,30 +372,103 @@ const styles = StyleSheet.create({
   },
   touch: {
     flexDirection: 'row',
-    width: 300,
-    borderBottomEndRadius: 20
+    width: Dimensions.get('screen').width*0.9,
+    marginTop: 15,
   },
   button1: {
-    width: 150,
+    width: Dimensions.get('screen').width*0.4,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F59A23',
-    height: 60,
-    borderColor: '#fff',
-    borderBottomLeftRadius: 20
+    backgroundColor: '#ffffff',
+    height: Dimensions.get('screen').width*0.14,
+    borderRadius: 10,
+    margin: 10,
+    elevation: 10,
+    marginBottom: 10,
   },
   button2: {
-    width: 150,
+    width: Dimensions.get('screen').width*0.4,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F59A23',
-    height: 60,
-    borderColor: '#fff',
-    borderBottomRightRadius: 20,
-    borderStartWidth: 1
+    backgroundColor: '#F59B23',
+    height: Dimensions.get('screen').width*0.14,
+    borderRadius: 10,
+    margin: 10,
+    elevation: 10,
+    marginBottom: 10,
   },
   txt: {
     fontSize: 20,
-    color: '#fff'
-  }
+    color: '#fff',
+    fontWeight:'bold',
+  },
+  txtCancle: {
+    fontSize: 20,
+    color: '#191919',
+    fontWeight:'bold',
+  },
+  cold: {
+    marginRight: 20,
+    width: Dimensions.get('screen').width*0.33,
+    height: Dimensions.get('screen').width*0.15,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 10,
+    backgroundColor: '#ffffff'
+  },
+  cold2: {
+    marginRight: 20,
+    width: Dimensions.get('screen').width*0.33,
+    height: Dimensions.get('screen').width*0.15,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#9ACD32',
+  },
+  coldd: {
+    fontSize: 20,
+    color: '#ffffff',
+    fontWeight:'bold',
+  },
+  coldd2: {
+    fontSize: 20,
+    color: '#191919',
+    fontWeight:'bold',
+  },
+  ice: {
+    marginRight: 20,
+    width: Dimensions.get('screen').width*0.33,
+    height: Dimensions.get('screen').width*0.15,
+    elevation: 10,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ffffff'
+  },
+  ice2: {
+    marginRight: 20,
+    width: Dimensions.get('screen').width*0.33,
+    height: Dimensions.get('screen').width*0.15,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#add8e6'
+  },
+  icee: {
+    fontSize: 20,
+    color: '#191919',
+    fontWeight:'bold',
+  },
+  icee2: {
+    fontSize: 20,
+    color: '#ffffff',
+    fontWeight:'bold',
+  },
+  frozenpick: {
+    flex: 1,
+    flexDirection: 'row',
+    marginBottom: 60,
+    justifyContent: 'space-between',
+  },
 });

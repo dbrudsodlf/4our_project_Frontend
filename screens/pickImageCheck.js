@@ -168,8 +168,8 @@ export default function cameraCheck ({ route, navigation }) {
             console.log(error);})
       };
 
-  const goToPickImageList = async () => {
-    navigation.navigate('pickImageCart');
+  const goToCameraList = async () => {
+    navigation.navigate('cameraCart');
   }
 
   const pickImage = async () => {
@@ -222,7 +222,7 @@ export default function cameraCheck ({ route, navigation }) {
         </View>
         <Text style={styles.name}>{ingLabel}</Text>
         <Text style={styles.text}>
-          촬영한 재료가 맞나요?
+          선택한 이미지 재료가 맞나요?
         </Text>
         
         <TouchableOpacity style={styles.tbtn2} onPressIn={() => toggleModal(ingLabel)}>
@@ -235,7 +235,7 @@ export default function cameraCheck ({ route, navigation }) {
             <Text style={styles.btn1}>다른 재료 촬영하러 가기</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.cartBtn} onPressIn={() => {//장바구니로 이동
-            goToPickImageList()
+            goToCameraList()
           }}>
           {/* <Ionicons name="basket-outline" size={30} color="white" /> */}
           <Text style={{ color: 'white', fontSize: 18 }}>재료 촬영 끝내기</Text>

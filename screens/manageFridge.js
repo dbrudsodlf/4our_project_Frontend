@@ -53,14 +53,6 @@ export default function manageFridge ({ navigation }) {
     axios.get(`${API_URL}/manage?user_id=${id}`).then((result)=>{
       setIngredients(result.data);
       console.log(ingredients);
-      // for (const value in ingredients) {
-      //   console.log(ingredients[value].ing_name);
-      //   let ingId = ingredients[value]._id;
-      //   let ingName = ingredients[value].ing_name;
-      //   let tempData = {id: ingId, name: ingName, checked: 0};
-      //   setInsertData(prev => [...prev, tempData]);
-      // }
-      // console.log(insertData);
     }).catch((error)=>{
       console.error(error);
     })
@@ -70,7 +62,7 @@ export default function manageFridge ({ navigation }) {
       ingredients.map((ing) => {
         // ing.ing_expir = changeDateFormat(ing.ing_expir);
         ing.ing_expir = changeDateFormat(ing.ing_expir);
-        let tempData = {id: ing._id, expir: ing.ing_expir, name: ing.ing.ing_name, checked: 0};
+        let tempData = {id: ing._id, expir: ing.ing_expir, frozen: ing.ing_frozen, name: ing.ing.ing_name, checked: 0};
         setInsertData(prev => [...prev, tempData]);
       });
   }, [ingredients]);
@@ -105,7 +97,7 @@ export default function manageFridge ({ navigation }) {
 	
 	const deleteHandler = (idd,index) => {
 		Alert.alert(
-			'관리 페이지에서 정말 삭제하시겠습니까?',
+			'냉장고에서 정말 삭제하시겠습니까?',
 			'',
 			[
 				{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
@@ -134,7 +126,7 @@ export default function manageFridge ({ navigation }) {
     const deleteSelected = [...insertData];
     console.log(deleteSelected);
 		Alert.alert(
-			'선택 항목을 관리 페이지에서 정말 삭제하시겠습니까?',
+			'선택 항목을 냉장고에서 정말 삭제하시겠습니까?',
 			'',
 			[
 				{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
@@ -219,6 +211,7 @@ export default function manageFridge ({ navigation }) {
     setModalName(item.name);
     setIngId(item.id);
     setDate(item.expir);
+    setFrozen(item.frozen);
   };
 
   React.useEffect(()=>{
@@ -301,24 +294,23 @@ export default function manageFridge ({ navigation }) {
           checkboxProp={{ boxType: 'square' }} // iOS (supported from v0.3.0)
         />
       </SafeAreaView> */}
-      <View style={{paddingHorizontal: 20, paddingTop: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
+      <View style={{paddingHorizontal: 20, paddingTop: 20, flexDirection: 'row', justifyContent: 'space-between', marginBottom: 13}}>
         <View style={[styles.centerElement, {width: 60}]}>
           <TouchableOpacity style={[styles.centerElement, {width: 32, height: 32}]} onPress={() => selectHandlerAll(selectAll)}>
             <Ionicons name={selectAll == true ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"} size={25} color={selectAll == true ? "black" : "#aaaaaa"} />
           </TouchableOpacity>
           <View style={{ justifyContent: 'space-between', alignItems: 'center'}}>
-            <Text>전체 선택</Text>
+            <Text style={{fontSize: 14, fontWeight: 'bold'}}>전체 선택</Text>
           </View>
         </View>
         <TouchableOpacity style={styles.centerElement} onPress={() => deleteSelectedHandler()}>
-          {/* <Ionicons name="md-trash" size={25} color="#ee4d2d" /> */}
           <Text style={styles.textBox}>선택 삭제</Text>
         </TouchableOpacity>
       </View>
       <ScrollView>	
         {insertData && insertData.map((item, i) => (
           <TouchableOpacity key={i} onPress={()=>toggleModal(item)}>
-            <View key={i} style={[styles.itemList, {flexDirection: 'row', backgroundColor: '#fff', marginBottom: 2, height: 60}]}>
+            <View key={i} style={[styles.itemList, {flexDirection: 'row', backgroundColor: '#fff'}]}>
               <View style={[styles.centerElement, {width: 60}]}>
               <TouchableOpacity style={[styles.centerElement, {width: 32, height: 32}]} onPress={() => selectHandler(i, item.checked)}>
                   <Ionicons name={item.checked == 1 ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"} size={25} color={item.checked == 1 ? "black" : "#aaaaaa"} />
@@ -326,7 +318,8 @@ export default function manageFridge ({ navigation }) {
               </View>
               <View style={{flexDirection: 'row', flexGrow: 1, flexShrink: 1, alignSelf: 'center'}}>
                 <View style={{flexGrow: 1, flexShrink: 1, alignSelf: 'center'}}>
-                  <Text numberOfLines={1} style={{fontSize: 15}}>{item.name}</Text>
+                  <Text numberOfLines={1} style={{fontSize: 16, fontWeight: 'bold'}}>{item.name}</Text>
+                  <Text numberOfLines={1} style={{fontSize: 12}}>~{item.expir}</Text>
                 </View>
               </View>
               <View style={[styles.centerElement, {width: 60}]}>
@@ -367,11 +360,11 @@ export default function manageFridge ({ navigation }) {
             )}
             <Text style={styles.fridge}>보관 방법</Text>
             <View style={styles.frozenpick}>
-              <TouchableOpacity delayPressIn={0} style={fridge == 0 ? styles.cold : styles.cold2} onPressIn={() => { frozenpick(fridge, fridgeice) }}  >
-                <Text style={styles.coldd} >냉장</Text>
+              <TouchableOpacity delayPressIn={0} style={frozen == 1 ? styles.cold : styles.cold2} onPressIn={() => { frozenpick(fridge, fridgeice) }}  >
+                <Text style={frozen == 0 ? styles.coldd : styles.coldd2} >냉장</Text>
               </TouchableOpacity>
-              <TouchableOpacity delayPressIn={0} style={fridgeice == 0 ? styles.ice : styles.ice2} onPressIn={() => { frozenpick2(fridge, fridgeice) }} >
-                <Text style={styles.icee}>냉동</Text>
+              <TouchableOpacity delayPressIn={0} style={frozen == 0 ? styles.ice : styles.ice2} onPressIn={() => { frozenpick2(fridge, fridgeice) }} >
+                <Text style={frozen == 0 ? styles.icee : styles.icee2}>냉동</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -387,7 +380,7 @@ export default function manageFridge ({ navigation }) {
                 setFridgeice(0);
                 setIngId();
               }}>
-              <Text style={styles.txt}>취소</Text>
+              <Text style={styles.txtCancle}>취소</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -421,19 +414,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   itemList: {
-    borderWidth: 1,
-    borderRadius: 10,
-    margin: Dimensions.get('screen').width*0.05,
+    borderTopColor: 'black',
+    borderTopWidth: 1,
+    //margin: Dimensions.get('screen').width*0.05,
+    height: Dimensions.get('screen').width*0.21,
+    width: Dimensions.get('screen').width,
   },
   textBox: {
-    borderWidth: 1,
-    borderRadius: 5,
     padding: 5,
+    fontWeight: 'bold',
+    fontSize: 14
   },
+
   modal: {
     margin: 0,
-    width: 300,
-    height: 385,
+    width: Dimensions.get('screen').width*0.9,
+    height: Dimensions.get('screen').width*1.06,
     backgroundColor: '#fff',
     borderRadius: 20
   },
@@ -441,20 +437,19 @@ const styles = StyleSheet.create({
     padding: 30,
   },
   food: {
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: "bold",
     marginBottom: 20
   },
   date: {
-    fontSize: 23,
+    fontSize: 16,
     fontWeight: "bold",
     marginBottom: 13,
-
+    marginTop: 13,
   },
   showdate: {
     flexDirection: 'row',
-    borderWidth: 1.5,
-    borderColor: '#8C9190',
+    backgroundColor: '#DFDFDF',
     height: 50,
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -463,10 +458,10 @@ const styles = StyleSheet.create({
     borderRadius: 20
   },
   fridge: {
-    fontSize: 23,
+    fontSize: 16,
     fontWeight: "bold",
     marginBottom: 10,
-
+    width: Dimensions.get('screen').width*0.9,
   },
   date2: {
     fontSize: 20,
@@ -474,79 +469,103 @@ const styles = StyleSheet.create({
   },
   touch: {
     flexDirection: 'row',
-    width: 300,
-    borderBottomEndRadius: 20
+    width: Dimensions.get('screen').width*0.9,
+    marginTop: 15,
   },
   button1: {
-    width: 150,
+    width: Dimensions.get('screen').width*0.4,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F59A23',
-    height: 60,
-    borderColor: '#fff',
-    borderBottomLeftRadius: 20
+    backgroundColor: '#ffffff',
+    height: Dimensions.get('screen').width*0.14,
+    borderRadius: 10,
+    margin: 10,
+    elevation: 10,
+    marginBottom: 10,
   },
   button2: {
-    width: 150,
+    width: Dimensions.get('screen').width*0.4,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F59A23',
-    height: 60,
-    borderColor: '#fff',
-    borderBottomRightRadius: 20,
-    borderStartWidth: 1
+    backgroundColor: '#F59B23',
+    height: Dimensions.get('screen').width*0.14,
+    borderRadius: 10,
+    margin: 10,
+    elevation: 10,
+    marginBottom: 10,
   },
   txt: {
     fontSize: 20,
-    color: '#fff'
+    color: '#fff',
+    fontWeight:'bold',
+  },
+  txtCancle: {
+    fontSize: 20,
+    color: '#191919',
+    fontWeight:'bold',
   },
   cold: {
     marginRight: 20,
-    width: 110,
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 10,
+    width: Dimensions.get('screen').width*0.33,
+    height: Dimensions.get('screen').width*0.15,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
+    elevation: 10,
+    backgroundColor: '#ffffff'
   },
   cold2: {
     marginRight: 20,
-    width: 110,
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 10,
+    width: Dimensions.get('screen').width*0.33,
+    height: Dimensions.get('screen').width*0.15,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#9ACD32'
+    backgroundColor: '#9ACD32',
   },
   coldd: {
     fontSize: 20,
+    color: '#ffffff',
+    fontWeight:'bold',
+  },
+  coldd2: {
+    fontSize: 20,
+    color: '#191919',
+    fontWeight:'bold',
   },
   ice: {
     marginRight: 20,
-    width: 110,
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 10,
+    width: Dimensions.get('screen').width*0.33,
+    height: Dimensions.get('screen').width*0.15,
+    elevation: 10,
+    borderRadius: 20,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: '#ffffff'
   },
   ice2: {
     marginRight: 20,
-    width: 110,
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 10,
+    width: Dimensions.get('screen').width*0.33,
+    height: Dimensions.get('screen').width*0.15,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#add8e6'
   },
   icee: {
     fontSize: 20,
+    color: '#191919',
+    fontWeight:'bold',
+  },
+  icee2: {
+    fontSize: 20,
+    color: '#ffffff',
+    fontWeight:'bold',
   },
   frozenpick: {
     flex: 1,
     flexDirection: 'row',
-    marginBottom: 50
+    marginBottom: 60,
+    justifyContent: 'space-between',
   },
 });

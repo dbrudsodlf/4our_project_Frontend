@@ -25,8 +25,10 @@ export default function FridgeCold ({ isSelectBtn }) {
   const [insertData, setInsertData] = React.useState([]);
   const [cook, setCook] = useState([]);
   const [cook2, setCook2] = useState([]);
+  const [date, setDate] = useState(new Date());
+
   let get = [{
-    _id:'',ing_name: '', ing_expir: '',  ing_img: ''
+    _id:'',ing_name: '', ing_expir: '',  ing_img: '', ing_dday: ''
   }]
 
   React.useEffect(()=>{
@@ -52,8 +54,12 @@ export default function FridgeCold ({ isSelectBtn }) {
       if(ing.ing_name === null) {
         ing.ing_name = '';
       }
+      
+        // let dday = new Date(ing.ing_expir).getTime() - new Date().getTime();
+        // let ddday = Math.round(dday/(1000*60*60*24));
         let tempData = {id: ing._id, name: ing.ing_name, img: ing.ing_img, checked: 0};
         setInsertData(prev => [...prev, tempData]);
+        
     });
   }, [ingredients]);
 
@@ -87,31 +93,32 @@ export default function FridgeCold ({ isSelectBtn }) {
     }
   }
 
-    return (
-      <View  style={styles.container}>
-        <ScrollView style={styles.scroll} horizontal={false}>
-          <View style={styles.cardview}>
-       {
-          insertData && insertData.map((food, i) => {
-            let photo = { uri: food.img };
-            return (
-      <TouchableOpacity key={i} onPress={() => checkHandle(i, food)} >        
-          <View style={food.checked==0 ? styles.ingredientsCard:styles.ingredientsCard2} >
-              <Image 
-                style={styles.ingredientsImage} 
-                source={photo}
-                resizeMode="contain"/>
-            
-            <View style={styles.ingredientsContents}>
-              <Text style={styles.ingredientsFont} >{food.name}</Text>
-              {/* <Text style={styles.ingredientsFont} >12</Text> */}
-            </View>
+  return (
+    <View  style={styles.container}>
+      <ScrollView style={styles.scroll} horizontal={false}>
+        <View style={styles.cardview}>
+      {
+        insertData && insertData.map((food, i) => {
+          let photo = { uri: food.img };
+
+          return (
+    <TouchableOpacity key={i} onPress={() => checkHandle(i, food)} >        
+        <View style={food.checked==0 ? styles.ingredientsCard:styles.ingredientsCard2} >
+            <Image 
+              style={styles.ingredientsImage} 
+              source={photo}
+              resizeMode="contain"/>
+          
+          <View style={styles.ingredientsContents}>
+            <Text style={styles.ingredientsFont} >{food.name}</Text>
+            {/* <Text style={styles.ingredientsFont} >{food.ing_dday}</Text> */}
           </View>
-        </TouchableOpacity>
-          );})
-              }</View>
-                </ScrollView>
-              </View>);
+        </View>
+      </TouchableOpacity>
+        );})
+            }</View>
+              </ScrollView>
+            </View>);
 
 }
 
@@ -126,14 +133,14 @@ const styles = StyleSheet.create({
     flexWrap:"wrap",
     //paddingHorizontal:16,
     paddingTop:5,
-    justifyContent:"space-between",
+    //justifyContent:"space-between",
 
   },
   container: {
     flex: 1,
     flexWrap:"wrap",
     width:'100%',
-    justifyContent:"space-between",
+    justifyContent: 'space-between'
   },
   button: {
     alignItems: 'center',
@@ -144,47 +151,36 @@ const styles = StyleSheet.create({
   },
   ingredientsCard: {
     flex:1,
-    marginTop: Dimensions.get('screen').width*0.07,
-    marginLeft: Dimensions.get('screen').width*0.06,
-    marginRight: Dimensions.get('screen').width*0.06,
+    marginTop: Dimensions.get('screen').width*0.03,
+    marginLeft: Dimensions.get('screen').width*0.045,
     marginBottom: 10,
-    width: Dimensions.get('screen').width*0.38,
+    width: Dimensions.get('screen').width*0.43,
+    height: Dimensions.get('screen').width*0.52,
     borderColor: "#191919",
     backgroundColor: 'white',
     borderRadius: 20,
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: -3
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
+    elevation: 10,
     alignItems:'center',
     justifyContent:'center'
   },
   ingredientsCard2: {
     flex:1,
+    marginTop: Dimensions.get('screen').width*0.03,
+    marginLeft: Dimensions.get('screen').width*0.045,
     marginBottom: 10,
-    marginTop: Dimensions.get('screen').width*0.07,
-    marginLeft: Dimensions.get('screen').width*0.06,
-    marginRight: Dimensions.get('screen').width*0.06,
-    width: Dimensions.get('screen').width*0.38,
+    width: Dimensions.get('screen').width*0.43,
+    height: Dimensions.get('screen').width*0.52,
+    borderColor: "#191919",
     borderColor: "#191919",
     backgroundColor: 'white',
     opacity: 0.3,
     borderRadius: 20,
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: -3
-    },
+    elevation: 10,
     alignItems:'center',
-    justifyContent:'center',
-    shadowOpacity: 0.3,
-    shadowRadius: 6
+    justifyContent:'center'
   },
   ingredientsImage: {
-    width: Dimensions.get('screen').width*0.30,
+    width: Dimensions.get('screen').width*0.25,
     height: 150,
   },
   ingredientsContents: {
@@ -195,6 +191,7 @@ const styles = StyleSheet.create({
   },
   ingredientsFont: {
     fontSize: 20,
+    fontWeight: 'bold',
   },
   ingredientsList: {
     flex: 1, 
