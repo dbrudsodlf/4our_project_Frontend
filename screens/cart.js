@@ -185,7 +185,7 @@ const datechange=(i,food)=>{
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>담은 재료</Text>
+      <Text style={styles.text}>냉장고에 추가할 재료</Text>
       <View style={styles.boxtop}>
         <View style={styles.checkboxtop}>
           <TouchableOpacity
@@ -212,20 +212,32 @@ const datechange=(i,food)=>{
             let photo = { uri: food.img };       
             return (
               <View style={styles.box} key={i}  >
-                <View style={styles.boxtop2}>
-                  <TouchableOpacity onPress={() => checkHandle(i, food)} >
-                    <Ionicons name={food.checked == 1 ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"} size={35} color={food.checked == 1 ? "#F59A23" : "#aaaaaa"} />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => deleteHandler(food.idd,i)}>
-                    <Icon name="close" size={30} color="#000" />
-                  </TouchableOpacity></View>
                 <View style={styles.box2} width={Dimensions.get('screen').width * 0.89}>
-                  <Image style={styles.ingredientsImage}
-                    source={photo}
-                    resizeMode={"contain"} />
-                  <View style={styles.box3}
-                    width={Dimensions.get('screen').width * 0.5}>
+                <TouchableHighlight onPress={() => checkHandle(i, food)} style={styles.ingredientsImage}>
+                    <Image 
+                    style={{
+                      flex: 1,
+                      resizeMode:'contain',
+                      backgroundColor: '#ffffff',
+                    }}
+                    source={photo}/>
+                  </TouchableHighlight>
+                  
+                  <View style={styles.box3}>
+                    <View style={styles.boxtop2} width={Dimensions.get('screen').width * 0.48}>
+                      <View style={styles.checkNname}>
+                        <TouchableOpacity onPress={() => checkHandle(i, food)} >
+                    <Ionicons name={food.checked == 1 ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"} size={32} color={food.checked == 1 ? "#F59A23" : "#aaaaaa"} />
+                  </TouchableOpacity>
                     <Text style={styles.food} key={i}>{food.name}</Text>
+                    </View>
+                    <TouchableOpacity onPress={() => deleteHandler(food.idd,i)}>
+                    <Icon name="close" size={30} color="#000" />
+                  </TouchableOpacity>
+                      </View>
+                      
+                    
+
                     <TouchableHighlight underlayColor='#fff'
                      onPress={()=>showDatepicker(food,i)}>
                       <View style={styles.showdate} >
@@ -248,10 +260,10 @@ const datechange=(i,food)=>{
 
                     <View style={styles.frozenpick}>
                       <TouchableOpacity delayPressIn={0} style={food.frozen == 0 ? styles.cold2 : styles.cold} onPressIn={() => { frozenpick(i,food) }}  >
-                        <Text style={styles.coldd} >냉장</Text>
+                        <Text style={food.frozen == 0 ? styles.coldd : styles.coldd2} >냉장</Text>
                       </TouchableOpacity>
                       <TouchableOpacity delayPressIn={0} style={food.frozen == 0 ? styles.ice : styles.ice2} onPressIn={() => { frozenpick2(i,food) }} >
-                        <Text style={styles.icee}>냉동</Text>
+                        <Text style={food.frozen == 0 ? styles.icee : styles.icee2}>냉동</Text>
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -314,7 +326,12 @@ const styles = StyleSheet.create({
   boxtop2: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginRight: 10
+    textAlign: 'center',
+    marginRight: 10,
+    marginBottom: 10,
+  },
+  checkNname: {
+    flexDirection: 'row',
   },
   add: {
     borderRadius: 10,
@@ -337,10 +354,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     margin: 15,
     borderRadius: 10,
-    borderColor: "#808080",
     backgroundColor: '#fff',
-    borderWidth: 1,
-    padding: 10
+    padding: 10,
+    elevation: 10,
+    alignItems: 'center'
   },
   box2: {
     flexDirection: 'row',
@@ -349,14 +366,16 @@ const styles = StyleSheet.create({
   },
   box3: {
     paddingLeft: 20,
+    alignItems: 'center'
   },
   food: {
-    fontSize: 25,
+    fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 10
+    marginBottom: 10,
+    alignSelf: 'center'
   },
   date: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "bold",
     marginBottom: 13,
   },
@@ -366,8 +385,7 @@ const styles = StyleSheet.create({
   },
   showdate: {
     flexDirection: 'row',
-    borderWidth: 1.5,
-    borderColor: '#8C9190',
+    backgroundColor: '#DFDFDF',
     height: 50,
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -402,58 +420,69 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: "#d3d3d3",
     backgroundColor: '#fff',
-    borderWidth: 1,
-    marginTop: 10
+    marginTop: 10,
   },
-
   cold: {
-    marginRight: 20,
-    width: Dimensions.get('screen').width * 0.2,
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 10,
+    marginRight: 10,
+    width: Dimensions.get('screen').width*0.23,
+    height: Dimensions.get('screen').width*0.15,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
+    elevation: 10,
+    backgroundColor: '#ffffff'
   },
   cold2: {
-    marginRight: 20,
-    width: Dimensions.get('screen').width * 0.2,
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 10,
+    marginRight: 10,
+    width: Dimensions.get('screen').width*0.23,
+    height: Dimensions.get('screen').width*0.15,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#9ACD32'
+    backgroundColor: '#9ACD32',
   },
   coldd: {
     fontSize: 20,
+    color: '#ffffff',
+    fontWeight:'bold',
+  },
+  coldd2: {
+    fontSize: 20,
+    color: '#191919',
+    fontWeight:'bold',
   },
   ice: {
-    marginRight: 20,
-    width: Dimensions.get('screen').width * 0.2,
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 10,
+    marginRight: 10,
+    width: Dimensions.get('screen').width*0.23,
+    height: Dimensions.get('screen').width*0.15,
+    elevation: 10,
+    borderRadius: 20,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: '#ffffff'
   },
   ice2: {
-    marginRight: 20,
-    width: Dimensions.get('screen').width * 0.2,
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 10,
+    marginRight: 10,
+    width: Dimensions.get('screen').width*0.23,
+    height: Dimensions.get('screen').width*0.15,
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#add8e6'
   },
   icee: {
     fontSize: 20,
+    color: '#191919',
+    fontWeight:'bold',
+  },
+  icee2: {
+    fontSize: 20,
+    color: '#ffffff',
+    fontWeight:'bold',
   },
   frozenpick: {
     flex: 1,
     flexDirection: 'row',
     marginBottom: 10,
-    marginLeft: 10
   },
 });

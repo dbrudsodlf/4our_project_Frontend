@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Image, Text, TouchableHighlight, Dimensions, ScrollView, Alert } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableHighlight, Dimensions, ScrollView, Alert,Button } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { API_URL } from '../config/constants.js';
@@ -7,20 +7,24 @@ import axios from 'axios';
 import { TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
-import { ScreenStackHeaderLeftView } from 'react-native-screens';
+import { ScreenStackHeaderBackButtonImage, ScreenStackHeaderLeftView } from 'react-native-screens';
 
 export default function pickImageCart(props) {
+const [showDates, setShowDates] = useState({});
   let today = new Date();
-  const [date, setDate] = useState(today);
+  const [date, setDate] = useState([]);
   const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState({});
   const [frozen, setFrozen] = useState(0);
+  const [todate, setTodate] = useState('');
   const [fridge, setFridge] = useState(0);
   const [fridgeice, setFridgeice] = useState(0);
   const [ingredients, setIngredients] = React.useState([]);
   const [selectAll, setSelectAll] = React.useState(0); //false
   const [insertData, setInsertData] = React.useState([]);
+  const [ii, setII] = React.useState([]);
   const [main, setMain] = useState([]);
+  const [foodNum, setFoodNum] = useState(0);
   const id = useSelector((state) => state.id);
   let get = [{
     _id: '', ing_name: '', ing_expir: '', ing_frozen: '', ing_img: ''
@@ -30,72 +34,60 @@ export default function pickImageCart(props) {
     axios.get(`${API_URL}/camera/list`, {params: {user_id: id},get})
       .then((result) => {
         setIngredients(result.data);
-        console.log("앨범 선택 카트", result.data);
+        console.log("이것은 카트", result.data);
       })
       .catch((error) => {
         console.error(error);
       })
   }, []);
+  
+
 
   React.useEffect(() => {
-    ingredients.map((ing) => {
-      // ing.ing_expir = changeDateFormat(ing.ing_expir);
-      ing.ing_expir = changeDateFormat(ing.ing_expir);
-      let tempData = { date: ing.ing_expir, name: ing.ing.ing_name, img: ing.ing.ing_img, frozen: ing.ing_frozen, idd: ing._id, checked: 0 };
+    let dates={};
+    ingredients.map((ing,index) => {
+      let tempData = { date: ing.ing_expir, name: ing.ing.ing_name, img: ing.ing.ing_img, frozen: ing.ing_frozen, idd: ing._id, checked: 0,Id:index };
       setInsertData(prev => [...prev, tempData]);
+      setDate(prev => [...prev, ing.ing_expir]);
+      dates[ing.Id]=false;
+      if(index==0){
+        dates[ing.Id]=true;
+      }
+      setShow(dates);
     });
   }, [ingredients]);
 
-//   React.useEffect(() => {
-//     ingredients.map((ing)=> {
-//       ing.ing_expir = changeDateFormat(ing.ing_expir);
-//     });
-// }, [ingredients]);
-
-  const changeDateFormat = (oldDate) => {
-    if(oldDate === null) {
-      return '2021-01-01'
-    }
-    let newDate = oldDate.substr(0, 10);
-    return newDate
-  }
 
   const checkHandle = (index, food) => {//일부 선택
     const newItems = [...insertData];
     newItems[index]['checked'] = food.checked == 1 ? 0 : 1;
     setInsertData(newItems);
-    let maindata = { user_id: id, ing_expir: food.ing_expir, ing_frozen: food.frozen, ing_name: food.name,ing_img:food.img } //체크 된 배열 
+    let maindata = { _id:food.idd,user_id: id, ing_expir: date, ing_frozen: food.frozen, ing_name: food.name,ing_img:food.img} //체크 된 배열 
     if (food.checked == 1) { //체크 한 배열
-      setMain([...main, maindata]);
-      // console.log("들어감",main);
+      setMain( [...main,maindata]);
+      setII(prev=>[...prev,index]);
+       console.log("들어감",main);
     }
-    else if (food.checked == 0) {//체크 취소한 배열 빼기
+    else if (food.checked == 0) {//체크 취소한 배열 빼기     
       main.splice(index, 1);
-      // console.log("나감",main);
+      ii.splice(index,1);
     }
+    console.log("배열",ii);
   }
 
-  const gotoFridge = () => {
-    axios.post(`${API_URL}/search/list`,
-      main)
-      .then((res) => {
-        //console.log("보냄", res.config.data);
-        console.log("보냄", res);
-      }).catch(error => {
-        console.log(error);
-      })
-  }
 
   const allCheckHandle = (value) => { //전체선택
     const newItems = [...insertData];
-    newItems.map((item, index) => {
-      newItems[index]['checked'] = value == 1 ? 0 : 1;
-      console.log(value);
+    newItems.map((index) => {
+      index.checked = value == 1 ? 0 : 1;
+      console.log(index);
+      let tempData = { _id:index.idd, user_id: id, ing_expir: index.date, ing_frozen: index.frozen, ing_name: index.name, ing_img:index.img };
+      setMain(prev => [...prev, tempData]);
+      console.log('main', main);
     });
     setInsertData(newItems);
     setSelectAll(value == 1 ? 0 : 1);
     console.log("check", selectAll);
-
   };
 
   const deleteHandler = (idd,index) => { //x표 삭제
@@ -108,49 +100,92 @@ export default function pickImageCart(props) {
       }).catch(error => {
         console.log(error);
       })
+
   }
 
   const onChange = (event, selectedDate) => {//날짜 바꾸기
-    const currentDate = selectedDate || date;
+    let i = foodNum;
+    const currentDate = selectedDate || date[i];
     setShow(Platform.OS === 'ios');
-    setDate(currentDate);
-    console.log(currentDate);
+    date.splice(i,1,currentDate);
+    console.log(date);
+    setFoodNum(0);
   };
 
-  const showMode = (currentMode) => {
+  React.useEffect(() => {
+    console.log("한 날짜",date);
+    setDate(date);
+  }, [foodNum]); 
+
+  const showMode = (item,i) => {
     setShow(true);
-    setMode(currentMode);
+   // setMode(currentMode);
   };
 
-  const showDatepicker = () => {
-    showMode('date');
-  };
-
-  const frozenpick = (fridge, fridgeice) => {
-    if (fridgeice == 0) {
-      setFridge(1);
-      setFridgeice(0);
-    } else if (fridgeice == 1) {
-      setFridge(1);
-      setFridgeice(0);
+  const showDatepicker = (item,index) => {
+    let dates={};
+    insertData.map((data)=>{
+      dates[data.Id]=false;
+    })
+    dates[item.Id]=true;
+    setShow(dates);
+    // showMode(item,i);
+    // setDate(item.date);
+    if( dates[item.Id]==false){
+      changeit(index);
     }
+    console.log("원래날짜",date[index]);
+
+    setFoodNum(index);
+    console.log(foodNum);
+
+ };
+  
+
+const datechange=(i,food)=>{
+  setDate(food.date);
+  console.log("뜨고이시니니",i,food);
+}
+  
+
+
+  const frozenpick = (i, food) => {
+    const newItems = [...insertData];
+    newItems[i]['frozen'] = food.frozen == 1 ? 0 : 0;
+    setInsertData(newItems);
+      console.log(food.frozen);
     setFrozen(0);
   }
 
-  const frozenpick2 = (fridge, fridgeice) => {
-    if (fridge == 0) {
-      setFridge(0);
-      setFridgeice(1);
-    } else if (fridge == 1) {
-      setFridge(0);
-      setFridgeice(1);
-    }
+  const frozenpick2 = (i, food) => {
+    const newItems = [...insertData];
+    newItems[i]['frozen'] = food.frozen == 0 ? 1 : 1;
+    setInsertData(newItems);
+    console.log(food.frozen);
     setFrozen(1);
   }
 
+  const gotoFridge = () => {
+    axios.post(`${API_URL}/search/list`,
+      main)
+      .then((res) => {
+        //console.log("보냄", res.config.data);
+        console.log("보냄", res);
+      }).catch(error => {
+        console.log(error);
+      })
+      props.navigation.replace("MainScreen");
+      setMain([]);
+  }
+
+  const settingNum = (i) => {
+    setFoodNum(i);
+  }
+
+
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>담은 재료</Text>
+      <Text style={styles.text}>냉장고에 추가할 재료</Text>
       <View style={styles.boxtop}>
         <View style={styles.checkboxtop}>
           <TouchableOpacity
@@ -174,50 +209,61 @@ export default function pickImageCart(props) {
       <ScrollView>
         {
           insertData && insertData.map((food, i) => {
-            let photo = { uri: food.img };
-
+            let photo = { uri: food.img };       
             return (
-              <View style={styles.box} key={i}>
-                <View style={styles.boxtop2}>
-                  <TouchableOpacity onPress={() => checkHandle(i, food)} >
-                    <Ionicons name={food.checked == 1 ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"} size={35} color={food.checked == 1 ? "#F59A23" : "#aaaaaa"} />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => deleteHandler(food.idd, i)}>
-                    <Icon name="close" size={30} color="#000" />
-                  </TouchableOpacity></View>
+              <View style={styles.box} key={i}  >
                 <View style={styles.box2} width={Dimensions.get('screen').width * 0.89}>
-                  <Image style={styles.ingredientsImage}
-                    source={photo}
-                    resizeMode={"contain"} />
-                  <View style={styles.box3}
-                    width={Dimensions.get('screen').width * 0.5}>
-                    <Text style={styles.food} key={i}>{food.name}</Text>
-                    <TouchableHighlight underlayColor='#fff' onPress={showDatepicker}>
+                <TouchableHighlight onPress={() => checkHandle(i, food)} style={styles.ingredientsImage}>
+                    <Image 
+                    style={{
+                      flex: 1,
+                      resizeMode:'contain',
+                      backgroundColor: '#ffffff',
+                    }}
+                    source={photo}/>
+                  </TouchableHighlight>
+                  
+                  <View style={styles.box3}>
+                    <View style={styles.boxtop2} width={Dimensions.get('screen').width * 0.48}>
+                      <View style={styles.checkNname}>
+                        <TouchableOpacity onPress={() => checkHandle(i, food)} >
+                          <Ionicons name={food.checked == 1 ? "ios-checkmark-circle" : "ios-checkmark-circle-outline"} size={35} color={food.checked == 1 ? "#F59A23" : "#aaaaaa"} />
+                        </TouchableOpacity>
+                        <Text style={styles.food} key={i}>{food.name}</Text>
+                      </View>
+
+                      <TouchableOpacity onPress={() => deleteHandler(food.idd,i)}>
+                        <Icon name="close" size={30} color="#000" />
+                      </TouchableOpacity>
+                    </View>
+                      
+                    
+
+                    <TouchableHighlight underlayColor='#fff'
+                     onPress={()=>showDatepicker(food,i)}>
                       <View style={styles.showdate} >
                         <Icon name="calendar" size={30} color="#8C9190" />
                         <View style={styles.date1} >
-                          {/* <Text style={styles.date2}>{food.date.substring(0,10)}</Text> */}
-                          <Text style={styles.date2}>{food.date}</Text>
+                          <Text style={styles.date2}>{new Date(date[i]).toLocaleDateString()}</Text>
                         </View></View>
                     </TouchableHighlight>
-                    {show && (
+                    {show[food.Id] && (
                       <DateTimePicker
                         testID="dateTimePicker"
-                        minimumDate={new Date(today)}
-                        value={date}
+                        value={new Date(date[i])}
+                        minimumDate={new Date(today)}                       
                         mode={mode}
                         is24Hour={true}
                         display="spinner"
                         onChange={onChange}
-
                       />
                     )}
 
                     <View style={styles.frozenpick}>
-                      <TouchableOpacity delayPressIn={0} style={food.frozen == 0 ? styles.cold2 : styles.cold} onPressIn={() => { frozenpick(fridge, fridgeice) }}  >
+                      <TouchableOpacity delayPressIn={0} style={food.frozen == 0 ? styles.cold2 : styles.cold} onPressIn={() => { frozenpick(i,food) }}  >
                         <Text style={styles.coldd} >냉장</Text>
                       </TouchableOpacity>
-                      <TouchableOpacity delayPressIn={0} style={food.frozen == 0 ? styles.ice : styles.ice2} onPressIn={() => { frozenpick2(fridge, fridgeice) }} >
+                      <TouchableOpacity delayPressIn={0} style={food.frozen == 0 ? styles.ice : styles.ice2} onPressIn={() => { frozenpick2(i,food) }} >
                         <Text style={styles.icee}>냉동</Text>
                       </TouchableOpacity>
                     </View>
@@ -274,6 +320,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     alignItems: 'center',
     fontWeight: '400'
+
   },
   texttop: {
     marginLeft: 7,
@@ -281,7 +328,11 @@ const styles = StyleSheet.create({
   boxtop2: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginRight: 10
+    //justifyContent: 'space-evenly',
+  },
+  checkNname: {
+    flexDirection: 'row',
+    justifyContent: 'space-around'
   },
   add: {
     borderRadius: 10,
@@ -304,10 +355,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     margin: 15,
     borderRadius: 10,
-    borderColor: "#808080",
     backgroundColor: '#fff',
-    borderWidth: 1,
-    padding: 10
+    padding: 10,
+    elevation: 10,
   },
   box2: {
     flexDirection: 'row',
@@ -369,10 +419,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: "#d3d3d3",
     backgroundColor: '#fff',
-    borderWidth: 1,
-    marginTop: 10
+    marginTop: 10,
   },
-
   cold: {
     marginRight: 20,
     width: Dimensions.get('screen').width * 0.2,
