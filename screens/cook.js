@@ -14,10 +14,11 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Linking } from 'react-native';
 import { API_URL } from '../config/constants.js';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
-export default function CookScreen (props) {
-  const {ing} =props.route.params;
-  const {recipe} =props.route.params;
+export default function CookScreen ({ route, navigation }) {
+  const {ing} =route.params;
+  const {recipe} =route.params;
   // console.log("배열 드르옴",ing);
   // console.log("레시피 드르옴",recipe);
 
@@ -89,6 +90,15 @@ export default function CookScreen (props) {
 
   return (
     <SafeAreaView style={styles.container}>
+       <TouchableOpacity
+          onPress={()=>{
+              navigation.goBack()
+          }}
+          >
+            <Icon name="arrow-left" style={{marginLeft: 16, marginBottom: 20}} size={40} color="#191919" />
+          </TouchableOpacity>
+
+      <Text style={styles.title}>요리하기</Text>
       <Text style={styles.appTitle}>내가 선택한 재료</Text>
         <View style={styles.mypicks} >
         {
@@ -108,26 +118,26 @@ export default function CookScreen (props) {
             <View 
               width={Dimensions.get('screen').width *0.58}>
               <Text style={styles.food_text}>{food.name}</Text>
-                {/* <View style={styles.ing_container}>
-                {
+                <View style={styles.ing_container}>
+                {/* {
                 ing.map((ing, index)=>{
                   return (
                     <Text key={index} style={styles.food_ing}>{ing}</Text>
                     );
                   })
-                }
-              </View> */}
+                } */}
+              </View>
             </View>
             <View style={styles.container3}
                 width={Dimensions.get('screen').width *0.2}>
               <TouchableOpacity style={styles.icon} onPress={() => {
                  pushMemory(i,food)
                                     }} >
-                <Icon name="silverware-fork-knife" size={30} color="#fff" />
+                <Icon name="silverware-fork-knife" size={26} color="#fff" />
               </TouchableOpacity>
               <View style={styles.icon2}>
               <TouchableOpacity  onPressIn={()=>{pushHeart(i,food)}} >
-            <Icon name={food.checked? 'heart' : 'heart-outline'} size={30} color="#fff" />  
+            <Icon name={food.checked? 'heart' : 'heart-outline'} size={26} color="#fff" />  
               </TouchableOpacity></View>
             </View>
           </View>
@@ -145,97 +155,99 @@ export default function CookScreen (props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFD098',
-    paddingTop:50
+    backgroundColor: '#f59b23',
+    paddingTop:Dimensions.get('screen').width *0.3
   },
-  appTitle: {
-    color: '#000',
+  title: {
+    color: '#ffffff',
     fontSize: 28,
     marginTop: 20,
     marginBottom: 20,
     marginLeft: 20,
     textAlign: 'left',
-    backgroundColor: '#FFD098',
-    fontWeight:'bold'
+  },
+  appTitle: {
+    color: '#ffffff',
+    fontSize: 20,
+    marginBottom: 10,
+    marginLeft: 20,
+    textAlign: 'left',
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
     flex: 1,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10, 
-    marginLeft: 10,
-    marginRight: 10,
   },
   container3: {
-    flex:1,
     flexDirection:'row',
     justifyContent:'flex-end',
     marginRight:20,
-alignItems:'center'
+    alignItems:'center',
   },
-  
   food_text: {
-    flex: 5,
     fontWeight: 'bold',
     fontSize: 22,
-    marginLeft:20,
-    marginTop:20
+    marginLeft:Dimensions.get('screen').width*0.08,
+    alignItems:'center',
+    justifyContent:'center',
   },
   food_ing: {
     fontWeight: '500',
     fontSize: 17,
     marginBottom:20,
     marginTop:10,
-    marginLeft:10,
+    marginRight: 10,
     },
  icon:{
-   width:53,
+   width:Dimensions.get('screen').width*0.15,
    padding:10,
    marginRight:1,
    backgroundColor:'#F59A23',
    alignItems:'center',
-   borderTopLeftRadius:25,
-   borderBottomLeftRadius:25
+   borderTopLeftRadius:10,
+   borderBottomLeftRadius:10,
+   elevation: 10
  },
  icon2:{
-  width:53,
+  width:Dimensions.get('screen').width*0.15,
   padding:10,
   backgroundColor:'#F59A23',
   alignItems:'center',
-  borderTopRightRadius:25,
-  borderBottomRightRadius:25
+  borderTopRightRadius:10,
+  borderBottomRightRadius:10,
+  elevation: 10
 },
  menu:{
   borderBottomColor: '#FFD098',
   borderBottomWidth: 2,
   flexDirection:'row',
   alignItems:'center',
-  justifyContent:'center',
-  height:80,
+  justifyContent:'space-between',
+  height:Dimensions.get('screen').width *0.27,
   paddingTop:5
  },
  mypicks:{
-  backgroundColor:"#FFD098",
   flexDirection:'row',
-  marginBottom:30,
-  marginLeft:25
+  marginBottom:20,
+  marginLeft:Dimensions.get('screen').width *0.035,
  },
  mypick:{
    borderColor:"#fff",
    backgroundColor:'#fff',
-   borderWidth:2,
-   fontSize: 17,
+   fontSize: 16,
    fontWeight: 'bold',
    alignItems:'center',
    padding:12,
    borderRadius:20,
    height:45,
-   marginRight:15
+   marginRight:15,
+   elevation: 10,
  },
  ing_container: {
    display: 'flex',
    flexDirection:'row', 
    justifyContent: 'flex-start',
-   marginLeft: 18,
+   marginLeft:Dimensions.get('screen').width*0.07,
   }
 });

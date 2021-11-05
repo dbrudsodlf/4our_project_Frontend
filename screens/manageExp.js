@@ -27,7 +27,7 @@ export default function manageExp () {
   const id = useSelector((state) => state.id);
   React.useEffect(()=>{
     axios.get(`${API_URL}/manage/manageover?user_id=${id}`).then((result)=>{
-      setInsertData(result.data);
+      setIngredients(result.data);
       console.log('기한초과페이지', result.data);
     }).catch((error)=>{
       console.error(error);
@@ -59,14 +59,15 @@ export default function manageExp () {
   //   });
   // }, [ingredients]);
 
+  React.useEffect(() => {
+    ingredients.map((ing) => {
+      // ing.ing_expir = changeDateFormat(ing.ing_expir);
+      //ing.ing_expir = changeDateFormat(ing.ing_expir);
+      let tempData = {name: ing.ing_name, checked: 0};
+      setInsertData(prev => [...prev, tempData]);
+    });
+  }, [ingredients]);
 
-  // const changeDateFormat = (oldDate) => {
-  //   if(oldDate === null) {
-  //     return '2021-01-01'
-  //   }
-  //   let newDate = oldDate.substr(0, 10);
-  //   return newDate
-  // }
 
   //const data = [{id: 1, name: '계란'}, {id: 2, name: '토마토'}, {id: 3, name: '오이'}];
 	const selectHandler = (index, value) => {
@@ -75,20 +76,20 @@ export default function manageExp () {
     setInsertData(newItems); // set new state
 
     if(newItems[index].checked == 1){
-      setCounting(counting + 1);
-      console.log(counting);
-    } else if(newItems[index].checked == 0){
-      setCounting(counting - 1);
+        setCounting(counting + 1);
+        console.log(counting);
+      } else if(newItems[index].checked == 0){
+        setCounting(counting - 1);
+      }
     }
-	}
 	
 	const selectHandlerAll = (value) => {
 		const newItems = [...insertData]; // clone the array 
 		newItems.map((item) => {
-      item['checked'] = value == true ? 0 : 1; // set the new value 
-      if(newItems[index].checked == 1){
+      item['checked'] = (value == true ? 0 : 1); // set the new value 
+      if(item.checked == 1){
         setCounting(counting + 1);
-      } else if(newItems[index].checked == 0){
+      } else if(item.checked == 0){
         setCounting(counting - 1);
       }
 		});
@@ -123,7 +124,7 @@ export default function manageExp () {
     const deleteSelected = [...insertData];
     console.log(deleteSelected);
 		Alert.alert(
-			'선택 항목을 관리 페이지에서 정말 삭제하시겠습니까?',
+			'선택 항목을 냉장고에서 정말 삭제하시겠습니까?',
 			'',
 			[
 				{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
@@ -220,7 +221,6 @@ export default function manageExp () {
           </View>
         </View>
         <TouchableOpacity style={styles.centerElement} onPress={() => deleteSelectedHandler()}>
-          {/* <Ionicons name="md-trash" size={25} color="#ee4d2d" /> */}
           <Text style={styles.textBox}>선택 삭제</Text>
         </TouchableOpacity>
       </View>
@@ -234,7 +234,7 @@ export default function manageExp () {
             </View>
             <View style={{flexDirection: 'row', flexGrow: 1, flexShrink: 1, alignSelf: 'center'}}>
               <View style={{flexGrow: 1, flexShrink: 1, alignSelf: 'center'}}>
-                <Text numberOfLines={1} style={{fontSize: 16, fontWeight: 'bold'}}>{item.ing_name}</Text>
+                <Text numberOfLines={1} style={{fontSize: 16, fontWeight: 'bold'}}>{item.name}</Text>
               </View>
             </View>
             <View style={[styles.centerElement, {width: 60}]}>
@@ -245,7 +245,7 @@ export default function manageExp () {
           </View>
         ))}
       </ScrollView>
-      <TouchableOpacity style={[styles.cartBtn , {backgroundColor : counting > 0 ? '#f9b664' : '#fcd9ae'}]} onPress={() => addBasketHandler()}>
+      <TouchableOpacity style={[styles.cartBtn , {backgroundColor : counting > 0 ? '#f59b23' : '#fcd9ae'}]} onPress={() => addBasketHandler()}>
           <Ionicons name="basket-outline" size={30} color='white' />
           <Text style={{ color: 'white', fontSize: 18 }}> 장바구니에 담기</Text>
         </TouchableOpacity>

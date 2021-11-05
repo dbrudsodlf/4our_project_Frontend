@@ -131,10 +131,7 @@ const styles = StyleSheet.create({
   cardview:{
     flexDirection:"row",
     flexWrap:"wrap",
-    //paddingHorizontal:16,
     paddingTop:5,
-    //justifyContent:"space-between",
-
   },
   container: {
     flex: 1,

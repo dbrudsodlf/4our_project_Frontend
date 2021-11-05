@@ -124,10 +124,7 @@ const styles = StyleSheet.create({
   cardview:{
     flexDirection:"row",
     flexWrap:"wrap",
-    //paddingHorizontal:16,
     paddingTop:5,
-    justifyContent:"space-between",
-
   },
   container: {
     flex: 1,
@@ -144,44 +141,33 @@ const styles = StyleSheet.create({
   },
   ingredientsCard: {
     flex:1,
-    marginTop: Dimensions.get('screen').width*0.07,
-    marginLeft: Dimensions.get('screen').width*0.06,
-    marginRight: Dimensions.get('screen').width*0.06,
+    marginTop: Dimensions.get('screen').width*0.03,
+    marginLeft: Dimensions.get('screen').width*0.045,
     marginBottom: 10,
-    width: Dimensions.get('screen').width*0.38,
+    width: Dimensions.get('screen').width*0.43,
+    height: Dimensions.get('screen').width*0.52,
     borderColor: "#191919",
     backgroundColor: 'white',
     borderRadius: 20,
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: -3
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
+    elevation: 10,
     alignItems:'center',
     justifyContent:'center'
   },
   ingredientsCard2: {
     flex:1,
+    marginTop: Dimensions.get('screen').width*0.03,
+    marginLeft: Dimensions.get('screen').width*0.045,
     marginBottom: 10,
-    marginTop: Dimensions.get('screen').width*0.07,
-    marginLeft: Dimensions.get('screen').width*0.06,
-    marginRight: Dimensions.get('screen').width*0.06,
-    width: Dimensions.get('screen').width*0.38,
+    width: Dimensions.get('screen').width*0.43,
+    height: Dimensions.get('screen').width*0.52,
+    borderColor: "#191919",
     borderColor: "#191919",
     backgroundColor: 'white',
     opacity: 0.3,
     borderRadius: 20,
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: -3
-    },
+    elevation: 10,
     alignItems:'center',
-    justifyContent:'center',
-    shadowOpacity: 0.3,
-    shadowRadius: 6
+    justifyContent:'center'
   },
   ingredientsImage: {
     width: Dimensions.get('screen').width*0.30,

@@ -33,7 +33,7 @@ export default function MypageScreen(props) {
   return (
     <SafeAreaView style={styles.container}>
     <View style={styles.top}>
-      <Icon2 name='account-outline' size={45} color={'#F59A23'}/> 
+      {/* <Icon2 name='account-outline' size={45} color={'#F59A23'}/>  */}
       <Text style={styles.appTitle}>마이페이지</Text>
     </View>
     <ScrollView>
@@ -78,15 +78,13 @@ const styles = StyleSheet.create({
   top:{
     flexDirection: "row",
     alignItems: 'center',
-    backgroundColor: '#fff',
     paddingLeft:20,
     marginBottom:20
   },
   appTitle: {
     color: '#000',
-    fontSize: 28,
+    fontSize: 22,
     marginTop: 20,
-    marginBottom: 20,
     marginLeft: 10,
     fontWeight: '300',
     textAlign: 'left',
