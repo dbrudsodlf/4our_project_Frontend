@@ -1,5 +1,5 @@
 ## 1. *서비스 소개*
-## 냉장고를 부탁해!
+### 냉장고를 부탁해!
 ### 냉장고 속 식재료들을 통해 만들 수 있는 요리를 추천해주고 해당 요리의 레시피까지 연결해 줄 수 있는 앱
 <img src="https://user-images.githubusercontent.com/43868525/136002366-56c11668-d35e-44f8-8f8e-acfc6e6c1d45.jpeg" width="200" height="350" />
 
