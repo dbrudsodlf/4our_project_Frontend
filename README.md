@@ -51,7 +51,21 @@ https://youtu.be/w-Q_QPlQyB0?si=gkryTxi4dkP3aY9c
 #### 해당 화면에서 정보를 수정할 수 있다.
 <img src="https://user-images.githubusercontent.com/43868525/136002591-38be4737-c465-4803-86bc-04f70142244c.jpeg" width="200" height="350" />
 
-### 7. 냉장고 속 재료들을 선택
+### 7. 유통기한 만료 식재료는 장바구니로 이동
+#### 재료를 저장할 때 기입한 유통기한이 지나면
+#### 해당 재료가 자동으로 장바구니로 이동하여 사야 할 식재료를 상기시킬 수 있다.
+![image](https://github.com/dbrudsodlf/4our_project_Frontend/assets/43839967/958b1bf4-08ad-4136-9c7d-0b90c29bf2b7)
+
+### 8. 냉장고 속 재료들을 선택
 #### 냉장고에 저장된 식재료들 중 사용하고자 하는 식재료를 선택하면,
 #### 선택 된 식재료를 사용하여 할 수 있는 요리를 추천받을 수 있다.
 <img src="https://user-images.githubusercontent.com/43868525/136002613-e7bab273-b504-4e9c-b833-e3116bf336a3.jpeg" width="200" height="350" />
+
+### 8. 요리 추천 후 유튜브 자동 검색 후 이동
+#### 만들고 싶은 요리를 선택하면,
+#### 해당 요리가 검색된 유튜브 화면으로 이동할 수 있다.
+![image](https://github.com/dbrudsodlf/4our_project_Frontend/assets/43839967/3edfbfce-349c-48e2-afea-3742c6fc5612)
+![image](https://github.com/dbrudsodlf/4our_project_Frontend/assets/43839967/65e01762-7268-4ba3-921e-8a61658d316d)
+
+
+
